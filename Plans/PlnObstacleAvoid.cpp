@@ -7,7 +7,7 @@
 
 #include "PlnObstacleAvoid.h"
 
-PlnObstacleAvoid::PlnObstacleAvoid(Robot* robot) {
+PlnObstacleAvoid :: PlnObstacleAvoid(Robot* robot):Plan(robot){
 	//Creating Behaviors
 	//_beh[0] = new A(robot);
 	//_beh[1] = new B(robot);
