@@ -11,4 +11,4 @@ public:
 	virtual ~Size();
 };
 
-#endif /* SIXZE_H_ */
+#endif /* SIZE_H_ */
