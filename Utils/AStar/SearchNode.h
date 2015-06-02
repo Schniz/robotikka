@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../../Models/Map.h"
 #include "../stlastar.h"
 

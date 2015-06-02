@@ -41,6 +41,9 @@ using namespace std;
 // fast fixed size memory allocator, used for fast node memory management
 #include "fsa.h"
 
+// Include our map
+#include "../Models/Map.h"
+
 // Fixed size memory allocator can be disabled to compare performance
 // Uses std new and delete instead if you turn it off
 #define USE_FSA_MEMORY 1

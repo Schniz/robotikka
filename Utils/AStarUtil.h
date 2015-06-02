@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include "stlastar.h"
 #include "./AStar/SearchNode.h"
@@ -11,7 +13,7 @@ namespace Utils {
 	  AStarUtil(Map* map) {
 		  this->map = map;
 	  }
-	  static vector<Cell*> findPath(Cell* start, Cell* destination);
+	  vector<Cell*> findPath(Cell* start, Cell* destination);
   protected:
 	  Map* map;
 	  AStarSearch<SearchNode> search;
