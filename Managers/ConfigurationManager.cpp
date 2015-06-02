@@ -48,14 +48,4 @@ ConfigurationManager::~ConfigurationManager() {
 		return m_RobotSize;
 	}
 
-	ostream& operator<<(ostream& os, ConfigurationManager* config) {
-		os << "PngMapPath: " << config->m_PngMapPath << endl;
-		os << "Start Location: [" << config->m_StartLocation.m_X << ", " << config->m_StartLocation.m_Y << ", " << config->m_StartLocation.m_Yaw << "]" << endl;
-		os << "End Location : [" << config->m_EndLocation.m_X << "," << config->m_EndLocation.m_Y << "]" << endl;
-		os << "PixelPerCM: " << config->m_PpCM << endl;
-		os << "Png Grid Resolution: " << config->m_PngGridResolution << endl;
-		os << "Robot Size: [" << config->m_RobotSize.m_Width << ", " << config->m_RobotSize.m_Height << "]";
-		return os;
-	}
-
 }

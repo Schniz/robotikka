@@ -16,6 +16,5 @@ Size::Size()
 
 
 Size::~Size() {
-	// TODO Auto-generated destructor stub
 }
 
