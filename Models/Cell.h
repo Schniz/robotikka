@@ -6,9 +6,9 @@ using namespace std;
 
 class Cell {
 public:
-	static const double OCCUPIED;
-	static const double FREE;
-	static const double WALL;
+	static const int OCCUPIED = 1;
+	static const int FREE = 0;
+	static const int WALL = 2;
 	static const unsigned NUM_NEIGHBORS;
 
 	double Cell_Cost;

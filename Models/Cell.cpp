@@ -38,8 +38,7 @@ Cell::~Cell() {
 }
 
 bool Cell::isFree() {
-	//return Cell_Cost != Cell::OCCUPIED;
-	return true;
+	return this->Cell_Cost == Cell::FREE;
 }
 
 
