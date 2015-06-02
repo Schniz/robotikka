@@ -7,13 +7,14 @@ using namespace std;
 class Cell
 {
 public:
-	double Cell_Cost;
 
 	// Consts
 	static const double OCCUPIED;
 	static const double FREE;
 	static const double WALL;
 	static const unsigned NUM_NEIGHBORS;
+
+	double Cell_Cost;
 
 	// Ctors
 	Cell(unsigned x, unsigned y, double cell_cost = 1.0);

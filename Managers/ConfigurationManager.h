@@ -27,5 +27,4 @@ private:
 	Size m_RobotSize;
 };
 
-};
 }

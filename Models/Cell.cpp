@@ -6,7 +6,8 @@ Cell::Cell(unsigned x, unsigned y, double cell_cost) {
 	m_IsInit = false;
 	m_X = x;
 	m_Y = y;
-	Cell_Cost = cell_cost
+	Cell_Cost = cell_cost;
+}
 
 Cell::Cell(const Cell& cell) {
 	m_IsInit = cell.m_IsInit;
@@ -35,8 +36,9 @@ void Cell::init(vector<Cell*> neighbors) {
 
 // Check if the cell is free
 bool Cell::isFree() {
-	return Cell_Cost != Cell :: OCCUPIED;
-}
+	//return Cell_Cost != Cell::OCCUPIED;
+	return true;
+	}
 
 Cell::~Cell() {
 	m_IsInit = false;
