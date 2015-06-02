@@ -1,16 +1,11 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
 
 using namespace std;
 
-
-class Cell
-{
+class Cell {
 public:
-
-	// Consts
 	static const double OCCUPIED;
 	static const double FREE;
 	static const double WALL;
@@ -18,22 +13,17 @@ public:
 
 	double Cell_Cost;
 
-	// Ctors
 	Cell(unsigned x, unsigned y, double cell_cost = 1.0);
 	Cell(const Cell& cell);
 	Cell(const Cell* cell);
 
-	// Dtor
 	~Cell();
 
-	// Metohods
-	inline bool equalsTo(Cell* cell) {
-		return (
-			this->getX() == cell->getX() && this->getY() == cell->getY()
-		);
-	}
-
 	void init(vector<Cell*> neighbors);
+
+	inline bool equalsTo(Cell* cell) {
+		return (this->getX() == cell->getX() && this->getY() == cell->getY());
+	}
 
 	inline vector<Cell*> getNeighbors() {
 		return m_Neighbors;

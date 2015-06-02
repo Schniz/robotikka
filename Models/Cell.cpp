@@ -25,7 +25,6 @@ Cell::Cell(const Cell* cell) {
 	m_Neighbors = vector<Cell*>(cell->m_Neighbors);
 }
 
-// Init the neghbors
 void Cell::init(vector<Cell*> neighbors) {
 	if (m_IsInit) {
 		return;
@@ -34,13 +33,13 @@ void Cell::init(vector<Cell*> neighbors) {
 	m_Neighbors = vector<Cell*>(neighbors);
 }
 
-// Check if the cell is free
-bool Cell::isFree() {
-	//return Cell_Cost != Cell::OCCUPIED;
-	return true;
-	}
-
 Cell::~Cell() {
 	m_IsInit = false;
 }
+
+bool Cell::isFree() {
+	//return Cell_Cost != Cell::OCCUPIED;
+	return true;
+}
+
 

@@ -4,6 +4,7 @@
 #include "../lib/config.h"
 #include "../Consts.h"
 using namespace std;
+using namespace Consts;
 
 namespace Managers {
 ConfigurationManager::ConfigurationManager(string filePath) {
