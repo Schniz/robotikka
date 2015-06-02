@@ -36,9 +36,8 @@ void Cell::init(vector<Cell*> neighbors) {
 
 // Check if the cell is free
 bool Cell::isFree() {
-	//return Cell_Cost != Cell::OCCUPIED;
-	return true;
-	}
+	return this->Cell_Cost == Cell::FREE;
+}
 
 Cell::~Cell() {
 	m_IsInit = false;
