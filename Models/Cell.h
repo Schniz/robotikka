@@ -25,6 +25,12 @@ public:
 	~Cell();
 
 	// Metohods
+	inline bool equalsTo(Cell* cell) {
+		return (
+			this->getX() == cell->getX() && this->getY() == cell->getY()
+		);
+	}
+
 	void init(vector<Cell*> neighbors);
 
 	inline vector<Cell*> getNeighbors() {
