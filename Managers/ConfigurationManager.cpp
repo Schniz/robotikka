@@ -13,7 +13,7 @@ void ConfigurationManager::LoadFromFile(std::string filePath) {
 
 		Config configParser = Config(filePath);
 
-		m_ConfigurationManagerInstance  = new ConfigurationManager();
+		ConfigurationManager::m_ConfigurationManagerInstance = new ConfigurationManager();
 		m_PngMapPath = configParser.pString(CFG_PATH_TO_PNG);
 		m_StartLocation.m_X = configParser.pDouble(CFG_START_LOCATION_X);
 		m_StartLocation.m_Y = configParser.pDouble(CFG_START_LOCATION_Y);
@@ -32,13 +32,13 @@ ConfigurationManager::~ConfigurationManager() {
 
 
 ConfigurationManager* ConfigurationManager::GetInstance() {
-	if (m_ConfigurationManagerInstance == NULL)
+	if (ConfigurationManager::m_ConfigurationManagerInstance == NULL)
 	{
 		throw new std::string("Object ConfigurationManager Never Loaded");
 	}
 	else
 	{
-		return m_ConfigurationManagerInstance;
+		return ConfigurationManager::m_ConfigurationManagerInstance;
 	}
 	return NULL;
 	}
