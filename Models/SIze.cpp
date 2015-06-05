@@ -2,6 +2,11 @@
 
 using namespace std;
 
+float Size::RadiosSize ()
+{
+	return std::max(m_Height,m_Width);
+}
+
 Size::Size(float Height, float Width)
 {
 	m_Height = Height;

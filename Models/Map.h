@@ -1,16 +1,23 @@
 #pragma once
-
 #include <vector>
+#include "../Managers/ConfigurationManager.h"
+#include "../Utils/pngUtil.h"
+#include <math.h>
 #include "Cell.h"
+#include "../lib/lodepng.h"
 
 using namespace std;
+using namespace Managers;
 
 class Map
 {
 public:
-	Map(unsigned rows, unsigned cols);
-	Map(const Map& map);
+	unsigned m_Rows;
+unsigned m_Cols;
+	Map(const char* filename);
 	~Map();
+
+	void PrintMap(const char* filename);
 
 	inline unsigned getCols() {
 		return m_Cols;
@@ -23,10 +30,11 @@ public:
 	Cell* getCell(int row, int col) const;
 
 protected:
-	unsigned m_Rows;
-	unsigned m_Cols;
+
 	vector<vector<Cell*> > m_Cells;
+	std::vector<unsigned char> FatGrid;
+	std::vector<unsigned char> RegGrid;
 
 private:
-	void initMap(unsigned rows, unsigned cols);
+	void initMap(const char* filename);
 };

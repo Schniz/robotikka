@@ -8,6 +8,7 @@
 using namespace std;
 using namespace Consts;
 
+
 namespace Managers {
 
 	class WaypointsManager {

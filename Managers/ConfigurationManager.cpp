@@ -7,9 +7,13 @@ using namespace std;
 using namespace Consts;
 
 namespace Managers {
-ConfigurationManager::ConfigurationManager(string filePath) {
+ConfigurationManager::ConfigurationManager(){};
+void ConfigurationManager::LoadFromFile(std::string filePath) {
+		// create the first singleton instance
+
 		Config configParser = Config(filePath);
 
+		m_ConfigurationManagerInstance  = new ConfigurationManager();
 		m_PngMapPath = configParser.pString(CFG_PATH_TO_PNG);
 		m_StartLocation.m_X = configParser.pDouble(CFG_START_LOCATION_X);
 		m_StartLocation.m_Y = configParser.pDouble(CFG_START_LOCATION_Y);
@@ -20,10 +24,25 @@ ConfigurationManager::ConfigurationManager(string filePath) {
 		m_PngGridResolution = configParser.pDouble(CFG_PNG_GRID_RESOLUTION);
 		m_RobotSize.m_Width = configParser.pDouble(CFG_ROBOT_SIZE_WIDTH);
 		m_RobotSize.m_Height = configParser.pDouble(CFG_ROBOT_SIZE_HEIGHT);
+
 	}
 
 ConfigurationManager::~ConfigurationManager() {
 	}
+
+
+ConfigurationManager* ConfigurationManager::GetInstance() {
+	if (m_ConfigurationManagerInstance == NULL)
+	{
+		throw new std::string("Object ConfigurationManager Never Loaded");
+	}
+	else
+	{
+		return m_ConfigurationManagerInstance;
+	}
+	return NULL;
+	}
+
 
 	string ConfigurationManager::getPngMapPath() {
 		return m_PngMapPath;

@@ -8,9 +8,9 @@ using namespace std;
 namespace Managers {
 class ConfigurationManager {
 public:
-	ConfigurationManager(string filePath);
 	virtual ~ConfigurationManager();
-
+	static ConfigurationManager* GetInstance();
+	void LoadFromFile(std::string filePath);
 	string getPngMapPath();
 	Location getStartLocation();
 	Location getEndLocation();
@@ -19,6 +19,8 @@ public:
 	Size getRobotSize();
 
 private:
+	ConfigurationManager();
+	static ConfigurationManager * m_ConfigurationManagerInstance;
 	string m_PngMapPath;
 	Location m_StartLocation;
 	Location m_EndLocation;
