@@ -1,3 +1,4 @@
+#pragma once
 #include "ConfigurationManager.h"
 #include <iostream>
 #include <string>
@@ -7,6 +8,7 @@ using namespace std;
 using namespace Consts;
 
 namespace Managers {
+ConfigurationManager * ConfigurationManager::m_ConfigurationManagerInstance = NULL;
 ConfigurationManager::ConfigurationManager(){};
 void ConfigurationManager::LoadFromFile(std::string filePath) {
 		// create the first singleton instance

@@ -31,5 +31,5 @@ namespace Managers {
 		Size m_RobotSize;
 	};
 
-	ConfigurationManager * ConfigurationManager::m_ConfigurationManagerInstance = NULL;
+	//ConfigurationManager * ConfigurationManager::m_ConfigurationManagerInstance = NULL;
 }
