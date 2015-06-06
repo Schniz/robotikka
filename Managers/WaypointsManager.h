@@ -8,12 +8,12 @@
 using namespace std;
 using namespace Consts;
 
-
 namespace Managers {
 
 	class WaypointsManager {
 		public:
-			WaypointsManager(Robot* robot, float radius = RADIUS_AROUND_POINT);
+		// TODO: init radius
+			WaypointsManager(Robot* robot, vector<Waypoint> waypoints, float radius = RADIUS_AROUND_POINT);
 			virtual ~WaypointsManager();
 
 			void update();
@@ -22,9 +22,9 @@ namespace Managers {
 			bool shouldMoveNext();
 
 		private:
-			const double c_Radius;
+			const double m_Radius;
 			Robot* m_Robot;
-			queue<Waypoint*> m_WaypointsQueue;
+			queue<Waypoint> m_WaypointsQueue;
 			Waypoint* m_CurrWaypoint;
 	};
 

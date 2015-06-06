@@ -9,6 +9,7 @@
 #define ROBOT_H_
 #include <libplayerc++/playerc++.h>
 
+using namespace std;
 using namespace PlayerCc;
 class Robot {
 	PlayerClient*_pc;

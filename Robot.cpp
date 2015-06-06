@@ -18,6 +18,7 @@ Robot::Robot(char* ip, int port) {
 		Read();
 }
 
+
 Robot::~Robot() {
 	delete _pc;
 	delete _pp;
