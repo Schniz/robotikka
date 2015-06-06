@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <player-2.0/libplayerc++/utility.h>
 
 using namespace std;
 
@@ -26,5 +27,9 @@ const unsigned LASER_SLEASER_ARRAY_SIZE = 666;
 const double LASER_FOV_DEGREE = 240.0;
 const double MIN_LEASER_DISTANCE = 0;
 double const MAX_LEASER_DISTANCE = 4;
+
+/* PLAYER */
+const string PLAYER_HOST = PlayerCc::PLAYER_HOSTNAME;
+const int PLAYER_PORT = PlayerCc::PLAYER_PORTNUM;
 
 }
