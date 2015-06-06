@@ -1,12 +1,11 @@
-
-#ifndef TURNLEFT_H_
-#define TURNLEFT_H_
+#ifndef MOVEFORWARD_H_
+#define MOVEFORWARD_H_
 
 #include "Behavior.h"
 
-class TurnLeft: public Behavior {
+class MoveForward: public Behavior {
 public:
-	TurnLeft(Robot* robot);
+	MoveForward(Robot* robot);
 
 	bool startCond()
 	{
@@ -25,7 +24,7 @@ public:
 		_robot->setSpeed(0.0, 0.3);
 	}
 
-	virtual ~TurnLeft();
+	virtual ~MoveForward();
 };
 
-#endif /* TURNLEFT_H_ */
+#endif /* MOVEFORWARD_H_ */
