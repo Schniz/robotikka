@@ -15,6 +15,10 @@ public:
 	double getCost(SearchNode& successor, Map* map);
 	bool isSameState(SearchNode& rhs);
 
+	inline Cell* toMapCell(Map* map) {
+		return map->getCell(this->X, this->Y);
+	}
+
 	friend ostream& operator<<(ostream& os, const SearchNode& cell);
 
 	int X;
