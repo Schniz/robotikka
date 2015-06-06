@@ -3,8 +3,6 @@
 
 using namespace std;
 
-const unsigned Cell::NUM_NEIGHBORS = 8;
-
 Map::Map(unsigned rows, unsigned cols) {
 	initMap(rows, cols);
 }

@@ -14,7 +14,8 @@ namespace Managers {
 			m_WaypointsQueue.pop();
 		}
 
-		// TODO Calculate where the robot is currently, and what speed and yawSpeed it needs to get to the next Waypoint.
+		// TODO Calculate where the robot is currently,
+		// and what speed and yawSpeed it needs to get to the next Waypoint.
 		// TODO Use the RobotManager to move it?
 	}
 

@@ -9,7 +9,7 @@ public:
 	static const int OCCUPIED = 1;
 	static const int FREE = 0;
 	static const int WALL = 2;
-	static const unsigned NUM_NEIGHBORS;
+	static const unsigned NUM_NEIGHBORS = 8;
 
 	double Cell_Cost;
 
