@@ -17,5 +17,6 @@ namespace Utils {
   protected:
 	  Map* map;
 	  AStarSearch<SearchNode> search;
+	  vector<Cell*> buildPath();
   };
 }
