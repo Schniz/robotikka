@@ -21,7 +21,7 @@ public:
 	}
 
 	void action()
-	{
+	{	//TODO: this
 		_robot->setSpeed(0.0, 0.3);
 	}
 

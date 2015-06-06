@@ -1,9 +1,3 @@
-/*
- * Manager.cpp
- *
- *  Created on: Dec 21, 2014
- *      Author: user
- */
 
 #include "Manager.h"
 
