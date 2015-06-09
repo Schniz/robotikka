@@ -31,13 +31,13 @@ double Robot::getRangeLaser(unsigned index) {
 	if (index < 0 || index > LASER_SLEASER_ARRAY_SIZE) {
 		return -1;
 	}
-
-	return _lp->GetRange(index);
+	return _lp->GetRange(index);;
 }
 
 double Robot::getRangeLaser(double angle) {
 	return getRangeLaser(angleToindex(angle));
 }
+
 
 double Robot::indexToAngle(int index, double fov, int size) {
 	double angular_resolution = fov / (double) size;

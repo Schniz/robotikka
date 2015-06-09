@@ -4,10 +4,12 @@
 
 #include <libplayerc++/playerc++.h>
 #include "Consts.h"
+#include "Utils/MathUtil.h"
 
 using namespace std;
 using namespace PlayerCc;
 using namespace Consts;
+using namespace Utils;
 
 class Robot {
 	PlayerClient*_pc;
@@ -19,6 +21,8 @@ public:
 		_pc->Read();
 	}
 	void setSpeed(float xSpeed, float angularSpeed) {
+		// TODO: check if we need to do:  cm_to_m to the x speed!
+
 		_pp->SetSpeed(xSpeed, angularSpeed);
 	}
 	bool isRightFree() {
