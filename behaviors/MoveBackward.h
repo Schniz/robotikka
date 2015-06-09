@@ -2,26 +2,24 @@
 #define MOVEBACKWARD_H_
 
 #include "Behavior.h"
+#include "../Consts.h"
 
 class MoveBackward: public Behavior {
 public:
 	MoveBackward(Robot* robot);
 
-	bool startCond()
-	{
+	bool startCond() {
 		//TODO: this
 		return true;
 	}
 
-	bool stopCond()
-	{
+	bool stopCond() {
 		//TODO: this
 		return true;
 	}
 
-	void action()
-	{	//TODO: this
-		_robot->setSpeed(0.0, 0.3);
+	void action() {
+		_robot->setSpeed(MOVE_BACKWARD_SPEED, 0);
 	}
 
 	virtual ~MoveBackward();

@@ -30,11 +30,21 @@ const float RADIUS_AROUND_POINT = 10.0;
 /* LASER */
 const unsigned LASER_SLEASER_ARRAY_SIZE = 666;
 const double LASER_FOV_DEGREE = 240.0;
-const double MIN_LEASER_DISTANCE = 0;
-double const MAX_LEASER_DISTANCE = 4.096;
+const double MIN_LEASER_DISTANCE = 0; // meters
+double const MAX_LEASER_DISTANCE = 4.096; // meters
+const double LASER_FRONT_SAMPLES_HALF = 75;
+const double OBJECTS_DISTANCE_FROM_LASER_METER = 0.65;
+const double LASER_ANGULAR_RESOLUTION = LASER_FOV_DEGREE / LASER_SLEASER_ARRAY_SIZE;
 
 /* PLAYER */
 const string PLAYER_HOST = PlayerCc::PLAYER_HOSTNAME;
 const int PLAYER_PORT = PlayerCc::PLAYER_PORTNUM;
+
+/* BEHAVIORS */
+const double MOVE_FORWARD_SPEED = 0.4;
+const double TURN_SPEED = 0.1;
+const double TURN_ANGULAR_SPEED = 0.6;
+const double TURN_IN_PLACE_ANGULAR_SPEED = 3.0;
+const double MOVE_BACKWARD_SPEED = -MOVE_FORWARD_SPEED;
 
 }

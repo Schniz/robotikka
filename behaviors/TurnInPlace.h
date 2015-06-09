@@ -3,6 +3,7 @@
 #define TURNINPLACE_H_
 
 #include "Behavior.h"
+#include "../Consts.h"
 
 class TurnInPlace: public Behavior {
 public:
@@ -21,8 +22,8 @@ public:
 	}
 
 	void action()
-	{	//TODO: this
-		_robot->setSpeed(0.0, 0.3);
+	{
+		_robot->setSpeed(0.0, TURN_IN_PLACE_ANGULAR_SPEED);
 	}
 
 	virtual ~TurnInPlace();

@@ -2,6 +2,7 @@
 #define MOVEFORWARD_H_
 
 #include "Behavior.h"
+#include "../Consts.h"
 
 class MoveForward: public Behavior {
 public:
@@ -20,8 +21,8 @@ public:
 	}
 
 	void action()
-	{	//TODO: this
-		_robot->setSpeed(0.0, 0.3);
+	{
+		_robot->setSpeed(MOVE_FORWARD_SPEED, 0);
 	}
 
 	virtual ~MoveForward();

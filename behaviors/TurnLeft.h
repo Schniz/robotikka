@@ -1,28 +1,25 @@
-
 #ifndef TURNLEFT_H_
 #define TURNLEFT_H_
 
 #include "Behavior.h"
+#include "../Consts.h"
 
 class TurnLeft: public Behavior {
 public:
 	TurnLeft(Robot* robot);
 
-	bool startCond()
-	{
+	bool startCond() {
 		//TODO: this
 		return true;
 	}
 
-	bool stopCond()
-	{
+	bool stopCond() {
 		//TODO: this
 		return true;
 	}
 
-	void action()
-	{	//TODO: this
-		_robot->setSpeed(0.0, 0.3);
+	void action() {
+		_robot->setSpeed(TURN_SPEED, TURN_ANGULAR_SPEED);
 	}
 
 	virtual ~TurnLeft();

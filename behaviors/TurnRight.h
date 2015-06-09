@@ -9,6 +9,7 @@
 #define TURNRIGHT_H_
 
 #include "Behavior.h"
+#include "../Consts.h"
 
 class TurnRight: public Behavior {
 public:
@@ -26,8 +27,9 @@ public:
 			return false;
 	}
 
-	void action() {	//TODO: this
-		_robot->setSpeed(0.0, 0.3);
+	void action() {
+		_robot->setSpeed(TURN_SPEED, TURN_ANGULAR_SPEED);
+
 	}
 	virtual ~TurnRight();
 };
