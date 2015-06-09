@@ -9,6 +9,20 @@ public:
 	Location();
 	Location(double x, double y, double Yaw);
 	virtual ~Location();
+
+
+	inline unsigned getX() {
+		return m_X;
+	};
+
+	inline unsigned getY() {
+		return m_Y;
+	};
+
+	inline unsigned getYaw() {
+		return m_Yaw;
+	};
+
 };
 
 #endif /* LOCATION_H_ */

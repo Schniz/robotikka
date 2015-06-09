@@ -9,9 +9,11 @@ using namespace std;
 using namespace Consts;
 
 namespace Managers {
-ConfigurationManager * ConfigurationManager::m_ConfigurationManagerInstance = NULL;
+ConfigurationManager *ConfigurationManager::m_ConfigurationManagerInstance = NULL;
+
 ConfigurationManager::ConfigurationManager(){};
-void ConfigurationManager::LoadFromFile(std::string filePath) {
+
+void ConfigurationManager::LoadFromFile(string filePath) {
 		// create the first singleton instance
 
 		Config configParser = Config(filePath);

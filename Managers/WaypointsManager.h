@@ -4,9 +4,11 @@
 #include "../Models/Cell.h"
 #include "../Robot.h"
 #include "../Consts.h"
+#include "../Models/Location.h"
 
 using namespace std;
 using namespace Consts;
+using namespace Utils;
 
 namespace Managers {
 
@@ -16,10 +18,10 @@ namespace Managers {
 			WaypointsManager(Robot* robot, vector<Waypoint> waypoints, float radius = RADIUS_AROUND_POINT);
 			virtual ~WaypointsManager();
 
-			void update();
+			Waypoint update(Location newRobotLoc);
 
 		protected:
-			bool shouldMoveNext();
+			bool shouldMoveNext(Location newRobotLoc);
 
 		private:
 			const double m_Radius;
