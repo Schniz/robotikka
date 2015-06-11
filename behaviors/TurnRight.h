@@ -9,28 +9,27 @@
 #define TURNRIGHT_H_
 
 #include "Behavior.h"
+#include "../Consts.h"
 
 class TurnRight: public Behavior {
 public:
 	TurnRight(Robot* robot);
-	bool startCond()
-	{
-		if(_robot->isRightFree() )
+	bool startCond() {	//TODO: this
+		if (_robot->isRightFree())
 			return true;
 		else
 			return false;
 	}
-	bool stopCond()
-	{
-		if(_robot->isForwardFree())
-					return true;
-				else
-					return false;
+	bool stopCond() {	//TODO: this
+		if (_robot->isForwardFree())
+			return true;
+		else
+			return false;
 	}
 
-	void action()
-	{
-		_robot->setSpeed(0.0, 0.3);
+	void action() {
+		_robot->setSpeed(TURN_SPEED, TURN_ANGULAR_SPEED);
+
 	}
 	virtual ~TurnRight();
 };

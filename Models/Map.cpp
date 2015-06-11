@@ -2,8 +2,6 @@
 
 using namespace std;
 
-const unsigned Cell::NUM_NEIGHBORS = 8;
-
 Map::Map(const char* filename) {
 	initMap(filename);
 }
@@ -125,4 +123,3 @@ void PrintMap(const char* filename)
 {
 
 	}
-

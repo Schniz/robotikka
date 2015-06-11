@@ -18,7 +18,25 @@ namespace Utils {
 	  if (state == AStarSearch<SearchNode>::SEARCH_STATE_FAILED) {
 		  std::cerr << "Could not find a path. sry for dis.\n";
 	  } else if (state == AStarSearch<SearchNode>::SEARCH_STATE_SUCCEEDED) {
-		  // Yay.
+		  vector<Cell*> solution = this->buildPath();
+		  this->search.FreeSolutionNodes();
+		  return solution;
 	  }
-  }
+
+	  return vector<Cell*>();
+  };
+
+  vector<Cell*> AStarUtil::buildPath() {
+	  int stepCount = this->search.GetStepCount();
+	  vector<Cell*> path(stepCount);
+	  SearchNode* searchNode = this->search.GetSolutionStart();
+
+	  while (searchNode != NULL) {
+		  Cell* cell = searchNode->toMapCell(this->map);
+		  path.push_back(cell);
+		  searchNode = this->search.GetSolutionNext();
+	  }
+
+	  return path;
+  };
 }

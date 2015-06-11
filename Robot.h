@@ -1,15 +1,16 @@
-/*
- * Robot.h
- *
- *  Created on: Dec 14, 2014
- *      Author: user
- */
 
 #ifndef ROBOT_H_
 #define ROBOT_H_
-#include <libplayerc++/playerc++.h>
 
+#include <libplayerc++/playerc++.h>
+#include "Consts.h"
+#include "Utils/MathUtil.h"
+
+using namespace std;
 using namespace PlayerCc;
+using namespace Consts;
+using namespace Utils;
+
 class Robot {
 	PlayerClient*_pc;
 	Position2dProxy* _pp;
@@ -20,6 +21,8 @@ public:
 		_pc->Read();
 	}
 	void setSpeed(float xSpeed, float angularSpeed) {
+		// TODO: check if we need to do:  cm_to_m to the x speed!
+
 		_pp->SetSpeed(xSpeed, angularSpeed);
 	}
 	bool isRightFree() {
@@ -34,7 +37,21 @@ public:
 		else
 			return false;
 	}
+
+	double getXPosition();
+	double getYPosition();
+	double getYawPosition();
+
+	double getRangeLaser(unsigned index);
+	double getRangeLaser(double angle);
+
 	virtual ~Robot();
+
+protected:
+	static double indexToAngle(int index, double fov, int size);
+	static double indexToAngle(int index);
+	static unsigned angleToIndex(double angle, double fov, int size);
+	static unsigned angleToindex(double angle);
 };
 
 #endif /* ROBOT_H_ */
