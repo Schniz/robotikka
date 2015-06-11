@@ -15,6 +15,7 @@ public:
 	unsigned m_Rows;
 unsigned m_Cols;
 	Map(const char* filename);
+	Map(unsigned Rows,unsigned Cols);
 	~Map();
 
 	void PrintMap(const char* filename);
@@ -37,4 +38,5 @@ protected:
 
 private:
 	void initMap(const char* filename);
+	std::vector<unsigned char> CreatGridFromMap(std::vector<unsigned char> PngMap,unsigned MapHeight,unsigned MapWidth, float PngGridResolution, float PixelPerCm, unsigned &GridCols, unsigned &GridRows);
 };
