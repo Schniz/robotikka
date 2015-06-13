@@ -10,16 +10,13 @@ public:
 
 	bool startCond()
 	{
-		//TODO: this
-		return true;
+		return _robot->canMoveForward();
 	}
 
 	bool stopCond()
 	{
-		//TODO: this
-		return true;
+		return !startCond();
 	}
-
 	void action()
 	{
 		_robot->setSpeed(MOVE_FORWARD_SPEED, 0);

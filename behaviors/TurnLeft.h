@@ -9,13 +9,11 @@ public:
 	TurnLeft(Robot* robot);
 
 	bool startCond() {
-		//TODO: this
-		return true;
+		return _robot->canTurnLeft();
 	}
 
 	bool stopCond() {
-		//TODO: this
-		return true;
+		return _robot->canMoveForward();
 	}
 
 	void action() {
