@@ -15,15 +15,15 @@ class TurnRight: public Behavior {
 public:
 	TurnRight(Robot* robot);
 	bool startCond() {	//TODO: this
-		if (_robot->isRightFree())
-			return true;
-		else
+//		if (_robot->isRightFree())
+//			return true;
+//		else
 			return false;
 	}
 	bool stopCond() {	//TODO: this
-		if (_robot->isForwardFree())
-			return true;
-		else
+//		if (_robot->isForwardFree())
+//			return true;
+//		else
 			return false;
 	}
 

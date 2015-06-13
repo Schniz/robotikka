@@ -73,7 +73,7 @@ void RobotManager::run() {
 	// TODO check if really needed - prettier solution?
 	//For fixing Player's reading BUG
 	for (int i = 0; i < 15; i++) {
-//		m_Robot->_pc->Read();
+	//	m_Robot->_pc->Read();
 	}
 
 	try {
@@ -105,17 +105,6 @@ void RobotManager::updateLocation() {
 
 void RobotManager::runStep() {
 
-//	if (!m_CurrBehavior || m_CurrBehavior->stopCond()()) {
-//		for (uint i = 0; i < m_Behaviors.size(); i++) {
-//
-//			if (m_Behaviors[i]->startCond() {
-//						m_CurrBehavior = m_Behaviors[i];
-//						break;
-//					}
-//				}
-//			}
-//
-//			m_CurrBehavior->execute();
-//		}
+	// TODO!
 	}
 }

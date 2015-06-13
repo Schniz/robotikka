@@ -1,4 +1,3 @@
-
 #include "Robot.h"
 #include <stdexcept>
 
@@ -27,6 +26,48 @@ double Robot::getYawPosition() {
 	return _pp->GetYaw();
 }
 
+bool Robot::canTurnRight()
+{
+	return canTurnInDirection(START_RIGHT_RAYS_RANGE_ANGLE, END_RIGHT_RAYS_RANGE_ANGLE);
+}
+
+bool Robot::canTurnLeft()
+{
+	return canTurnInDirection(START_LEFT_RAYS_RANGE_ANGLE, END_LEFT_RAYS_RANGE_ANGLE);
+}
+
+bool Robot::canTurnInDirection(double startRangeAngle, double endRangeAngle)
+{
+	int rangeStartIndex = angleToIndex(startRangeAngle);
+	int rangeEndIndex = angleToIndex(endRangeAngle);
+
+	for (int i = rangeStartIndex; i < rangeEndIndex; i++)
+	{
+		if (getDistanceFromObstacle(i) <= 0.5)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+// This function summarize the "rays range" distances from obstacles
+double Robot::getRaysRangeSum(double rangeStartAngle,double rangeEndAngle)
+{
+	double sum = 0;
+
+	int rangeStartIndex = angleToIndex(rangeStartAngle);
+	int rangeEndIndex = angleToIndex(rangeEndAngle);
+
+	for (int i = rangeStartIndex; i <= rangeEndIndex; i++)
+	{
+		sum += getDistanceFromObstacle(i);
+	}
+
+	return sum;
+}
+
 double Robot::getRangeLaser(unsigned index) {
 	if (index < 0 || index > LASER_SLEASER_ARRAY_SIZE) {
 		return -1;
@@ -35,43 +76,31 @@ double Robot::getRangeLaser(unsigned index) {
 }
 
 double Robot::getRangeLaser(double angle) {
-	return getRangeLaser(angleToindex(angle));
+	return getRangeLaser(angleToIndex(angle));
 }
 
-
-double Robot::indexToAngle(int index, double fov, int size) {
-	double angular_resolution = fov / (double) size;
-	double min_angle = fov / 2;
+double Robot::indexToAngle(int index) {
+	double angular_resolution = LASER_FOV_DEGREE
+			/ (double) LASER_SLEASER_ARRAY_SIZE;
+	double min_angle = LASER_FOV_DEGREE / 2;
 
 	double angle = index * angular_resolution - min_angle;
 	return angle;
 }
 
-unsigned Robot::angleToIndex(double angle, double fov, int size) {
-	double min_angle = fov / 2;
+unsigned Robot::angleToIndex(double angle) {
+	double min_angle = LASER_FOV_DEGREE / 2;
 
-	int index = ((double) size / fov) * (angle + min_angle);
-	if (index >= size) {
+	int index = ((double) LASER_SLEASER_ARRAY_SIZE / LASER_FOV_DEGREE)
+			* (angle + min_angle);
+	if (index >= LASER_SLEASER_ARRAY_SIZE) {
 		throw new out_of_range("index larger than possible.");
 	}
 
 	return index;
 }
 
-double Robot::indexToAngle(int index) {
-	return Robot::indexToAngle(index, LASER_FOV_DEGREE,
-			LASER_SLEASER_ARRAY_SIZE);
-}
-
-unsigned Robot::angleToindex(double angle) {
-	return Robot::angleToIndex(angle, LASER_FOV_DEGREE,
-			LASER_SLEASER_ARRAY_SIZE);
-}
-
-
-
-double Robot::getDistanceFromObstacle(int index)
-{
+double Robot::getDistanceFromObstacle(int index) {
 	return (*_lp)[index];
 }
 

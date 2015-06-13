@@ -9,7 +9,7 @@
 using namespace std;
 using namespace PlayerCc;
 using namespace Consts;
-//using namespace Utils;
+
 
 class Robot {
 	PlayerClient*_pc;
@@ -19,6 +19,7 @@ class Robot {
 public:
 	Robot(char* ip, int port);
 	void Read() {
+		// TODO
 		_pc->Read();
 	}
 	void setSpeed(float xSpeed, float angularSpeed) {
@@ -26,23 +27,24 @@ public:
 
 		_pp->SetSpeed(xSpeed, angularSpeed);
 	}
-	bool isRightFree() {
-		if ((*_lp)[50] > 0.5)
-			return true;
-		else
-			return false;
-	}
-	bool isForwardFree() {
-		if ((*_lp)[332] > 0.5)
-			return true;
-		else
-			return false;
-	}
+//	bool isRightFree() {
+//		// todo
+//		if ((*_lp)[50] > 0.5)
+//			return true;
+//		else
+//			return false;
+//	}
+//	bool isForwardFree() {
+//		// todo
+//		if ((*_lp)[332] > 0.5)
+//			return true;
+//		else
+//			return false;
+//	}
 
-	bool CanMoveForward();
-	bool CanTurnRight();
-	bool CanTurnLeft();
-
+	bool canMoveForward();
+	bool canTurnRight();
+	bool canTurnLeft();
 
 	double getDistanceFromObstacle(int index);
 	double getXPosition();
@@ -51,14 +53,15 @@ public:
 
 	double getRangeLaser(unsigned index);
 	double getRangeLaser(double angle);
+	double getRaysRangeSum(double rangeStartAngle,double rangeEndAngle);
 
 	virtual ~Robot();
 
 protected:
-	static double indexToAngle(int index, double fov, int size);
 	static double indexToAngle(int index);
-	static unsigned angleToIndex(double angle, double fov, int size);
-	static unsigned angleToindex(double angle);
+	static unsigned angleToIndex(double angle);
+	static double convertDegreesToRadians(double deg);
+	bool canTurnInDirection(double startRangeAngle, double endRangeAngle);
 };
 
 #endif /* ROBOT_H_ */
