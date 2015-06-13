@@ -8,6 +8,11 @@
 #include "../Robot.h"
 #include "LocalizationManager.h"
 #include "WaypointsManager.h"
+#include "../behaviors/MoveForward.h"
+#include "../behaviors/TurnInPlace.h"
+#include "../behaviors/TurnLeft.h"
+#include "../behaviors/TurnRight.h"
+#include "../behaviors/MoveBackward.h"
 
 using namespace PlayerCc;
 using namespace std;

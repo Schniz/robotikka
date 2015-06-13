@@ -16,7 +16,7 @@ namespace Utils {
 			static double distance(double x1, double y1, double x2, double y2);
 			static double normalize(double num, double min = DBL_MIN, double max = DBL_MAX);
 			static bool equals(double number, double compare, double epsilon = DBL_EPSILON);
-			static double convertDegreesToRadians(double deg);
+		//	static double convertDegreesToRadians(double deg);
 
 	};
 

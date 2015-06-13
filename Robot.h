@@ -9,7 +9,7 @@
 using namespace std;
 using namespace PlayerCc;
 using namespace Consts;
-using namespace Utils;
+//using namespace Utils;
 
 class Robot {
 	PlayerClient*_pc;

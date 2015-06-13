@@ -13,7 +13,7 @@
 #include "../behaviors/TurnInPlace.h"
 #include "../behaviors/TurnLeft.h"
 #include "../behaviors/TurnRight.h"
-#include "./Plan.h"
+#include "Plan.h"
 
 class PlnObstacleAvoid: public Plan {
 	Behavior* _beh[5];

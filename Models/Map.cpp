@@ -6,15 +6,14 @@ Map::Map(const char* filename) {
 	initMap(filename);
 }
 
-Map::Map(unsigned Cols,unsigned Rows){
+Map::Map(unsigned Cols, unsigned Rows) {
 	this->m_Cols = Cols;
 	this->m_Rows = Rows;
-	this->FatGrid.resize(Rows,Cols);
-	this->RegGrid.resize(Rows,Cols);
-	}
+	this->FatGrid.resize(Rows, Cols);
+	this->RegGrid.resize(Rows, Cols);
+}
 
-void Map::initMap(const char* filename)
-{
+void Map::initMap(const char* filename) {
 	std::vector<unsigned char> image;
 	std::vector<unsigned char> FatImage;
 	unsigned width, height;
@@ -24,20 +23,21 @@ void Map::initMap(const char* filename)
 	ConfigurationManager* config = ConfigurationManager::GetInstance();
 
 	//decode
-	unsigned error = lodepng::decode(image, width, height, config->getPngMapPath());
+	unsigned error = lodepng::decode(image, width, height,
+			config->getPngMapPath());
 
 	//if there's an error, display it
 	if (error)
 		std::cout << "decoder error " << error << ": "
 				<< lodepng_error_text(error) << std::endl;
 
-
 	// Create the fat img
 	FatImage.resize(width * height);
 
-
 	// calc the size of the robot in pic px
-	unsigned PxToBlow = ceil(config->getRobotSize().RadiosSize() / config->getPngGridResolution());
+	unsigned PxToBlow = ceil(
+			config->getRobotSize().RadiosSize()
+					/ config->getPngGridResolution());
 
 	// run on the map and find the
 	unsigned char color;
@@ -48,26 +48,31 @@ void Map::initMap(const char* filename)
 					|| image[y * width * 4 + x * 4 + 2])
 				color = 0;
 
-				// add oppstical to the fat img
-				for (bX = std::max(x - PxToBlow,static_cast<unsigned int>(0)); bX < PxToBlow+x; bX++)
-					for (bY = std::max(x - PxToBlow,static_cast<unsigned int>(0));bY < PxToBlow+y;bY++)
-					{
-						FatImage[y * width * 4 + x * 4 + 0] = color;
-						FatImage[y * width * 4 + x * 4 + 1] = color;
-						FatImage[y * width * 4 + x * 4 + 2] = color;
-						FatImage[y * width * 4 + x * 4 + 3] = 255;
-					}
+			// add oppstical to the fat img
+			for (bX = std::max(x - PxToBlow, static_cast<unsigned int>(0));
+					bX < PxToBlow + x; bX++)
+				for (bY = std::max(x - PxToBlow, static_cast<unsigned int>(0));
+						bY < PxToBlow + y; bY++) {
+					FatImage[y * width * 4 + x * 4 + 0] = color;
+					FatImage[y * width * 4 + x * 4 + 1] = color;
+					FatImage[y * width * 4 + x * 4 + 2] = color;
+					FatImage[y * width * 4 + x * 4 + 3] = 255;
+				}
 		}
 
 	// create grid from the fat and regular map
-	this->FatGrid = this->CreatGridFromMap(FatImage, height, width,config->getPngGridResolution(),config->getPixelPerCm(), this->m_Cols,this->m_Rows);
-	this->RegGrid = this->CreatGridFromMap(image, height, width,config->getPngGridResolution(),config->getPixelPerCm(), this->m_Cols,this->m_Rows);
-
+	this->FatGrid = this->CreatGridFromMap(FatImage, height, width,
+			config->getPngGridResolution(), config->getPixelPerCm(),
+			this->m_Cols, this->m_Rows);
+	this->RegGrid = this->CreatGridFromMap(image, height, width,
+			config->getPngGridResolution(), config->getPixelPerCm(),
+			this->m_Cols, this->m_Rows);
 
 }
 
-
-std::vector<unsigned char>  CreatGridFromMap(std::vector<unsigned char> PngMap,unsigned MapHeight,unsigned MapWidth, float GridResolutionCm, float PixelPerCm, unsigned &GridCols, unsigned &GridRows){
+std::vector<unsigned char> CreatGridFromMap(std::vector<unsigned char> PngMap,
+		unsigned MapHeight, unsigned MapWidth, float GridResolutionCm,
+		float PixelPerCm, unsigned &GridCols, unsigned &GridRows) {
 
 	// Calc grid size
 	unsigned GridCellSizeInPx = ceil(GridResolutionCm / PixelPerCm);
@@ -76,8 +81,7 @@ std::vector<unsigned char>  CreatGridFromMap(std::vector<unsigned char> PngMap,u
 
 	//crate the grid
 	std::vector<unsigned char> Grid;
-	Grid.resize(GridCols,GridRows);
-
+	Grid.resize(GridCols, GridRows);
 
 	for (unsigned i = 0; i < GridCols; ++i) {
 		for (unsigned j = 0; j < GridRows; ++j) {
@@ -87,21 +91,19 @@ std::vector<unsigned char>  CreatGridFromMap(std::vector<unsigned char> PngMap,u
 
 			// find out from the png if cell is black or white
 			for (unsigned pI = 0; pI < GridCellSizeInPx; ++pI) {
-				for (unsigned pJ = 0;  pJ < GridCellSizeInPx; ++ pJ) {
-					PxWhiteConuter += PngMap[(i* GridCellSizeInPx * MapWidth + pI )* 4 + (j * GridCellSizeInPx + pJ)* 4 ];
+				for (unsigned pJ = 0; pJ < GridCellSizeInPx; ++pJ) {
+					PxWhiteConuter += PngMap[(i * GridCellSizeInPx * MapWidth
+							+ pI) * 4 + (j * GridCellSizeInPx + pJ) * 4];
 				}
 			}
 
 			// Chack for number of black cell TODO:think if i need a parameter for Negligible number of blac px
-			if (PxWhiteConuter == (GridCellSizeInPx * GridCellSizeInPx))
-			{
+			if (PxWhiteConuter == (GridCellSizeInPx * GridCellSizeInPx)) {
 				// white
-				Grid[i*GridCols + j] = 1;
-			}
-			else
-			{
+				Grid[i * GridCols + j] = 1;
+			} else {
 				// Black
-				Grid[i*GridCols + j] = 0;
+				Grid[i * GridCols + j] = 0;
 			}
 
 		}
@@ -120,9 +122,8 @@ Cell* Map::getCell(int row, int col) const {
 	return m_Cells[row][col];
 }
 
-void Map::PrintMap(const char* filename)
-{
-	unsigned width,height;
+void Map::PrintMap(const char* filename) {
+	unsigned width, height;
 	std::vector<unsigned char> Image;
 
 	// sizing
@@ -130,16 +131,16 @@ void Map::PrintMap(const char* filename)
 	width = this->getCols();
 	Image.resize(width * height * 4);
 
-	for (unsigned y= 0; y < height; y++)
-				for  (unsigned x = 0; x < width; x++)
-				{
-					Image[y * width * 4 + x * 4 + 0] = this->FatGrid[y * width + x]*255;
-					Image[y * width * 4 + x * 4 + 1] = this->FatGrid[y * width + x]*255;
-					Image[y * width * 4 + x * 4 + 2] = this->FatGrid[y * width + x]*255;
-					Image[y * width * 4 + x * 4 + 3] = 255;
-				}
-
-
+	for (unsigned y = 0; y < height; y++)
+		for (unsigned x = 0; x < width; x++) {
+			Image[y * width * 4 + x * 4 + 0] = this->FatGrid[y * width + x]
+					* 255;
+			Image[y * width * 4 + x * 4 + 1] = this->FatGrid[y * width + x]
+					* 255;
+			Image[y * width * 4 + x * 4 + 2] = this->FatGrid[y * width + x]
+					* 255;
+			Image[y * width * 4 + x * 4 + 3] = 255;
+		}
 
 	// encode the map
 	encodeOneStep(filename, Image, width, height);

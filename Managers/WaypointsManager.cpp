@@ -1,5 +1,4 @@
 #include "WaypointsManager.h"
-#include "../Utils/MathUtil.h"
 
 namespace Managers {
 
