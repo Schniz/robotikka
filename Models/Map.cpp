@@ -61,6 +61,7 @@ void Map::initMap(const char* filename) {
 		}
 
 	// create grid from the fat and regular map
+
 	this->FatGrid = this->CreatGridFromMap(FatImage, height, width,
 			config->getPngGridResolution(), config->getPixelPerCm(),
 			this->m_Cols, this->m_Rows);
@@ -70,9 +71,9 @@ void Map::initMap(const char* filename) {
 
 }
 
-std::vector<unsigned char> CreatGridFromMap(std::vector<unsigned char> PngMap,
+std::vector<unsigned char> Map::CreatGridFromMap(std::vector<unsigned char> PngMap,
 		unsigned MapHeight, unsigned MapWidth, float GridResolutionCm,
-		float PixelPerCm, unsigned &GridCols, unsigned &GridRows) {
+		float PixelPerCm, unsigned& GridCols, unsigned& GridRows) {
 
 	// Calc grid size
 	unsigned GridCellSizeInPx = ceil(GridResolutionCm / PixelPerCm);

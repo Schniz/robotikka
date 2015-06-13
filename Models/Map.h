@@ -13,7 +13,7 @@ class Map
 {
 public:
 	unsigned m_Rows;
-unsigned m_Cols;
+	unsigned m_Cols;
 	Map(const char* filename);
 	Map(unsigned Rows,unsigned Cols);
 	~Map();
