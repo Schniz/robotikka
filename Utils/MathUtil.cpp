@@ -35,3 +35,6 @@ bool MathUtil::equals(double number, double comparee, double epsilon) {
 	return inRange(number, comparee - epsilon, comparee + epsilon);
 }
 }
+
+//double MathUtil::convertDegreesToRadians(double deg)
+//}

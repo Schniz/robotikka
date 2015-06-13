@@ -68,6 +68,13 @@ unsigned Robot::angleToindex(double angle) {
 			LASER_SLEASER_ARRAY_SIZE);
 }
 
+
+
+double Robot::getDistanceFromObstacle(int index)
+{
+	return (*_lp)[index];
+}
+
 Robot::~Robot() {
 	delete _pc;
 	delete _pp;

@@ -15,6 +15,7 @@ class Robot {
 	PlayerClient*_pc;
 	Position2dProxy* _pp;
 	LaserProxy* _lp;
+
 public:
 	Robot(char* ip, int port);
 	void Read() {
@@ -38,6 +39,12 @@ public:
 			return false;
 	}
 
+	bool CanMoveForward();
+	bool CanTurnRight();
+	bool CanTurnLeft();
+
+
+	double getDistanceFromObstacle(int index);
 	double getXPosition();
 	double getYPosition();
 	double getYawPosition();

@@ -17,7 +17,7 @@ using namespace Utils;
 namespace Managers {
 
 RobotManager::RobotManager(PlayerClient* player) {
-	m_Robot = new Robot(player);
+//m_Robot = new Robot(player);
 
 	initBehaviors();
 	m_CurrBehavior = NULL;
@@ -26,7 +26,7 @@ RobotManager::RobotManager(PlayerClient* player) {
 }
 
 RobotManager::RobotManager(const string hostname, uint port) {
-	m_Robot = new Robot(hostname, port);
+//	m_Robot = new Robot(hostname, port);
 
 	initBehaviors();
 	m_CurrBehavior = NULL;
@@ -61,9 +61,9 @@ void RobotManager::setLocalizationManager(
 void RobotManager::setWaypoints(vector<Location> landmarks) {
 	vector<Waypoint> waypoints;
 
-	for (Location loc : landmarks) {
-		waypoints.push_back(Waypoint(loc.m_Y, loc.m_Y, loc.m_Yaw));
-	}
+//	for (Location loc : landmarks) {
+//		waypoints.push_back(Waypoint(loc.m_Y, loc.m_Y, loc.m_Yaw));
+//	}
 
 	m_WaypointsManager = new WaypointsManager(m_Robot, waypoints,
 			RADIUS_AROUND_POINT);
@@ -73,12 +73,12 @@ void RobotManager::run() {
 	// TODO check if really needed - prettier solution?
 	//For fixing Player's reading BUG
 	for (int i = 0; i < 15; i++) {
-		m_Robot->_pc->Read();
+//		m_Robot->_pc->Read();
 	}
 
 	try {
 		while (true) {
-			m_Robot->_pc->Read();
+	//		m_Robot->_pc->Read();
 
 			updateLocation();
 			runStep();
@@ -97,24 +97,25 @@ void RobotManager::initBehaviors() {
 }
 
 void RobotManager::updateLocation() {
-	Location newLocation = { m_Robot->getXPosition(), m_Robot->getYPosition(),
-			m_Robot->getYawPosition() };
+//	Location newLocation = { m_Robot->getXPosition(), m_Robot->getYPosition(),
+//			m_Robot->getYawPosition() };
 	//m_LocalizationManager->update(newLocation, m_Robot->_lp);
 	//m_RealLocation = m_LocalizationManager->getEstimatedRealLocation();
 }
 
 void RobotManager::runStep() {
 
-	if (!m_CurrBehavior || m_CurrBehavior->stopCond()()) {
-		for (uint i = 0; i < m_Behaviors.size(); i++) {
-
-			if (m_Behaviors[i]->startCond() {
-						m_CurrBehavior = m_Behaviors[i];
-						break;
-					}
-				}
-			}
-
-			m_CurrBehavior->execute();
-		}
+//	if (!m_CurrBehavior || m_CurrBehavior->stopCond()()) {
+//		for (uint i = 0; i < m_Behaviors.size(); i++) {
+//
+//			if (m_Behaviors[i]->startCond() {
+//						m_CurrBehavior = m_Behaviors[i];
+//						break;
+//					}
+//				}
+//			}
+//
+//			m_CurrBehavior->execute();
+//		}
 	}
+}

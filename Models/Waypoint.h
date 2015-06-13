@@ -1,3 +1,9 @@
+#pragma once
+
+#ifndef WAYPOINT_H_
+#define WAYPOINT_H_
+using namespace std;
+
 class Waypoint {
 public:
 	Waypoint(double x, double y, double yaw) :
@@ -19,10 +25,10 @@ public:
 	};
 
 
-
-
 private:
 	double m_X;
 	double m_Y;
 	double m_Yaw;
 };
+
+#endif /* WAYPOINT_H_ */
