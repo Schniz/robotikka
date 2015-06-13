@@ -38,5 +38,5 @@ protected:
 
 private:
 	void initMap(const char* filename);
-	std::vector<unsigned char> CreatGridFromMap(std::vector<unsigned char> PngMap,unsigned MapHeight,unsigned MapWidth, float PngGridResolution, float PixelPerCm, unsigned &GridCols, unsigned &GridRows);
+	std::vector<unsigned char> CreatGridFromMap(std::vector<unsigned char> PngMap,unsigned MapHeight,unsigned MapWidth, float GridResolutionCm, float PixelPerCm, unsigned &GridCols, unsigned &GridRows);
 };
