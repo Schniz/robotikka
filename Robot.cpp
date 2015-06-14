@@ -52,6 +52,14 @@ bool Robot::canTurnInDirection(double startRangeAngle, double endRangeAngle)
 	return true;
 }
 
+bool Robot::canMoveForward()
+{
+	//todo this
+	return true;
+}
+
+
+
 // This function summarize the "rays range" distances from obstacles
 double Robot::getRaysRangeSum(double rangeStartAngle,double rangeEndAngle)
 {

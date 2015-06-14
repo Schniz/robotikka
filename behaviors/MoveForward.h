@@ -10,6 +10,7 @@ public:
 
 	bool startCond()
 	{
+
 		return _robot->canMoveForward();
 	}
 
