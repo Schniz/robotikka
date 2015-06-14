@@ -27,20 +27,6 @@ public:
 
 		_pp->SetSpeed(xSpeed, angularSpeed);
 	}
-//	bool isRightFree() {
-//		// todo
-//		if ((*_lp)[50] > 0.5)
-//			return true;
-//		else
-//			return false;
-//	}
-//	bool isForwardFree() {
-//		// todo
-//		if ((*_lp)[332] > 0.5)
-//			return true;
-//		else
-//			return false;
-//	}
 
 	bool canMoveForward();
 	bool canTurnRight();

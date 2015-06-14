@@ -54,7 +54,17 @@ bool Robot::canTurnInDirection(double startRangeAngle, double endRangeAngle)
 
 bool Robot::canMoveForward()
 {
-	//todo this
+	double dis;
+	int rightCorner = angleToIndex(-30);
+	int leftCorner = angleToIndex(30);
+	for (int i = rightCorner; i <= leftCorner; i++)
+	{
+		dis = getDistanceFromObstacle(i);
+		if (dis <= 0.8)
+		{
+			return false;
+		}
+	}
 	return true;
 }
 
