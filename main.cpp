@@ -7,6 +7,8 @@
 #include "Robot.h"
 #include "Manager.h"
 #include "Plans/PlnObstacleAvoid.h"
+#include "lib/config.h"
+
 int main()
 {
 	Robot robot("localhost",6665);

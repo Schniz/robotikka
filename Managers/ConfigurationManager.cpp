@@ -16,19 +16,19 @@ ConfigurationManager::ConfigurationManager(){};
 void ConfigurationManager::LoadFromFile(string filePath) {
 		// create the first singleton instance
 
-		Config configParser = Config(filePath);
+		Config configParser(filePath);
 
 		ConfigurationManager::m_ConfigurationManagerInstance = new ConfigurationManager();
-		m_PngMapPath = configParser.pString(CFG_PATH_TO_PNG);
-		m_StartLocation.m_X = configParser.pDouble(CFG_START_LOCATION_X);
-		m_StartLocation.m_Y = configParser.pDouble(CFG_START_LOCATION_Y);
-		m_StartLocation.m_Yaw = configParser.pDouble(CFG_START_LOCATION_YAW);
-		m_EndLocation.m_X = configParser.pDouble(CFG_END_LOCATION_X);
-		m_EndLocation.m_Y = configParser.pDouble(CFG_END_LOCATION_Y);
-		m_PpCM = configParser.pDouble(CFG_PPCM_KEY_KEY);
-		m_PngGridResolution = configParser.pDouble(CFG_PNG_GRID_RESOLUTION);
-		m_RobotSize.m_Width = configParser.pDouble(CFG_ROBOT_SIZE_WIDTH);
-		m_RobotSize.m_Height = configParser.pDouble(CFG_ROBOT_SIZE_HEIGHT);
+		m_PngMapPath = configParser.mapLocation;
+		m_StartLocation.m_X = configParser.startLocation[0];
+		m_StartLocation.m_Y = configParser.startLocation[1];
+		m_StartLocation.m_Yaw = configParser.startLocation[2];
+		m_EndLocation.m_X = configParser.goal[0];
+		m_EndLocation.m_Y = configParser.goal[1];
+		m_PpCM = configParser.mapResolutionCm;
+		m_PngGridResolution = configParser.gridResolutionCm;
+		m_RobotSize.m_Width = configParser.robotSize[0];
+		m_RobotSize.m_Height = configParser.robotSize[1];
 
 	}
 

@@ -1,163 +1,96 @@
 #include "config.h"
 
 #include <iostream>
-#include <stdio.h>
+#include <fstream>
 #include <stdlib.h>
 using namespace std;
 
+struct Decleration {
+	string name;
+	string value;
+};
+
+#include <tr1/regex>
+#include <regex.h>
 #include "log.h"
 
-Config::Config(string name, string parentDebugInfo) {
-	debugInfo = parentDebugInfo + ", " + name;
+vector<Decleration> readLines(string fileName) {
+	vector<Decleration> lines;
+	ifstream fileStream(fileName.c_str());
+	if (!fileStream) {
+		cout << "WAT";
+		return lines;
+	}
+	string line;
+	while (getline(fileStream, line)) {
+		Decleration lineDec;
+		int colon = line.find(':');
+		lineDec.name = line.substr(0, colon);
+		lineDec.value = line.substr(colon + 2, line.length() - colon - 3);
+		lines.push_back(lineDec);
+	}
+	return lines;
 }
 
-Config::Config(string configFile, char** envp) {
+void Config::parse(string fileName) {
+	vector<Decleration> decs = readLines(fileName);
 
-	debugInfo = configFile;
-	groupStack.push_front(this);
-
-	FILE* in = fopen(configFile.c_str(), "r");
-	if (!in) {
-		cerr << "cannot open input file '" << configFile << "'" << endl;
-		exit(2);
-	}
-
-	char buff[1024];
-	while (fgets(buff, 1024, in)) {
-
-		string line=buff;
-		if ( (line.length() > 2) && (line[0] != '#') && (line.find(')') == string::npos) ) {
-			string name;
-			string value;
-			split(line, name, value, '=');
-
-			if (value == "(") {
-				logDebug(cout << "   config: new group '" << name << "'" << endl);
-				Config* newGroup = new Config(name, debugInfo);
-				groupStack.front()->groups[name] = newGroup;
-				groupStack.push_front(newGroup);
-			} else {
-				for (list<Config*>::reverse_iterator i = groupStack.rbegin(); i != groupStack.rend(); ++i) {
-					(*i)->symbolExpand(value);
-				}
-				envSymbolExpand(value);
-				logDebug(cout << "   config: name = '" << name << "', value = '" << value << "'" << endl);
-				groupStack.front()->add(name, value);
-			}
-		}
-		if ( (line.length() > 0) && (line[0] != '#') && (line.find(')') != string::npos) ) {
-			logDebug(cout << "   end of group" << endl);
-			groupStack.pop_front();
+	// OMFG its ugly
+	for (Decleration dec : decs) {
+		if (!dec.name.compare("goal")) {
+			int space = dec.value.find(' ');
+			unsigned x = atoi(dec.value.substr(0, space).c_str());
+			unsigned y = atoi(dec.value.substr(space+1).c_str());
+			this->goal[0] = x;
+			this->goal[1] = y;
+		} else if (!dec.name.compare("map")) {
+			this->mapLocation = dec.value;
+		} else if (!dec.name.compare("startLocation")) {
+			int firstSpace = dec.value.find(' ');
+			int secondSpace = dec.value.substr(firstSpace+1).find(' ') + firstSpace + 1;
+			unsigned x = atoi(dec.value.substr(0, firstSpace).c_str());
+			unsigned y = atoi(dec.value.substr(firstSpace+1, secondSpace).c_str());
+			unsigned yaw = atoi(dec.value.substr(secondSpace+1).c_str());
+			this->startLocation[0] = x;
+			this->startLocation[1] = y;
+			this->startLocation[2] = yaw;
+		} else if (!dec.name.compare("robotSize")) {
+			int space = dec.value.find(' ');
+			unsigned width = atoi(dec.value.substr(0, space).c_str());
+			unsigned height = atoi(dec.value.substr(space+1).c_str());
+			this->robotSize[0] = width;
+			this->robotSize[1] = height;
+		} else if (!dec.name.compare("MapResolutionCM")) {
+			this->mapResolutionCm = atof(dec.value.c_str());
+		} else if (!dec.name.compare("GridResolutionCM")) {
+			this->gridResolutionCm = atof(dec.value.c_str());
 		}
 	}
 
-	fclose(in);
+	// Debug it
+	cout << "map location: " << this->mapLocation << endl
+		 << "start location: " << this->startLocation[0] << " "
+		 	 	 	 	 	  << this->startLocation[1] << " "
+		 	 	 	 	 	  << this->startLocation[2] << endl
+		 << "goal: " << this->goal[0] << " " << this->goal[1] << endl
+		 << "robot size: " << this->robotSize[0] << " " << this->robotSize[1] << endl
+		 << "map res: " << this->mapResolutionCm << endl
+		 << "grid res: " << this->gridResolutionCm << endl
+		 ;
+}
+
+Config::Config(string fileName) {
+	this->mapLocation = string("");
+	this->startLocation = new int[3];
+	this->goal = new int[2];
+	this->robotSize = new int[2];
+	this->mapResolutionCm = 1.0;
+	this->gridResolutionCm = 1.0;
+	this->parse(fileName);
 }
 
 Config::~Config() {
-	for (map<string, Config*>::iterator i = groups.begin(); i != groups.end(); ++i) {
-		delete i->second;
-	}
-}
-
-void Config::add(string name, string value) {
-	symbols[name] = value;
-}
-
-void Config::split(string in, string& left, string& right, char c) {
-	size_t pos = in.find_first_of(c);
-	if(pos == string::npos) {
-		left = in;
-		trim(left);
-		right = "";
-	} else if (pos <= 1) {
-		left = "";
-		right = in.substr(pos+1, string::npos);
-		trim(right);
-	} else {
-		left = in.substr(0, pos-1);
-		trim(left);
-		right = in.substr(pos+1, string::npos);
-		trim(right);
-	}
-}
-
-void Config::trim(string& s) {
-	while ( (s.length() > 1) && ( (s[0] == ' ') || (s[0] =='\t') ) ) {
-		s = s.substr(1, string::npos);
-	}
-	while ( (s.length() > 1) &&
-			( (s[s.length()-1] == ' ') ||
-			  (s[s.length()-1] == '\t') ||
-			  (s[s.length()-1] == '\n') ||
-			  (s[s.length()-1] == '\r') ) ) {
-		s = s.substr(0, s.length()-1);
-	}
-	if ( (s.length() > 1) && (s[0] == '"') ) {
-		s = s.substr(1, string::npos);
-	}
-	if ( (s.length() > 1) && (s[s.length()-1] == '"') ) {
-		s = s.substr(0, s.length()-1);
-	}
-}
-
-void Config::symbolExpand(string& s) {
-	symbolExpand(symbols, s);
-}
-
-void Config::envSymbolExpand(string& s) {
-	symbolExpand(envSymbols, s);
-}
-
-void Config::symbolExpand(map<string, string>& symbols, string& s) {
-	bool expanded;
-	do {
-		expanded = false;
-		for (map<string, string>::iterator i = symbols.begin(); i != symbols.end(); ++i) {
-			string search = "%" + i->first + "%";
-			string replace = i->second;
-			size_t pos = s.find(search);
-			if (pos != string::npos) {
-				expanded = true;
-				s.replace(pos, search.length(), replace);
-			}
-		}
-	} while (expanded);
-}
-
-string Config::pString(string name) {
-	map<string, string>::iterator i = symbols.find(name);
-	if (i == symbols.end()) {
-		logError(cout << "access of missing property '" << name << "' (" << debugInfo << ")" << endl);
-		exit(4);
-	}
-	return i->second;
-}
-
-bool Config::pBool(string name) {
-	string val = pString(name);
-
-	if ( (val == "yes") ||
-	     (val == "Yes") ||
-	     (val == "YES") ||
-		 (val == "true") ||
-	     (val == "True") ||
-	     (val == "TRUE"))
-	{
-		return true;
-	}
-
-	return false;
-}
-
-double Config::pDouble(string name) {
-	string val = pString(name);
-
-	return atof(val.c_str());
-}
-
-int Config::pInt(string name) {
-	string val = pString(name);
-
-	return atoi(val.c_str());
+	delete[] this->goal;
+	delete[] this->startLocation;
+	delete[] this->robotSize;
 }
