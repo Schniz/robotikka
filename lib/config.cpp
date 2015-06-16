@@ -32,34 +32,46 @@ vector<Decleration> readLines(string fileName) {
 	return lines;
 }
 
+void parseGoal(Config* config, string value) {
+	int space = value.find(' ');
+	unsigned x = atoi(value.substr(0, space).c_str());
+	unsigned y = atoi(value.substr(space+1).c_str());
+	config->goal[0] = x;
+	config->goal[1] = y;
+}
+
+void parseStartLocation(Config* config, string value) {
+	int firstSpace = value.find(' ');
+	int secondSpace = value.substr(firstSpace+1).find(' ') + firstSpace + 1;
+	unsigned x = atoi(value.substr(0, firstSpace).c_str());
+	unsigned y = atoi(value.substr(firstSpace+1, secondSpace).c_str());
+	unsigned yaw = atoi(value.substr(secondSpace+1).c_str());
+	config->startLocation[0] = x;
+	config->startLocation[1] = y;
+	config->startLocation[2] = yaw;
+}
+
+void parseRobotSize(Config* config, string value) {
+	int space = value.find(' ');
+	unsigned width = atoi(value.substr(0, space).c_str());
+	unsigned height = atoi(value.substr(space+1).c_str());
+	config->robotSize[0] = width;
+	config->robotSize[1] = height;
+}
+
 void Config::parse(string fileName) {
 	vector<Decleration> decs = readLines(fileName);
 
 	// OMFG its ugly
 	for (Decleration dec : decs) {
 		if (!dec.name.compare("goal")) {
-			int space = dec.value.find(' ');
-			unsigned x = atoi(dec.value.substr(0, space).c_str());
-			unsigned y = atoi(dec.value.substr(space+1).c_str());
-			this->goal[0] = x;
-			this->goal[1] = y;
+			parseGoal(this, dec.value);
 		} else if (!dec.name.compare("map")) {
 			this->mapLocation = dec.value;
 		} else if (!dec.name.compare("startLocation")) {
-			int firstSpace = dec.value.find(' ');
-			int secondSpace = dec.value.substr(firstSpace+1).find(' ') + firstSpace + 1;
-			unsigned x = atoi(dec.value.substr(0, firstSpace).c_str());
-			unsigned y = atoi(dec.value.substr(firstSpace+1, secondSpace).c_str());
-			unsigned yaw = atoi(dec.value.substr(secondSpace+1).c_str());
-			this->startLocation[0] = x;
-			this->startLocation[1] = y;
-			this->startLocation[2] = yaw;
+			parseStartLocation(this, dec.value);
 		} else if (!dec.name.compare("robotSize")) {
-			int space = dec.value.find(' ');
-			unsigned width = atoi(dec.value.substr(0, space).c_str());
-			unsigned height = atoi(dec.value.substr(space+1).c_str());
-			this->robotSize[0] = width;
-			this->robotSize[1] = height;
+			parseRobotSize(this, dec.value);
 		} else if (!dec.name.compare("MapResolutionCM")) {
 			this->mapResolutionCm = atof(dec.value.c_str());
 		} else if (!dec.name.compare("GridResolutionCM")) {
