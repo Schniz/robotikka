@@ -13,6 +13,7 @@
 using namespace std;
 
 void loadFile(AnotherMap* map, string fileName) {
+	cout << "Loading file '" << fileName << "'..." << endl;
 	unsigned error = lodepng::decode(map->image, map->width, map->height, fileName);
 	cout << "error:" << error << ", size: " << map->width << "x" << map->height << endl;
 }
