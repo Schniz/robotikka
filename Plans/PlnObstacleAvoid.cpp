@@ -7,26 +7,27 @@
 
 #include "PlnObstacleAvoid.h"
 
-PlnObstacleAvoid :: PlnObstacleAvoid(Robot* robot):Plan(robot){
+PlnObstacleAvoid::PlnObstacleAvoid(Robot* robot) :
+		Plan(robot) {
 	//Creating Behaviors
-	_beh[0] = new MoveBackward(robot);
-	_beh[1] = new MoveForward(robot);
-	_beh[2] = new TurnInPlace(robot);
-	_beh[3] = new TurnLeft(robot);
-	_beh[4] = new TurnRight(robot);
+	_beh[0] = new MoveForward(robot);
+	_beh[1] = new TurnLeft(robot);
+	_beh[2] = new TurnRight(robot);
+	_beh[3] = new MoveBackward(robot);
+	_beh[4] = new TurnInPlace(robot);
 
-	//Connecting Behaviors
-	_beh[0]->addBeh(_beh[1]);
-	_beh[0]->addBeh(_beh[2]);
-	_beh[1]->addBeh(_beh[2]);
-	_beh[2]->addBeh(_beh[0]);
+// Connecting behaviors
+	for (int i = 0; i < BEHAVIOR_NUM; i++)
+		for (int j = 0; j < BEHAVIOR_NUM; j++)
+			if (j != i)
+				this->_beh[i]->addBeh(this->_beh[j]);
 
 	// TODO: CHECK HOW NEED BE THE FIRST?
 	_start = _beh[0];
 }
 
 PlnObstacleAvoid::~PlnObstacleAvoid() {
-	// TODO Auto-generated destructor stub
-	for(int i=0;i<3;i++)
+
+	for (int i = 0; i < BEHAVIOR_NUM; i++)
 		delete _beh[i];
 }

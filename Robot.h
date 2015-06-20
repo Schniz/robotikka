@@ -1,4 +1,3 @@
-
 #ifndef ROBOT_H_
 #define ROBOT_H_
 
@@ -9,7 +8,6 @@
 using namespace std;
 using namespace PlayerCc;
 using namespace Consts;
-
 
 class Robot {
 	PlayerClient*_pc;
@@ -32,6 +30,7 @@ public:
 	bool canTurnRight();
 	bool canTurnLeft();
 
+	void calcLocationDeltas(double &DelX, double &DelY, double &DelYaw);
 	double getDistanceFromObstacle(int index);
 	double getXPosition();
 	double getYPosition();
@@ -39,7 +38,7 @@ public:
 
 	double getRangeLaser(unsigned index);
 	double getRangeLaser(double angle);
-	double getRaysRangeSum(double rangeStartAngle,double rangeEndAngle);
+	double getRaysRangeSum(double rangeStartAngle, double rangeEndAngle);
 
 	virtual ~Robot();
 
@@ -48,6 +47,10 @@ protected:
 	static unsigned angleToIndex(double angle);
 	static double convertDegreesToRadians(double deg);
 	bool canTurnInDirection(double startRangeAngle, double endRangeAngle);
+
+	double robot_XPos;
+	double robot_YPos;
+	double robot_Yaw;
 };
 
 #endif /* ROBOT_H_ */

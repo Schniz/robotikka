@@ -27,6 +27,7 @@ public:
 	}
 	Behavior* selectNext()
 	{
+		//TODO
 		//Run over vector and return first true
 		//startCond of the first behavior
 		return NULL;

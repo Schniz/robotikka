@@ -9,6 +9,10 @@ Robot::Robot(char* ip, int port) {
 
 	_pp->SetMotorEnable(true);
 
+	robot_XPos = 0;
+	robot_YPos = 0;
+	robot_Yaw = 0;
+
 	//For fixing Player's reading BUG
 	for (int i = 0; i < 15; i++)
 		Read();
@@ -24,6 +28,27 @@ double Robot::getYPosition() {
 
 double Robot::getYawPosition() {
 	return _pp->GetYaw();
+}
+
+void Robot::calcLocationDeltas(double &DelX,double &DelY,double &DelYaw)
+{
+	// Getting the new position of the robot
+	double currRobotX = _pp->GetXPos();
+	double currRobotY = _pp->GetYPos();
+
+	// Getting the robot yaw and casting it from radians to degrees
+	double x =  _pp->GetYaw();
+	double currRobotYaw = x * 180 / M_PI;
+
+	// Calculating the deltas
+	DelX = currRobotX - robot_XPos;
+	DelY = currRobotY - robot_YPos;
+	DelYaw = fmod(currRobotYaw - robot_Yaw ,360);
+
+	// Updating the robot location
+	robot_XPos = currRobotX;
+	robot_YPos = currRobotY;
+	robot_Yaw = currRobotYaw;
 }
 
 bool Robot::canTurnRight()

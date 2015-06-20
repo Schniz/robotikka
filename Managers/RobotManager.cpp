@@ -1,18 +1,7 @@
 #include "RobotManager.h"
 
-//#include <libplayerc++/playerc++.h>
-//#include "../Consts.h"
-//#include "../behaviors/MoveForward.h"
-//#include "../behaviors/TurnInPlace.h"
-//#include "../behaviors/TurnLeft.h"
-//#include "../behaviors/TurnRight.h"
-//#include "../behaviors/MoveBackward.h"
-//#include "WaypointsManager.h"
-
-
 using namespace std;
 using namespace PlayerCc;
-//using namespace Utils;
 
 namespace Managers {
 

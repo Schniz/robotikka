@@ -50,5 +50,6 @@ const double TURN_SPEED = 0.1;
 const double TURN_ANGULAR_SPEED = 0.6;
 const double TURN_IN_PLACE_ANGULAR_SPEED = 3.0;
 const double MOVE_BACKWARD_SPEED = -MOVE_FORWARD_SPEED;
+const int BEHAVIOR_NUM = 5;
 
 }

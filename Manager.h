@@ -12,6 +12,8 @@
 class Manager {
 	Behavior* _curr;
 	Robot* _robot;
+	Plan* _plan;
+
 public:
 	Manager(Robot* robot, Plan* pln);
 	void run();

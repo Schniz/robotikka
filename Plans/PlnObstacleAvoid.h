@@ -16,7 +16,7 @@
 #include "Plan.h"
 
 class PlnObstacleAvoid: public Plan {
-	Behavior* _beh[5];
+	Behavior* _beh[BEHAVIOR_NUM];
 
 public:
 	PlnObstacleAvoid(Robot* robot);
