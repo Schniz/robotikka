@@ -78,17 +78,18 @@ void Config::parse(string fileName) {
 			this->gridResolutionCm = atof(dec.value.c_str());
 		}
 	}
+}
 
-	// Debug it
-	cout << "map location: " << this->mapLocation << endl
-		 << "start location: " << this->startLocation[0] << " "
-		 	 	 	 	 	  << this->startLocation[1] << " "
-		 	 	 	 	 	  << this->startLocation[2] << endl
-		 << "goal: " << this->goal[0] << " " << this->goal[1] << endl
-		 << "robot size: " << this->robotSize[0] << " " << this->robotSize[1] << endl
-		 << "map res: " << this->mapResolutionCm << endl
-		 << "grid res: " << this->gridResolutionCm << endl
-		 ;
+ostream& operator<<(ostream& os, const Config& config) {
+	os << "map location: "   << config.mapLocation << endl
+	   << "start location: " << config.startLocation[0] << " "
+							 << config.startLocation[1] << " "
+							 << config.startLocation[2] << endl
+	   << "goal: " 	     	 << config.goal[0] << " " << config.goal[1] << endl
+	   << "robot size: "     << config.robotSize[0] << " " << config.robotSize[1] << endl
+	   << "map res: "        << config.mapResolutionCm << endl
+	   << "grid res: "       << config.gridResolutionCm << endl;
+	return os;
 }
 
 Config::Config(string fileName) {
