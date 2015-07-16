@@ -20,11 +20,11 @@ int main()
 //	manager.run();
 
 	// init configuration manager
-	ConfigurationManager::LoadFromFile("Reasurce\parameters.txt");
+	ConfigurationManager::LoadFromFile("Resources/parameters.txt");
 	// load map
 	//const char* c = ConfigurationManager::GetInstance()->getPngMapPath();
 	//Map *m = (Map*)malloc(sizeof(Map));
 	//ConvertMapBlackToWhiteAndWhiteToBlack("/home/colman/git/robotikka/Reasurce/Grid.png");
 	Map *m = new Map(strtok(&ConfigurationManager::GetInstance()->getPngMapPath()[0], " "));
-	//m->PrintMap("/home/colman/git/robotikka/Release/Grid.png");
+	m->PrintMap("/tmp/Grid.png");
 }
