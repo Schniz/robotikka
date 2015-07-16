@@ -14,6 +14,7 @@ double SearchNode::goalDistanceEstimate(SearchNode& goalNode) {
 }
 
 bool SearchNode::isGoal(SearchNode& goalNode) {
+	cout << X << "," << Y << endl;
 	return X == goalNode.X && Y == goalNode.Y;
 }
 
@@ -27,6 +28,8 @@ void addIfNotBackwards(Cell* cell, Cell* previousCell, AStarSearch<SearchNode>* 
 
 	int x = cell->getX();
 	int y = cell->getY();
+
+	cout << "is " << x << "," << y << " free? " << cell->isFree() << endl;
 
 	if (previousCell == NULL || (!cell->equalsTo(previousCell) && cell->isFree())) {
 		SearchNode newNode = SearchNode(x, y);
@@ -53,9 +56,11 @@ bool SearchNode::getSuccessors(AStarSearch<SearchNode>* search, Map* map, Search
 			map->getCell(Y + 1, X)
 	};
 
-	for (int cellIndex = 0; cellIndex < 4; cellIndex++) {
-		addIfNotBackwards(neighbors[cellIndex], previousCell, search);
+	for (Cell* neighbor : neighbors) {
+		addIfNotBackwards(neighbor, previousCell, search);
 	}
+
+	delete previousCell;
 
 	return true;
 }
@@ -64,7 +69,10 @@ bool SearchNode::getSuccessors(AStarSearch<SearchNode>* search, Map* map, Search
 // of our map the answer is the map terrain value at this node since that is
 // conceptually where we're moving
 double SearchNode::getCost(SearchNode& successor, Map* map) {
-	return map->getCell(Y, X)->Cell_Cost;
+	Cell* cell = map->getCell(Y, X);
+	double cost = cell->Cell_Cost;
+	delete cell;
+	return cost;
 }
 
 bool SearchNode::isSameState(SearchNode& rhs) {
