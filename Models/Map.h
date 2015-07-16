@@ -12,6 +12,7 @@ using namespace Managers;
 class Map
 {
 public:
+	enum PXTYPE {FREE=255, OPSTICAL=0, GRAY=100};
 	unsigned m_Rows;
 	unsigned m_Cols;
 	Map(const char* filename);
@@ -33,10 +34,10 @@ public:
 protected:
 
 	vector<vector<Cell*> > m_Cells;
-	std::vector<unsigned char> FatGrid;
-	std::vector<unsigned char> RegGrid;
+	std::vector<unsigned char> Grid;
+	//std::vector<unsigned char> RegGrid;
 
 private:
 	void initMap(const char* filename);
-	std::vector<unsigned char> CreatGridFromMap(std::vector<unsigned char> PngMap,unsigned MapHeight,unsigned MapWidth, float GridResolutionCm, float PixelPerCm, unsigned &GridCols, unsigned &GridRows);
+	std::vector<unsigned char> CreatGridFromMap(const std::vector<unsigned char> PngMap,unsigned MapHeight,unsigned MapWidth, float GridResolutionCm, float PixelPerCm, unsigned &GridCols, unsigned &GridRows);
 };
