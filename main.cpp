@@ -11,6 +11,9 @@
 //map check
 #include "Managers/ConfigurationManager.h"
 #include "Models/Map.h"
+#include "Utils/AStarUtil.h"
+
+using namespace Utils;
 
 int main()
 {
@@ -20,13 +23,22 @@ int main()
 //	manager.run();
 
 	// init configuration manager
-	ConfigurationManager::LoadFromFile("Reasurce\parameters.txt");
+	ConfigurationManager::LoadFromFile("Resources/parameters.txt");
 	// load map
 	//const char* c = ConfigurationManager::GetInstance()->getPngMapPath();
 	//Map *m = (Map*)malloc(sizeof(Map));
 	//ConvertMapBlackToWhiteAndWhiteToBlack("/home/colman/git/robotikka/Reasurce/Grid.png");
 	Map *m = new Map(strtok(&ConfigurationManager::GetInstance()->getPngMapPath()[0], " "));
 	//m->PrintMap("/home/colman/git/robotikka/Release/Grid.png");
+	cout << "HEY" << endl;
 
-
+	// Throws an exception :D
+	//	AStarUtil astar(m);
+	//	Cell* start = m->getCell(0, 0);
+	//	Cell* destination = m->getCell(4, 4);
+	//	vector<Cell*> path = astar.findPath(start, destination);
+	//	cout << "PATH LENGTH: " << path.size() << endl;
+	//	for (Cell* cell : path) {
+	//		cout << "[" << cell->getX() << "," << cell->getY() << "]" << endl;
+	//	}
 }

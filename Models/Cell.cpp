@@ -1,4 +1,5 @@
 #include "Cell.h"
+#include "Map.h"
 
 using namespace std;
 
@@ -7,6 +8,8 @@ Cell::Cell(unsigned x, unsigned y, double cell_cost) {
 	m_X = x;
 	m_Y = y;
 	Cell_Cost = cell_cost;
+
+	cout << x << "," << y << "," << cell_cost << endl;
 }
 
 Cell::Cell(const Cell& cell) {
@@ -38,7 +41,5 @@ Cell::~Cell() {
 }
 
 bool Cell::isFree() {
-	return this->Cell_Cost == Cell::FREE;
+	return this->Cell_Cost == Map::PXTYPE::FREE;
 }
-
-

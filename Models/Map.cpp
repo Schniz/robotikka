@@ -103,7 +103,9 @@ std::vector<unsigned char> Map::CreatGridFromMap(const std::vector<unsigned char
 			// find out from the png if cell is black or white
 			for (unsigned pI = 0; pI < GridCellSizeInPx; ++pI) {
 				for (unsigned pJ = 0; pJ < GridCellSizeInPx; ++pJ) {
-					PxBlackConuter += PngMap[(i * GridCellSizeInPx + pI) * 4 + (j * GridCellSizeInPx + pJ)* MapWidth * 4] != PXTYPE::FREE ? 1 : 0;
+					if (PngMap[(i * GridCellSizeInPx + pI) * 4 + (j * GridCellSizeInPx + pJ)* MapWidth * 4] != 255) {
+						PxBlackConuter++;
+					}
 					// Debugs
 					//std::cout << "cell No': " <<(i * GridCellSizeInPx
 					//		+ pI) * 4 + (j * GridCellSizeInPx + pJ)* MapWidth * 4 << std::endl;
@@ -111,7 +113,7 @@ std::vector<unsigned char> Map::CreatGridFromMap(const std::vector<unsigned char
 			}
 
 			// Chack for number of black cell TODO:think if i need a parameter for Negligible number of blac px
-			if (PxBlackConuter >= (GridCellSizeInPx * GridCellSizeInPx)/7) {
+			if (PxBlackConuter < (GridCellSizeInPx * GridCellSizeInPx)/7) {
 				// Black
 				Grid[i * GridCols + j] = 0;
 			} else {
@@ -131,8 +133,16 @@ Map::~Map() {
 	// TODO: clear all objects!!!!
 }
 
-Cell* Map::getCell(int row, int col) const {
-	return m_Cells[row][col];
+Cell* Map::getCell(int x, int y) const {
+	if (x < 0 || y < 0 || x >= this->m_Cols || y >= this->m_Rows) {
+		return NULL;
+	}
+	unsigned int index = y*this->m_Cols + x;
+	return new Cell(
+		x,
+		y,
+		this->Grid[index]
+	);
 }
 
 void Map::PrintMap(const char* filename) {
