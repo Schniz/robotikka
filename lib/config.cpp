@@ -93,12 +93,14 @@ ostream& operator<<(ostream& os, const Config& config) {
 }
 
 Config::Config(string fileName) {
-	this->mapLocation = string("");
+	this->mapLocation = string("/home/colman/git/robotikka/Reasurce/roboticLabMap.png");
 	this->startLocation = new int[3];
 	this->goal = new int[2];
 	this->robotSize = new int[2];
-	this->mapResolutionCm = 1.0;
-	this->gridResolutionCm = 1.0;
+	this->robotSize[0] = 30;
+	this->robotSize[1]= 30;
+	this->mapResolutionCm = 2.5;
+	this->gridResolutionCm = 10;
 	this->parse(fileName);
 }
 

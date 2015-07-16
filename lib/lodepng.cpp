@@ -3685,7 +3685,7 @@ unsigned lodepng_auto_choose_color(LodePNGColorMode* mode_out,
 
   lodepng_color_profile_init(&prof);
   error = lodepng_get_color_profile(&prof, image, w, h, mode_in);
-  if(error) return error;
+  if(error) return
   mode_out->key_defined = 0;
 
   if(prof.key && w * h <= 16) {
