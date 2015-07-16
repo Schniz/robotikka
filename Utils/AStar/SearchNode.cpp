@@ -3,6 +3,7 @@
 #include <math.h>
 
 SearchNode::SearchNode(int x, int y) : X(x), Y(y) {
+	//cout << "SearchNode.cpp: Creating node.. " << x << "," << y << endl;
 }
 
 SearchNode::SearchNode() : SearchNode(0, 0) {
@@ -10,11 +11,11 @@ SearchNode::SearchNode() : SearchNode(0, 0) {
 
 // Heuristic distance between this and the goal node
 double SearchNode::goalDistanceEstimate(SearchNode& goalNode) {
-	return sqrt(pow(X - goalNode.X, 2) + pow(Y - goalNode.Y, 2));
+	return sqrt(pow(this->X - goalNode.X, 2) + pow(this->Y - goalNode.Y, 2));
 }
 
 bool SearchNode::isGoal(SearchNode& goalNode) {
-	cout << X << "," << Y << endl;
+	cout << "SearchNode.cpp: isGoal? " << X << "," << Y << endl;
 	return X == goalNode.X && Y == goalNode.Y;
 }
 
@@ -29,7 +30,7 @@ void addIfNotBackwards(Cell* cell, Cell* previousCell, AStarSearch<SearchNode>* 
 	int x = cell->getX();
 	int y = cell->getY();
 
-	cout << "is " << x << "," << y << " free? " << cell->isFree() << endl;
+	cout << "SearchNode.cpp: " << "is " << x << "," << y << " free? " << cell->isFree() << endl;
 
 	if (previousCell == NULL || (!cell->equalsTo(previousCell) && cell->isFree())) {
 		SearchNode newNode = SearchNode(x, y);
@@ -38,6 +39,7 @@ void addIfNotBackwards(Cell* cell, Cell* previousCell, AStarSearch<SearchNode>* 
 }
 
 bool SearchNode::getSuccessors(AStarSearch<SearchNode>* search, Map* map, SearchNode* parentNode) {
+	cout << "SearchNode.cpp: " << "searching successors for " << this->Y << "," << this->Y << endl;
 	// Infinity!
 	Cell* previousCell = NULL;
 
@@ -60,8 +62,6 @@ bool SearchNode::getSuccessors(AStarSearch<SearchNode>* search, Map* map, Search
 		addIfNotBackwards(neighbor, previousCell, search);
 	}
 
-	delete previousCell;
-
 	return true;
 }
 
@@ -71,7 +71,7 @@ bool SearchNode::getSuccessors(AStarSearch<SearchNode>* search, Map* map, Search
 double SearchNode::getCost(SearchNode& successor, Map* map) {
 	Cell* cell = map->getCell(Y, X);
 	double cost = cell->Cell_Cost;
-	delete cell;
+	//delete cell;
 	return cost;
 }
 

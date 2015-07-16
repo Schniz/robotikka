@@ -27,8 +27,7 @@ namespace Utils {
   };
 
   vector<Cell*> AStarUtil::buildPath() {
-	  int stepCount = this->search.GetStepCount();
-	  vector<Cell*> path(stepCount);
+	  vector<Cell*> path;
 	  SearchNode* searchNode = this->search.GetSolutionStart();
 
 	  while (searchNode != NULL) {

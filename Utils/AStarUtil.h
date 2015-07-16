@@ -10,8 +10,8 @@ using namespace std;
 namespace Utils {
   class AStarUtil {
   public:
-	  AStarUtil(Map* map) {
-		  this->map = map;
+	  AStarUtil(Map* map) : map(map), search(NULL) {
+		  cout << "AStarUtil.h: Creating a map." << endl;
 	  }
 	  vector<Cell*> findPath(Cell* start, Cell* destination);
   protected:

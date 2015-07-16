@@ -28,7 +28,7 @@ void Map::initMap(const char* filename) {
 
 	//if there's an error, display it
 	if (error)
-		std::cout << "decoder error " << error << ": "
+		std::cout << "Map.cpp: " << "decoder error " << error << ": "
 				<< lodepng_error_text(error) << std::endl;
 
 	// calc the size of the robot in pic px
@@ -115,12 +115,12 @@ std::vector<unsigned char> Map::CreatGridFromMap(const std::vector<unsigned char
 			}
 
 			// Chack for number of black cell TODO:think if i need a parameter for Negligible number of blac px
-			if (PxBlackConuter < (GridCellSizeInPx * GridCellSizeInPx)/7) {
+			if (PxBlackConuter >= (GridCellSizeInPx * GridCellSizeInPx)/7) {
 				// Black
-				Grid[i * GridCols + j] = 0;
+				Grid[i * GridCols + j] = PXTYPE::OPSTICAL;
 			} else {
 				// White
-				Grid[i * GridCols + j] = 1;
+				Grid[i * GridCols + j] = PXTYPE::FREE;
 			}
 
 		}
