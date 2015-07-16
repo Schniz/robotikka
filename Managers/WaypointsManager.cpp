@@ -2,42 +2,50 @@
 
 namespace Managers {
 
-WaypointsManager::WaypointsManager(Robot* robot, vector<Waypoint> waypoints,
-		float radius) :
-		m_Radius(radius), m_Robot(robot) {
+WaypointsManager::WaypointsManager(vector<Waypoint> waypoints, float radius) :
+		radius(radius) {
+	waypointsVec = waypoints;
 
-	for (int i = 0; i < waypoints.size(); i++) {
-		m_WaypointsQueue.push(waypoints[i]);
+	smoothSize = waypoints.size() / 100 + 1;
+
+	smoothWaypoints = vector<Waypoint>(smoothSize);
+
+	SmoothWaypoints();
+
+	currWaypoint = NULL;
+}
+
+void WaypointsManager::SmoothWaypoints() {
+	for (int i = 0; i < smoothSize; i++) {
+		smoothWaypoints[i] = new Waypoint(waypointsVec[i + 100]);
 	}
-
-	m_CurrWaypoint = NULL;
 }
 
 WaypointsManager::~WaypointsManager() {
-	delete m_CurrWaypoint;
-	m_CurrWaypoint = NULL;
-
-	delete m_Robot;
-	m_Robot = NULL;
+	delete currWaypoint;
+	currWaypoint = NULL;
 }
 
-Waypoint WaypointsManager::update(Location newRobotLoc) {
-	if (m_CurrWaypoint == NULL || shouldMoveNext(newRobotLoc)) {
-		m_CurrWaypoint = &m_WaypointsQueue.front();
-		m_WaypointsQueue.pop();
-	}
-
-	return *m_CurrWaypoint;
-
-	// TODO Calculate where the robot is currently, and what speed and yawSpeed it needs to get to the next Waypoint.
-	// TODO Use the RobotManager to move it?
-}
-
-bool WaypointsManager::shouldMoveNext(Location newRobotLoc) {
-	return MathUtil::equals(newRobotLoc.getX(), m_CurrWaypoint->getX(),
-			m_Radius)
-			&& MathUtil::equals(newRobotLoc.getY(),
-					m_CurrWaypoint->getY(), m_Radius);
-}
+//Waypoint WaypointsManager::update(Location newRobotLoc) {
+////	if (crrWaypoint == NULL || shouldMoveNext(newRobotLoc)) {
+////		currWaypoint = &waypointsQueue.front();
+////		m_WaypointsQueue.pop();
+////	}
+////
+////	return *m_CurrWaypoint;
+////
+//	return NULL;
+//
+//
+//}
+//
+//bool WaypointsManager::shouldMoveNext(Location newRobotLoc) {
+////	return MathUtil::equals(newRobotLoc.getX(), m_CurrWaypoint->getX(),
+////			m_Radius)
+////			&& MathUtil::equals(newRobotLoc.getY(),
+////					m_CurrWaypoint->getY(), m_Radius);
+//
+//	retun NULL;
+//}
 }
 

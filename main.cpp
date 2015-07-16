@@ -17,6 +17,13 @@ using namespace Utils;
 
 int main()
 {
+	Robot robot("localhost",6665);
+	PlnObstacleAvoid plnOA(&robot);
+	Manager manager(&robot, &plnOA);
+	manager.run();
+
+	// Testing O:)
+
 //	Robot robot("localhost",6665);
 //	PlnObstacleAvoid plnOA(&robot);
 //	Manager manager(&robot, &plnOA);

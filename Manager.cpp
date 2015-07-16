@@ -1,5 +1,7 @@
 
 #include "Manager.h"
+#include "Managers/ConfigurationManager.h"
+#include "Models/Map.h"
 
 Manager::Manager(Robot* robot, Plan* pln) {
 	_robot = robot;
@@ -33,6 +35,17 @@ void Manager::run()
 			_curr = _curr->selectNext();
 			_robot->Read();
 		}
+}
+
+void Manager::InitApp()
+{
+	// init configuration manager
+	//ConfigurationManager::LoadFromFile("Reasurce\parameters.txt");
+
+	// load map
+	Map *m = new Map(strtok(&ConfigurationManager::GetInstance()->getPngMapPath()[0], " "));
+
+
 }
 
 Manager::~Manager() {
