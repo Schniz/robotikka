@@ -20,7 +20,7 @@ int main()
 //	manager.run();
 
 	// init configuration manager
-	ConfigurationManager::LoadFromFile("Reasurce\parameters.txt");
+	ConfigurationManager::LoadFromFile("Reasurce/parameters.txt");
 	// load map
 	//const char* c = ConfigurationManager::GetInstance()->getPngMapPath();
 	//Map *m = (Map*)malloc(sizeof(Map));
