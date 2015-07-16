@@ -23,8 +23,7 @@ void Map::initMap(const char* filename) {
 	ConfigurationManager* config = ConfigurationManager::GetInstance();
 
 	//decode
-	unsigned error = lodepng::decode(Image, width, height,
-			config->getPngMapPath());
+	unsigned error = lodepng::decode(Image, this->pngWidth, this->pngHeight,config->getPngMapPath());
 
 	//if there's an error, display it
 	if (error)
@@ -61,8 +60,7 @@ void Map::initMap(const char* filename) {
 			}
 		}
 
-	// encode the map -- WORK FINE
-	encodeOneStep("Grid1.png", Image, width, height);
+
 
 
 	// create grid from the fat and regular map
@@ -72,7 +70,7 @@ void Map::initMap(const char* filename) {
 			this->m_Cols, this->m_Rows);
 
 	// encode the map -- FLY
-	encodeOneStep("Grid2.png", Image, width, height);
+	//encodeOneStep("Grid2.png", Image, width, height);
 
 	// Free Image Memory
 	Image.clear();
@@ -164,3 +162,14 @@ void Map::PrintMap(const char* filename) {
 	vector<unsigned char>().swap(Image);
 
 }
+
+Cell* Map::pointToGrid(unsigned x, unsigned y)
+{
+	// Get config instance
+	ConfigurationManager* config = ConfigurationManager::GetInstance();
+	// creat the return cells
+	unsigned l1 = floor(this->pngHeight * (unsigned)config->getPixelPerCm()  / config->getPngGridResolution());
+	unsigned l2 = floor(this->pngHeight * config->getPixelPerCm() / config->getPngGridResolution());
+	return new Cell(l1,l2,this->Grid[y * this->m_Cols + x]);
+}
+
