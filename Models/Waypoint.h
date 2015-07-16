@@ -11,19 +11,32 @@ public:
 
 	}
 
+	Waypoint(Waypoint* waypoint) :
+			m_X(waypoint->getX()), m_Y(waypoint->getY()), m_Yaw(
+					waypoint->getYaw()) {
+
+	}
+
+	Waypoint()
+	{
+
+	}
+
 
 	inline double getX() {
 		return m_X;
-	};
+	}
+	;
 
 	inline double getY() {
 		return m_Y;
-	};
+	}
+	;
 
 	inline double getYaw() {
 		return m_Yaw;
-	};
-
+	}
+	;
 
 private:
 	double m_X;
