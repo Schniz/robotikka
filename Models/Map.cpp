@@ -98,29 +98,50 @@ std::vector<unsigned char> Map::CreatGridFromMap(const std::vector<unsigned char
 		for (unsigned j = 0; j < GridRows; ++j) {
 
 			// defind white px counter
-			unsigned PxBlackConuter = 0;
+			unsigned PxOpsticalConuter,PxFreeConuter,PxGrayCounter = 0;
 
 			// find out from the png if cell is black or white
 			for (unsigned pI = 0; pI < GridCellSizeInPx; ++pI) {
 				for (unsigned pJ = 0; pJ < GridCellSizeInPx; ++pJ) {
-					if (PngMap[(i * GridCellSizeInPx + pI) * 4 + (j * GridCellSizeInPx + pJ)* MapWidth * 4] != 255) {
-						PxBlackConuter++;
-					}
+//					if (PngMap[(i * GridCellSizeInPx + pI) * 4 + (j * GridCellSizeInPx + pJ)* MapWidth * 4] != 255) {
+//						PxBlackConuter++;
+//					}
+					switch (PngMap[(i * GridCellSizeInPx + pI) * 4 + (j * GridCellSizeInPx + pJ)* MapWidth * 4]){
+						case static_cast<char>(Map::GRAY):
+							PxGrayCounter++;
+							break;
+
+						case static_cast<char>(Map::FREE):
+							PxFreeConuter++;
+							break;
+
+						case static_cast<char>(Map::OPSTICAL):
+							PxOpsticalConuter++;
+							break;
+
+						default:
+							std::cout << "Map: CreateGrid: switch default choosen. value= " << PngMap[(i * GridCellSizeInPx + pI) * 4 + (j * GridCellSizeInPx + pJ)* MapWidth * 4] << endl;
+						}
+
 					// Debugs
 					//std::cout << "cell No': " <<(i * GridCellSizeInPx
 					//		+ pI) * 4 + (j * GridCellSizeInPx + pJ)* MapWidth * 4 << std::endl;
 				}
 			}
 
-			// Chack for number of black cell TODO:think if i need a parameter for Negligible number of blac px
-			if (PxBlackConuter < (GridCellSizeInPx * GridCellSizeInPx)/7) {
-				// Black
-				Grid[i * GridCols + j] = 0;
+			// Chack for number of color cell TODO:think if i need a parameter for Negligible number of blac px
+			if (PxGrayCounter >= PxFreeConuter) {
+				if (PxGrayCounter > PxOpsticalConuter){
+					Grid[i * GridCols + j] = static_cast<char>(Map::GRAY);
+				}
+				else
+					Grid[i * GridCols + j] = static_cast<char>(Map::OPSTICAL);
 			} else {
-				// White
-				Grid[i * GridCols + j] = 1;
+				if (PxFreeConuter > PxOpsticalConuter)
+					Grid[i * GridCols + j] = static_cast<char>(Map::FREE);
+				else
+					Grid[i * GridCols + j] = static_cast<char>(Map::OPSTICAL);
 			}
-
 		}
 
 	}
