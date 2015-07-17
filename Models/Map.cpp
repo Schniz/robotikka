@@ -23,8 +23,7 @@ void Map::initMap(const char* filename) {
 	ConfigurationManager* config = ConfigurationManager::GetInstance();
 
 	//decode
-	unsigned error = lodepng::decode(Image, width, height,
-			config->getPngMapPath());
+	unsigned error = lodepng::decode(Image, this->pngWidth, this->pngHeight,config->getPngMapPath());
 
 	//if there's an error, display it
 	if (error)
@@ -61,8 +60,7 @@ void Map::initMap(const char* filename) {
 			}
 		}
 
-	// encode the map -- WORK FINE
-	encodeOneStep("Grid1.png", Image, width, height);
+
 
 
 	// create grid from the fat and regular map
@@ -100,29 +98,50 @@ std::vector<unsigned char> Map::CreatGridFromMap(const std::vector<unsigned char
 		for (unsigned j = 0; j < GridRows; ++j) {
 
 			// defind white px counter
-			unsigned PxBlackConuter = 0;
+			unsigned PxOpsticalConuter,PxFreeConuter,PxGrayCounter = 0;
 
 			// find out from the png if cell is black or white
 			for (unsigned pI = 0; pI < GridCellSizeInPx; ++pI) {
 				for (unsigned pJ = 0; pJ < GridCellSizeInPx; ++pJ) {
-					if (PngMap[(i * GridCellSizeInPx + pI) * 4 + (j * GridCellSizeInPx + pJ)* MapWidth * 4] != 255) {
-						PxBlackConuter++;
-					}
+//					if (PngMap[(i * GridCellSizeInPx + pI) * 4 + (j * GridCellSizeInPx + pJ)* MapWidth * 4] != 255) {
+//						PxBlackConuter++;
+//					}
+					switch (PngMap[(i * GridCellSizeInPx + pI) * 4 + (j * GridCellSizeInPx + pJ)* MapWidth * 4]){
+						case static_cast<char>(Map::GRAY):
+							PxGrayCounter++;
+							break;
+
+						case static_cast<char>(Map::FREE):
+							PxFreeConuter++;
+							break;
+
+						case static_cast<char>(Map::OPSTICAL):
+							PxOpsticalConuter++;
+							break;
+
+						default:
+							std::cout << "Map: CreateGrid: switch default choosen. value= " << PngMap[(i * GridCellSizeInPx + pI) * 4 + (j * GridCellSizeInPx + pJ)* MapWidth * 4] << endl;
+						}
+
 					// Debugs
 					//std::cout << "cell No': " <<(i * GridCellSizeInPx
 					//		+ pI) * 4 + (j * GridCellSizeInPx + pJ)* MapWidth * 4 << std::endl;
 				}
 			}
 
-			// Chack for number of black cell TODO:think if i need a parameter for Negligible number of blac px
-			if (PxBlackConuter < (GridCellSizeInPx * GridCellSizeInPx)/7) {
-				// Black
-				Grid[i * GridCols + j] = 0;
+			// Chack for number of color cell TODO:think if i need a parameter for Negligible number of blac px
+			if (PxGrayCounter >= PxFreeConuter) {
+				if (PxGrayCounter > PxOpsticalConuter){
+					Grid[i * GridCols + j] = static_cast<char>(Map::GRAY);
+				}
+				else
+					Grid[i * GridCols + j] = static_cast<char>(Map::OPSTICAL);
 			} else {
-				// White
-				Grid[i * GridCols + j] = 1;
+				if (PxFreeConuter > PxOpsticalConuter)
+					Grid[i * GridCols + j] = static_cast<char>(Map::FREE);
+				else
+					Grid[i * GridCols + j] = static_cast<char>(Map::OPSTICAL);
 			}
-
 		}
 
 	}
@@ -174,3 +193,14 @@ void Map::PrintMap(const char* filename) {
 	vector<unsigned char>().swap(Image);
 
 }
+
+Cell* Map::pointToGrid(unsigned x, unsigned y)
+{
+	// Get config instance
+	ConfigurationManager* config = ConfigurationManager::GetInstance();
+	// creat the return cells
+	unsigned l1 = floor(this->pngHeight * (unsigned)config->getPixelPerCm()  / config->getPngGridResolution());
+	unsigned l2 = floor(this->pngHeight * config->getPixelPerCm() / config->getPngGridResolution());
+	return new Cell(l1,l2,this->Grid[y * this->m_Cols + x]);
+}
+
