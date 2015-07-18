@@ -17,7 +17,7 @@ public:
 	bool isSameState(SearchNode& rhs);
 
 	inline Cell* toMapCell(AnotherMap* map) {
-		return map->getCell(this->X, this->Y);
+		return map->getResizedCell(this->X, this->Y);
 	}
 
 	friend ostream& operator<<(ostream& os, const SearchNode& cell);
