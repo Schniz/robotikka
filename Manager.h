@@ -32,7 +32,8 @@ public:
 	AnotherMap* map;
 	Cell* start;
 	Cell* destination;
-	void rotateLikeShawarma(double angleToBe);
+	Location getBestLocation();
+	void rotateLikeShawarma(Cell* waypoint, Location* location);
 };
 
 #endif /* MANAGER_H_ */

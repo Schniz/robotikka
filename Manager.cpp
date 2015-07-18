@@ -24,11 +24,25 @@ double getAngleToBe(Cell* waypoint, Location* bestLocation) {
 	return tan(deltaY / deltaX);
 }
 
-void Manager::rotateLikeShawarma(double angleToBe) {
-	while (abs(angleToBe - robot->getYawPosition()) > 0.1) {
+void Manager::rotateLikeShawarma(Cell* waypoint, Location* bestLocation) {
+	double angleToBe = getAngleToBe(waypoint, bestLocation);
+	double yaw = bestLocation->getYaw();
+	while (fabs(angleToBe - yaw) > 0.1) {
 		robot->setSpeed(Consts::TURN_SPEED, Consts::TURN_ANGULAR_SPEED);
 		robot->Read();
+		yaw = this->getBestLocation().getYaw();
 	}
+}
+
+Location Manager::getBestLocation() {
+	double dx, dy, dyaw;
+	float* allLasers = robot->getAllLasers();
+	robot->calcLocationDeltas(dx, dy, dyaw);
+	this->localizationManager->upDate((float) dx, (float) dy,
+			(float) dyaw, allLasers);
+	Location bestLocation = this->localizationManager->BestLocation();
+	delete[] allLasers;
+	return bestLocation;
 }
 
 void Manager::run() {
@@ -40,16 +54,11 @@ void Manager::run() {
 		this->waypointsManager->currWaypoint = waypoint;
 		while (!waypointsManager->IsInWaypoint(dx, dy)) {
 			robot->Read();
-			this->rotateLikeShawarma(getAngleToBe(waypoint, &bestLocation));
+			this->rotateLikeShawarma(waypoint, &bestLocation);
 			this->robot->setSpeed(Consts::MOVE_FORWARD_SPEED, 0);
 			sleep(1);
 			this->robot->setSpeed(0, 0);
-			float* allLasers = robot->getAllLasers();
-			robot->calcLocationDeltas(dx, dy, dyaw);
-			this->localizationManager->upDate((float) dx, (float) dy,
-					(float) dyaw, allLasers);
-			bestLocation = this->localizationManager->BestLocation();
-			delete[] allLasers;
+			bestLocation = this->getBestLocation();
 		}
 
 	}
