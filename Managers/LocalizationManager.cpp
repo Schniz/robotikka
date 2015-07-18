@@ -65,4 +65,9 @@ Location LocalizationManager::BestLocation()
 	return (Location(best.x,best.y,best.yaw));
 }
 
+LocalizationManager::~LocalizationManager()
+{
+	this->currLocation.~Location();
+	this->particleList.~list();
+	}
 }
