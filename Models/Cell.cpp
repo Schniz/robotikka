@@ -7,7 +7,7 @@ Cell::Cell(unsigned x, unsigned y, CellType cell_cost) {
 	m_IsInit = false;
 	m_X = x;
 	m_Y = y;
-	Cell_Cost= cell_cost;
+	Cell_Cost = cell_cost;
 
 	// cout << "Cell.cpp: " << x << "," << y << "," << cell_cost << endl;
 }

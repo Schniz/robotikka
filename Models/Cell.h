@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include "Location.h"
 
 using namespace std;
 
@@ -25,6 +26,9 @@ public:
 
 	void init(vector<Cell*> neighbors);
 
+	inline Location getLocation() {
+		return Location(this->m_X, this->m_Y, 0.0);
+	}
 	inline bool equalsTo(Cell* cell) {
 		return (this->getX() == cell->getX() && this->getY() == cell->getY());
 	}
