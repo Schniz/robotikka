@@ -27,7 +27,7 @@ void Map::initMap(const char* filename) {
 
 	//if there's an error, display it
 	if (error)
-		std::cout << "decoder error " << error << ": "
+		std::cout << "Map.cpp: " << "decoder error " << error << ": "
 				<< lodepng_error_text(error) << std::endl;
 
 	// calc the size of the robot in pic px
@@ -128,7 +128,6 @@ std::vector<unsigned char> Map::CreatGridFromMap(const std::vector<unsigned char
 					//		+ pI) * 4 + (j * GridCellSizeInPx + pJ)* MapWidth * 4 << std::endl;
 				}
 			}
-
 			// Chack for number of color cell TODO:think if i need a parameter for Negligible number of blac px
 			if (PxGrayCounter >= PxFreeConuter) {
 				if (PxGrayCounter > PxOpsticalConuter){
@@ -159,11 +158,12 @@ Cell* Map::getCell(int x, int y) const {
 		return NULL;
 	}
 	unsigned int index = y*this->m_Cols + x;
-	return new Cell(
-		x,
-		y,
-		this->Grid[index]
-	);
+//	return new Cell(
+//		(unsigned)x,
+//		(unsigned)y,
+//		this->Grid[index]
+//	);
+	return NULL;
 }
 
 void Map::PrintMap(const char* filename) {
@@ -201,6 +201,6 @@ Cell* Map::pointToGrid(unsigned x, unsigned y)
 	// creat the return cells
 	unsigned l1 = floor(this->pngHeight * (unsigned)config->getPixelPerCm()  / config->getPngGridResolution());
 	unsigned l2 = floor(this->pngHeight * config->getPixelPerCm() / config->getPngGridResolution());
-	return new Cell(l1,l2,this->Grid[y * this->m_Cols + x]);
+	return new Cell(l1,l2,(CellType)this->Grid[y * this->m_Cols + x]);
 }
 

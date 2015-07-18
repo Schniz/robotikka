@@ -7,41 +7,35 @@
 #include "Robot.h"
 #include "Manager.h"
 #include "Plans/PlnObstacleAvoid.h"
+#include <stdarg.h>
+
+#define RUN_ROBOT false
 
 //map check
 #include "Managers/ConfigurationManager.h"
 #include "Models/Map.h"
 #include "Utils/AStarUtil.h"
+#include "Models/AnotherMap.h"
 
+using namespace std;
 using namespace Utils;
 
 int main()
 {
-	Robot robot("localhost",6665);
-	PlnObstacleAvoid plnOA(&robot);
-	Manager manager(&robot, &plnOA);
-	manager.run();
-
-	// Testing O:)
-
-//	Robot robot("localhost",6665);
-//	PlnObstacleAvoid plnOA(&robot);
-//	Manager manager(&robot, &plnOA);
-//	manager.run();
-
-	// init configuration manager
-	ConfigurationManager::LoadFromFile("Resources/parameters.txt");
-	// load map
-	Map *m = new Map(strtok(&ConfigurationManager::GetInstance()->getPngMapPath()[0], " "));
-	cout << "HEY" << endl;
-
-	// Throws an exception :D
-	AStarUtil astar(m);
-	Cell* start = m->getCell(0, 0);
-	Cell* destination = m->getCell(4, 4);
-	vector<Cell*> path = astar.findPath(start, destination);
-	cout << "PATH LENGTH: " << path.size() << endl;
-	for (Cell* cell : path) {
-		cout << "[" << cell->getX() << "," << cell->getY() << "]" << endl;
+	if (RUN_ROBOT) {
+		Robot robot("localhost",6665);
+		PlnObstacleAvoid plnOA(&robot);
+		Manager manager(&robot, &plnOA);
+		manager.run();
 	}
+
+	ConfigurationManager::LoadFromFile("Resources/parameters.txt");
+	Managers::ConfigurationManager* config =
+			ConfigurationManager::GetInstance();
+	AnotherMap* m = new AnotherMap(
+		config->getPngMapPath(),
+		config->getRobotSize().RadiosSize(),
+		config->getPngGridResolution()
+	);
+	AStarUtil::testWithMap(m);
 }

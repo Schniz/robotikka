@@ -4,9 +4,18 @@
 
 namespace Utils {
   vector<Cell*> AStarUtil::findPath(Cell* start, Cell* destination) {
+	  if (!start->isFree()) {
+		  cout << "start node is not a valid terrain." << endl;
+		  exit(1);
+	  }
+	  if (!destination->isFree()) {
+		  cout << "destination node is not a valid terrain." << endl;
+		  exit(1);
+	  }
 	  // Set start and destination cells.
 	  SearchNode startNode = SearchNode(start->getX(), start->getY());
 	  SearchNode destinationNode = SearchNode(destination->getX(), destination->getY());
+
 	  this->search.SetStartAndGoalStates(startNode, destinationNode);
 
 	  // Search until you get to the destination (or you haven't found a path).
@@ -27,8 +36,7 @@ namespace Utils {
   };
 
   vector<Cell*> AStarUtil::buildPath() {
-	  int stepCount = this->search.GetStepCount();
-	  vector<Cell*> path(stepCount);
+	  vector<Cell*> path;
 	  SearchNode* searchNode = this->search.GetSolutionStart();
 
 	  while (searchNode != NULL) {

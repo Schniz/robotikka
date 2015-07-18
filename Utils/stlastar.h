@@ -46,7 +46,7 @@ using namespace std;
 
 // Fixed size memory allocator can be disabled to compare performance
 // Uses std new and delete instead if you turn it off
-#define USE_FSA_MEMORY 1
+#define USE_FSA_MEMORY 0
 
 // disable warning that debugging information has lines that are truncated
 // occurs in stl headers
@@ -177,7 +177,7 @@ public: // methods
 	}
 
 	// Advances search one step
-	unsigned int SearchStep(Map* map) {
+	unsigned int SearchStep(AnotherMap* map) {
 		// Firstly break if the user has not initialised the search
 		assert((m_State > SEARCH_STATE_NOT_INITIALISED) &&
 			(m_State < SEARCH_STATE_INVALID));
