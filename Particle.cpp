@@ -18,7 +18,6 @@ Particle::Particle(float x, float y, float yaw, float belief) {
 
 void Particle::SetMap(AnotherMap* map) {
 	this->map = map;
-	cout <<"Particle : SetMap : " <<this->map->gridHeight << " - " << this->map->gridWidth<< endl;
 }
 
 void Particle::Update(float deltaX, float deltaY, float deltaYaw,

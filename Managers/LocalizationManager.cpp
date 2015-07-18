@@ -12,8 +12,7 @@ LocalizationManager::LocalizationManager(Location currLocation,
 	Particle fatherParticle = Particle(this->currLocation.m_X,
 			this->currLocation.m_Y, this->currLocation.m_Yaw, 1);
 
-	// give the father particle the map
-	fatherParticle.SetMap(currMap);
+	// give the father particle the map	fatherParticle.SetMap(currMap);
 	fatherParticle.SetMaxDistance(maxDistance);
 
 	// rando all the particle list
@@ -31,7 +30,7 @@ void LocalizationManager::upDate(float deltaX, float deltaY, float deltaYaw,
 	vector<list<Particle>::iterator> BestParticle;
 	vector<list<Particle>::iterator> kakis;
 	unsigned itCount = 0;
-	cout << this->particleList.size() << endl;
+	cout << "LocalizationManager : particleList size:"<<this->particleList.size() << endl;
 
 	// update and delete
 	for (std::list<Particle>::iterator it = this->particleList.begin();
@@ -50,16 +49,18 @@ void LocalizationManager::upDate(float deltaX, float deltaY, float deltaYaw,
 		this->particleList.erase(it);
 	}
 
-
+	cout << "LocalizationManager :  size after erase:"<<this->particleList.size() << endl;
 	std::list<Particle>::iterator parent;
 	// born new children
-	for (unsigned i = 1; i != NUMBER_OF_PARTICLE - this->particleList.size();
+	unsigned numberOfNewChiled = NUMBER_OF_PARTICLE - this->particleList.size();
+	for (unsigned i = 1; i != numberOfNewChiled;
 			i++) {
 		parent = BestParticle[fmod(i, BestParticle.size())];
 		this->particleList.push_front(
 				*(parent->CreateChild(
 						PARTIACLE_CHILED_RADIOS_CM, PARTICAL_DGREE_YAW)));
 	}
+	cout << "LocalizationManager :  size after born:"<<this->particleList.size() << endl;
 }
 
 Location LocalizationManager::BestLocation() {
