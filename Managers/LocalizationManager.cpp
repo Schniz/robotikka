@@ -4,7 +4,7 @@
 
 namespace Managers {
 
-LocalizationManager::LocalizationManager(Location currLocation, Map* currMap)
+LocalizationManager::LocalizationManager(Location currLocation, AnotherMap* currMap)
 {
 	// add the location
 	this->currLocation = Location(currLocation);
@@ -19,7 +19,7 @@ LocalizationManager::LocalizationManager(Location currLocation, Map* currMap)
 	// rando all the particle list
 	for (unsigned i=0; i <= NUMBER_OF_PARTICLE; i++)
 	{
-		this->particleList.push_front(*(fatherParticle.CreateChild()));
+		this->particleList.push_front(*(fatherParticle.CreateChild(PARTICALE_RADIOS_FROM_ROBOT,PARTICAL_DGREE_YAW_FROM_ROBOT)));
 	}
 
 }
@@ -33,12 +33,12 @@ void LocalizationManager::upDate(float deltaX, float deltaY, float deltaYaw, flo
 	// update and delete
 	for (std::list<Particle>::iterator it = this->particleList.begin(); it != this->particleList.end(); it++)
 	{
-		*it->Update(deltaX,deltaY,deltaYaw,laserArr);
-		if (*it->belief < TRASHHOLE)
+		it->Update(deltaX,deltaY,deltaYaw,laserArr);
+		if (it->belief < TRASHHOLE)
 		{
 			this->particleList.erase(it);
 		}
-		else if (*it->belief > BEST_EFFORT)
+		else if (it->belief > BEST_EFFORT)
 		{
 			BestParticle.push_back(it);
 		}
@@ -47,22 +47,22 @@ void LocalizationManager::upDate(float deltaX, float deltaY, float deltaYaw, flo
 	// born new children
 	for (unsigned i = 0; i < NUMBER_OF_PARTICLE - this->particleList.size(); i++)
 	{
-		this->particleList.push_front((*(BestParticle[i%BestParticle.size()])->CreateChild()));
+		this->particleList.push_front((*(BestParticle[i%BestParticle.size()])->CreateChild(PARTIACLE_CHILED_RADIOS_CM,PARTICAL_DGREE_YAW)));
 	}
 }
 
 Location LocalizationManager::BestLocation()
 {
-	Particle* best = this->particleList[1];
+	Particle best = this->particleList.front();
 	for (Particle p : this->particleList)
 	{
-		if (best->belief < p.belief)
+		if (best.belief < p.belief)
 		{
-			best = *p;
+			best = p;
 		}
 	}
 
-	return (Location(best->x,best->y,best->yaw));
+	return (Location(best.x,best.y,best.yaw));
 }
 
 }

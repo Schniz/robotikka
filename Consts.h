@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <math.h>
 #include <player-2.0/libplayerc++/utility.h>
 
 using namespace std;
@@ -54,4 +55,13 @@ const int BEHAVIOR_NUM = 3;
 
 /* PARTICLE */
 const double BEL_NOR = 2;
+
+/* LocationManager */
+const unsigned NUMBER_OF_PARTICLE = 100;
+const float TRASHHOLE = 0.5;
+const float BEST_EFFORT = 0.9;
+const float PARTIACLE_CHILED_RADIOS_CM = 10;
+const float PARTICALE_RADIOS_FROM_ROBOT = 40;
+const float PARTICAL_DGREE_YAW = M_PI / 4;
+const float PARTICAL_DGREE_YAW_FROM_ROBOT = M_PI / 3;
 }
