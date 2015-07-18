@@ -13,6 +13,7 @@
 #include "Managers/LocalizationManager.h"
 #include "Models/AnotherMap.h"
 #include "Models/Cell.h"
+#include <unistd.h>
 
 using namespace Managers;
 
@@ -31,6 +32,7 @@ public:
 	AnotherMap* map;
 	Cell* start;
 	Cell* destination;
+	void rotateLikeShawarma(double angleToBe);
 };
 
 #endif /* MANAGER_H_ */

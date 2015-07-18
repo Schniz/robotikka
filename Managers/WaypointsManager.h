@@ -20,13 +20,13 @@ namespace Managers {
 			bool WaypointDriver(Cell* wp, Robot rob);
 			bool IsInWaypoint(double xp, double yp);
 			vector<Cell*> smoothWaypoints;
+			Cell* currWaypoint;
 
 		protected:
 			void SmoothWaypoints();
 
 		private:
 			vector<Cell*> waypointsVec;
-			Cell* currWaypoint;
 
 };
 }

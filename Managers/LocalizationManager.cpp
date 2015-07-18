@@ -29,6 +29,7 @@ void LocalizationManager::upDate(float deltaX, float deltaY, float deltaYaw, flo
 	//creat new chileds
 	vector<list<Particle>::iterator> BestParticle;
 	unsigned itCount = 0;
+	cout << this->particleList.size() << endl;
 
 	// update and delete
 	for (std::list<Particle>::iterator it = this->particleList.begin(); it != this->particleList.end(); it++)

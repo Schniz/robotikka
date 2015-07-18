@@ -20,7 +20,7 @@ void WaypointsManager::SmoothWaypoints() {
 			waypointsVec[0]->getY(), waypointsVec[1]->getX(),
 			waypointsVec[1]->getY());
 	int lastPut = 0;
-	smoothWaypoints.push_back(waypointsVec[0]);
+	//smoothWaypoints.push_back(waypointsVec[0]);
 
 	for (unsigned i = 1; i < waypointsVec.size() - 1; i += WAYPOINT_SKIPS) {
 		lastPut++;
@@ -43,6 +43,7 @@ void WaypointsManager::SmoothWaypoints() {
 	if (lastSmooth != lastWaypoint) {
 		smoothWaypoints.push_back(lastWaypoint);
 	}
+	this->currWaypoint = smoothWaypoints[0];
 }
 
 WaypointsManager::~WaypointsManager() {

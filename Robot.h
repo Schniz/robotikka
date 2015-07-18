@@ -6,6 +6,7 @@
 #include <libplayerc++/playerc++.h>
 #include "Consts.h"
 #include "Utils/MathUtil.h"
+#include "Models/Location.h"
 
 using namespace std;
 using namespace PlayerCc;
@@ -22,6 +23,9 @@ public:
 		// TODO
 		_pc->Read();
 	}
+	void setOdemetry(double x, double y, double yaw) {
+		this->_pp->SetOdometry(x, y, yaw);
+	}
 	void setSpeed(float xSpeed, float angularSpeed) {
 		// TODO: check if we need to do:  cm_to_m to the x speed! we need.
 		// TODO: need to check if do it here or in the caller method
@@ -29,7 +33,16 @@ public:
 		_pp->SetSpeed(xSpeed, angularSpeed);
 	}
 
+	Location getLocation();
 	bool canMoveForward();
+	float* getAllLasers() {
+		unsigned count = this->_lp->GetCount();
+		float* lasers = new float[count];
+		for (unsigned i = 0; i < count; i++) {
+			lasers[i] = this->_lp->GetRange(i);
+		}
+		return lasers;
+	}
 	bool canTurnRight();
 	bool canTurnLeft();
 

@@ -18,6 +18,10 @@ Robot::Robot(char* ip, int port) {
 		Read();
 }
 
+Location Robot::getLocation() {
+	return Location(this->getXPosition(), this->getYPosition(), this->getYawPosition());
+}
+
 double Robot::getXPosition() {
 	return _pp->GetXPos();
 }

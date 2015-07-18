@@ -17,36 +17,61 @@ Manager::Manager(Robot* robot, Plan* pln) {
 	this->plan = pln;
 	this->InitApp();
 }
-void Manager::run() {
-	while (
-		MathUtil::distance(
-			robot->getXPosition(),
-			robot->getYPosition(),
-			this->destination->getX(),
-			this->destination->getY()
-		) <= POSITION_INACCURACY
-	) {
+
+double getAngleToBe(Cell* waypoint, Location* bestLocation) {
+	unsigned int deltaY = abs(waypoint->getY() - bestLocation->getY());
+	unsigned int deltaX = abs(waypoint->getX() - bestLocation->getX());
+	return tan(deltaY / deltaX);
+}
+
+void Manager::rotateLikeShawarma(double angleToBe) {
+	while (abs(angleToBe - robot->getYawPosition()) > 0.1) {
+		robot->setSpeed(Consts::TURN_SPEED, Consts::TURN_ANGULAR_SPEED);
 		robot->Read();
+	}
+}
+
+void Manager::run() {
+	double dx = this->start->getX();
+	double dy = this->start->getY();
+	double dyaw = ConfigurationManager::GetInstance()->getStartLocation().getYaw();
+	Location bestLocation = Location(dx, dy, dyaw);
+	for (Cell* waypoint : waypointsManager->smoothWaypoints) {
+		this->waypointsManager->currWaypoint = waypoint;
+		while (!waypointsManager->IsInWaypoint(dx, dy)) {
+			robot->Read();
+			this->rotateLikeShawarma(getAngleToBe(waypoint, &bestLocation));
+			this->robot->setSpeed(Consts::MOVE_FORWARD_SPEED, 0);
+			sleep(1);
+			this->robot->setSpeed(0, 0);
+			float* allLasers = robot->getAllLasers();
+			robot->calcLocationDeltas(dx, dy, dyaw);
+			this->localizationManager->upDate((float) dx, (float) dy,
+					(float) dyaw, allLasers);
+			bestLocation = this->localizationManager->BestLocation();
+			delete[] allLasers;
+		}
+
 	}
 
 	/*
-	while (currentPoint->stopCond()) {
-		currentPoint = currentPoint->selectNext();
+	 while (currentPoint->stopCond()) {
+	 currentPoint = currentPoint->selectNext();
 
-		if (currentPoint == NULL) {
-			return;
-		}
-	}
-	currentPoint->action();
-	while (currentPoint != NULL) {
-		while (!currentPoint->stopCond()) {
-			currentPoint->action();
-			robot->Read();
-		}
-		currentPoint = currentPoint->selectNext();
-		robot->Read();
-	}
-	*/
+	 if (currentPoint == NULL) {
+	 return;
+	 }
+	 }
+	 currentPoint->action();
+	 while (currentPoint != NULL) {
+	 while (!currentPoint->stopCond()) {
+	 currentPoint->action();
+	 robot->Read();
+	 }
+	 currentPoint = currentPoint->selectNext();
+	 robot->Read();
+	 }
+	 */
 }
 
 Cell* locationToMapCell(AnotherMap* map, Location location) {
@@ -59,17 +84,18 @@ void Manager::InitApp() {
 			"Resources/parameters.txt");
 	AnotherMap* map = this->map = new AnotherMap(config);
 	AStarUtil astar(map);
-	Cell* startCell = locationToMapCell(map, config->getStartLocation());
-	Cell* endCell = locationToMapCell(map, config->getEndLocation());
-	vector<Cell*> astarPath = astar.findPath(
-		startCell,
-		endCell
-	);
+	Location startLocation = config->getStartLocation();
+	Cell* startCell = this->start = locationToMapCell(map,
+			startLocation);
+	Cell* endCell = this->destination = locationToMapCell(map,
+			config->getEndLocation());
+	vector<Cell*> astarPath = astar.findPath(startCell, endCell);
 	WaypointsManager* wayPointsManager = this->waypointsManager =
 			new WaypointsManager(astarPath);
 
 	Location startLocationPx = startCell->getLocation();
-	startLocationPx.m_Yaw = config->getStartLocation().m_Yaw;
+	startLocationPx.m_Yaw = startLocation.m_Yaw;
+	this->robot->setOdemetry(startLocation.getX() * config->getPixelPerCm(), startLocation.getY() * config->getPixelPerCm(), startLocationPx.getYaw());
 	this->localizationManager = new LocalizationManager(startLocationPx, map);
 
 	for (Cell* cell : astarPath) {
@@ -91,5 +117,6 @@ void Manager::InitApp() {
 
 Manager::~Manager() {
 	delete this->waypointsManager;
+	delete this->map;
 	delete this->localizationManager;
 }

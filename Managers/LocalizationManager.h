@@ -22,14 +22,14 @@ public:
 	void upDate(float deltaX, float deltaY, float deltaYaw, float laserArr[]);
 	Location BestLocation();
 
-protected:
-	// Data Member
-	std::list<Particle> particleList;
-
 	// Ctor
 	LocalizationManager(Location currLocation,  AnotherMap* currMap);
 
 	// Dtor
 	~LocalizationManager();
+
+protected:
+	// Data Member
+	std::list<Particle> particleList;
 	};
 }

@@ -22,7 +22,7 @@ public:
 	}
 	;
 
-	inline unsigned getYaw() {
+	inline double getYaw() {
 		return m_Yaw;
 	}
 	;
