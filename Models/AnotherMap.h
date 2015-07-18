@@ -13,21 +13,25 @@
 #include "Cell.h"
 #include <string>
 #include "../Models/Size.h"
+#include "../Managers/ConfigurationManager.h"
 
 using namespace std;
 
 class AnotherMap {
 public:
-	AnotherMap(string fileName, float radiusSize, double gridResolution);
+	AnotherMap(Managers::ConfigurationManager* config);
 	virtual ~AnotherMap();
 	Cell* getCell(unsigned x, unsigned y);
-	void saveToFile(string fileName);
+	Cell* getResizedCell(unsigned x, unsigned y);
+	void saveToFile(string fileName, bool resized = false);
 	unsigned int height;
 	unsigned int width;
 	unsigned int gridWidth;
 	unsigned int gridHeight;
 	vector<unsigned char> image;
 	vector<Cell*> grid;
+	Managers::ConfigurationManager* config;
+	vector<Cell*> resizedGrid;
 };
 
 #endif /* ALTERNATIVEMAP_H_ */

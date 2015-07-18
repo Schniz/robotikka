@@ -17,8 +17,8 @@ namespace Utils {
 	  vector<Cell*> findPath(Cell* start, Cell* destination);
 	  static void testWithMap(AnotherMap* m) {
 			AStarUtil astar(m);
-			Cell* start = m->getCell(80, 120);
-			Cell* destination = m->getCell(150, 120);
+			Cell* start = m->getResizedCell(40, 30);
+			Cell* destination = m->getResizedCell(60, 30);
 			cout << "main.cpp: " << "start: [" << (start->getX()) << "," << (start->getY()) << "]" << endl;
 			cout << "main.cpp: " << "destination: [" << destination->getX() << "," << destination->getY() << "]" << endl;
 			vector<Cell*> path = astar.findPath(start, destination);
@@ -29,10 +29,11 @@ namespace Utils {
 				cout << "main.cpp: " << "[" << cell->getX() << "," << cell->getY() << "]" << endl;
 				cell->Cell_Cost = CellType::PATH;
 			}
+
 			start->Cell_Cost = CellType::START;
 			destination->Cell_Cost = CellType::DESTINATION;
 
-			m->saveToFile("/tmp/wtf-with-path.png");
+			m->saveToFile("/tmp/wtf-with-path.png", true);
 	  }
   protected:
 	  AnotherMap* map;
