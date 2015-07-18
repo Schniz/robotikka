@@ -12,7 +12,7 @@ namespace Managers {
 	public:
 		virtual ~ConfigurationManager();
 		static ConfigurationManager* GetInstance();
-		static void LoadFromFile(string filePath);
+		static ConfigurationManager* LoadFromFile(string filePath);
 		string getPngMapPath();
 		Location getStartLocation();
 		Location getEndLocation();

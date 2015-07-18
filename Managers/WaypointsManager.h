@@ -14,22 +14,19 @@ namespace Managers {
 
 	class WaypointsManager {
 		public:
-		// TODO: init radius
-			WaypointsManager(vector<Waypoint> waypoints, float radius = RADIUS_AROUND_POINT);
+			WaypointsManager(vector<Cell*> waypoints);
 			virtual ~WaypointsManager();
 
-			bool WaypointDriver(Waypoint wp, Robot rob);
+			bool WaypointDriver(Cell* wp, Robot rob);
 			bool IsInWaypoint(double xp, double yp);
+			vector<Cell*> smoothWaypoints;
 
 		protected:
 			void SmoothWaypoints();
 
 		private:
-			const double radius;
-			vector<Waypoint> waypointsVec;
-			Waypoint* currWaypoint;
-			vector<Waypoint> smoothWaypoints;
-			int smoothSize;
+			vector<Cell*> waypointsVec;
+			Cell* currWaypoint;
 
 };
 }

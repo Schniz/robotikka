@@ -12,9 +12,9 @@
 
 
 class Manager {
-	Behavior* _curr;
-	Robot* _robot;
-	Plan* _plan;
+	Behavior* currentPoint;
+	Robot* robot;
+	Plan* plan;
 
 public:
 	Manager(Robot* robot, Plan* pln);

@@ -1,39 +1,48 @@
 #include "WaypointsManager.h"
 
+#define WAYPOINT_SKIPS 3
+#define INCLINE_INACCURACY DBL_EPSILON
+#define FORCE_WAYPOINT_ON 2
+
 namespace Managers {
 
-WaypointsManager::WaypointsManager(vector<Waypoint> waypoints, float radius) :
-		radius(radius) {
-	waypointsVec = waypoints;
-
-
+WaypointsManager::WaypointsManager(vector<Cell*> waypoints) {
+	this->waypointsVec = waypoints;
 	SmoothWaypoints();
-
 	currWaypoint = NULL;
 }
 
 void WaypointsManager::SmoothWaypoints() {
 
-	float firstIncline = MathUtil::incline(waypointsVec[0].getX(),
-			waypointsVec[0].getY(), waypointsVec[1].getX(),
-			waypointsVec[1].getY());
-
-	float currIncline = 0;
+	unsigned currentY = waypointsVec[0]->getY();
+	unsigned currentX = waypointsVec[0]->getX();
+	float firstIncline = MathUtil::incline(waypointsVec[0]->getX(),
+			waypointsVec[0]->getY(), waypointsVec[1]->getX(),
+			waypointsVec[1]->getY());
+	int lastPut = 0;
 	smoothWaypoints.push_back(waypointsVec[0]);
 
-	for (int i = 0; i < waypointsVec.size() - 1; i++) {
+	for (unsigned i = 1; i < waypointsVec.size() - 1; i += WAYPOINT_SKIPS) {
+		lastPut++;
+		unsigned y = waypointsVec[i+1]->getY();
+		unsigned x = waypointsVec[i+1]->getX();
+		float currIncline = MathUtil::incline(currentX, currentY, x, y);
 
-		float firstIncline = MathUtil::incline(waypointsVec[i].getX(),
-				waypointsVec[i].getY(), waypointsVec[i + 1].getX(),
-				waypointsVec[i + 1].getY());
-
-		if(currIncline != firstIncline && abs(currIncline - firstIncline) >= 5)
+		if((currIncline != firstIncline && abs(currIncline - firstIncline) >= INCLINE_INACCURACY) || lastPut > FORCE_WAYPOINT_ON)
 		{
-			smoothWaypoints.push_back(waypointsVec[i+1]);
+			lastPut = 0;
+			currentY = y;
+			currentX = x;
+			smoothWaypoints.push_back(waypointsVec[i]);
 			firstIncline = currIncline;
 		}
 	}
 
+	Cell* lastSmooth = smoothWaypoints[smoothWaypoints.size() - 1];
+	Cell* lastWaypoint = waypointsVec[waypointsVec.size() - 1];
+	if (lastSmooth != lastWaypoint) {
+		smoothWaypoints.push_back(lastWaypoint);
+	}
 }
 
 WaypointsManager::~WaypointsManager() {
@@ -41,8 +50,7 @@ WaypointsManager::~WaypointsManager() {
 	currWaypoint = NULL;
 }
 
-bool WaypointsManager::WaypointDriver(Waypoint wp, Robot rob) {
-
+bool WaypointsManager::WaypointDriver(Cell* wp, Robot rob) {
 	// TODO: DO IT
 	return false;
 

@@ -9,7 +9,7 @@
 #include "Plans/PlnObstacleAvoid.h"
 #include <stdarg.h>
 
-#define RUN_ROBOT false
+#define RUN_ROBOT true
 
 //map check
 #include "Managers/ConfigurationManager.h"
@@ -27,6 +27,7 @@ int main()
 		PlnObstacleAvoid plnOA(&robot);
 		Manager manager(&robot, &plnOA);
 		manager.run();
+		return 0;
 	}
 
 	ConfigurationManager::LoadFromFile("Resources/parameters.txt");

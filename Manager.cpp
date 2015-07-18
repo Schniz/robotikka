@@ -1,51 +1,79 @@
 
 #include "Manager.h"
 #include "Managers/ConfigurationManager.h"
+#include "Managers/WaypointsManager.h"
 #include "Models/Map.h"
+#include "Utils/AStarUtil.h"
+#include <vector>
+
+using namespace std;
+using namespace Utils;
 
 Manager::Manager(Robot* robot, Plan* pln) {
-	_robot = robot;
-	_curr = pln->getStartPoint();
-	_plan = pln;
+	this->robot = robot;
+	this->currentPoint = pln->getStartPoint();
+	this->plan = pln;
+	this->InitApp();
 }
 void Manager::run()
 {
-		_robot->Read();
-
-//		if(!_curr->startCond())
-//			return;
-
-		while (_curr->stopCond())
+		robot->Read();
+		while (currentPoint->stopCond())
 		{
-			_curr = _curr->selectNext();
+			currentPoint = currentPoint->selectNext();
 
-			if (_curr == NULL)
+			if (currentPoint == NULL) {
 				return;
-		}
-
-		_curr->action();
-
-		while(_curr != NULL)
-		{
-			while(!_curr->stopCond())
-			{
-				_curr->action();
-				_robot->Read();
 			}
-			_curr = _curr->selectNext();
-			_robot->Read();
 		}
+		currentPoint->action();
+		while(currentPoint != NULL)
+		{
+			while(!currentPoint->stopCond())
+			{
+				currentPoint->action();
+				robot->Read();
+			}
+			currentPoint = currentPoint->selectNext();
+			robot->Read();
+		}
+}
+
+Cell* locationToMapCell(AnotherMap* map, Location location) {
+	return map->getResizedCellFromImageCoords(location.getX(), location.getY());
 }
 
 void Manager::InitApp()
 {
+	int i = 0;
 	// init configuration manager
-	//ConfigurationManager::LoadFromFile("Reasurce\parameters.txt");
+	cout << ++i << endl;
+	ConfigurationManager* config = ConfigurationManager::LoadFromFile("Resources/parameters.txt");
+	cout << ++i << endl;
+	AnotherMap* map = new AnotherMap(config);
+	cout << ++i << endl;
+	AStarUtil astar(map);
+	cout << ++i << endl;
+	vector<Cell*> astarPath = astar.findPath(
+			locationToMapCell(map, config->getStartLocation()),
+			locationToMapCell(map, config->getEndLocation()));
+	cout << ++i << endl;
+	WaypointsManager wayPointsManager(astarPath);
+	cout << ++i << endl;
 
-	// load map
-	Map *m = new Map(strtok(&ConfigurationManager::GetInstance()->getPngMapPath()[0], " "));
+	for (Cell* cell : astarPath) {
+		cell->Cell_Cost = CellType::PATH;
+	}
 
+	for (Cell* cell : wayPointsManager.smoothWaypoints) {
+		cout << "[" << cell->getX() << "," << cell->getY() << "]" << endl;
+		cell->Cell_Cost = CellType::DESTINATION;
+	}
 
+	map->saveToFile("/tmp/waypoints.png", true);
+	map->saveToFile("/tmp/waypoints2.png",false);
+
+	cout << astarPath.size() << "-" << wayPointsManager.smoothWaypoints.size() << " = " << (astarPath.size() - wayPointsManager.smoothWaypoints.size()) << endl;
 }
 
 Manager::~Manager() {
