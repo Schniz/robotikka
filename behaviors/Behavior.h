@@ -15,6 +15,7 @@ class Behavior {
 	vector<Behavior*> _behVect;
 protected:
 	Robot* _robot;
+	int _behSize = 0;
 public:
 	Behavior(Robot* robot);
 	virtual ~Behavior();
@@ -24,12 +25,15 @@ public:
 	void addBeh(Behavior* next)
 	{
 		_behVect.push_back(next);
+		_behSize++;
 	}
 	Behavior* selectNext()
 	{
-		//TODO
-		//Run over vector and return first true
-		//startCond of the first behavior
+		int i;
+		for(i=0;i<_behSize;i++)
+			if(_behVect[i]->startCond())
+				return _behVect[i];
+
 		return NULL;
 	}
 

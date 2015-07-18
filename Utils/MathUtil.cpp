@@ -34,7 +34,15 @@ double MathUtil::normalize(double num, double min, double max) {
 bool MathUtil::equals(double number, double comparee, double epsilon) {
 	return inRange(number, comparee - epsilon, comparee + epsilon);
 }
+
+float MathUtil::incline(double x1, double y1, double x2, double y2) {
+	float dY = (signed) (y1 - y2);
+	float dX = (signed) (x1 - x2);
+
+	if (x1 == x2)
+		return FLT_MAX;
+	else
+		return fabs(dY / dX);
+}
 }
 
-//double MathUtil::convertDegreesToRadians(double deg)
-//}

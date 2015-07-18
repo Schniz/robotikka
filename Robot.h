@@ -23,7 +23,8 @@ public:
 		_pc->Read();
 	}
 	void setSpeed(float xSpeed, float angularSpeed) {
-		// TODO: check if we need to do:  cm_to_m to the x speed!
+		// TODO: check if we need to do:  cm_to_m to the x speed! we need.
+		// TODO: need to check if do it here or in the caller method
 
 		_pp->SetSpeed(xSpeed, angularSpeed);
 	}

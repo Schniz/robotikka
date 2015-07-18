@@ -9,14 +9,13 @@
 
 PlnObstacleAvoid::PlnObstacleAvoid(Robot* robot) :
 		Plan(robot) {
+
 	//Creating Behaviors
 	_beh[0] = new MoveForward(robot);
 	_beh[1] = new TurnLeft(robot);
 	_beh[2] = new TurnRight(robot);
-	_beh[3] = new MoveBackward(robot);
-	_beh[4] = new TurnInPlace(robot);
 
-// Connecting behaviors
+	// Connecting behaviors
 	for (int i = 0; i < BEHAVIOR_NUM; i++)
 		for (int j = 0; j < BEHAVIOR_NUM; j++)
 			if (j != i)

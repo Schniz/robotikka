@@ -8,9 +8,7 @@
 #ifndef PLNOBSTACLEAVOID_H_
 #define PLNOBSTACLEAVOID_H_
 
-#include "../behaviors/MoveBackward.h"
 #include "../behaviors/MoveForward.h"
-#include "../behaviors/TurnInPlace.h"
 #include "../behaviors/TurnLeft.h"
 #include "../behaviors/TurnRight.h"
 #include "Plan.h"

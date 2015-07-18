@@ -4,7 +4,7 @@
 #include "../Models/Cell.h"
 #include "../Robot.h"
 #include "../Consts.h"
-//#include "../Utils/MathUtil.h"
+#include "../Utils/MathUtil.h"
 
 using namespace std;
 using namespace Consts;
@@ -18,10 +18,8 @@ namespace Managers {
 			WaypointsManager(vector<Waypoint> waypoints, float radius = RADIUS_AROUND_POINT);
 			virtual ~WaypointsManager();
 
-//			Waypoint update(Location newRobotLoc);
-//
-//		protected:
-//			bool shouldMoveNext(Location newRobotLoc);
+			bool WaypointDriver(Waypoint wp, Robot rob);
+			bool IsInWaypoint(double xp, double yp);
 
 		protected:
 			void SmoothWaypoints();

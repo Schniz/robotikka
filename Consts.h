@@ -45,11 +45,17 @@ const string PLAYER_HOST = PlayerCc::PLAYER_HOSTNAME;
 const int PLAYER_PORT = PlayerCc::PLAYER_PORTNUM;
 
 /* BEHAVIORS */
-const double MOVE_FORWARD_SPEED = 0.4;
+const double MOVE_FORWARD_SPEED = 0.5;
 const double TURN_SPEED = 0.1;
-const double TURN_ANGULAR_SPEED = 0.6;
+const double TURN_ANGULAR_SPEED = 0.5;
 const double TURN_IN_PLACE_ANGULAR_SPEED = 3.0;
-const double MOVE_BACKWARD_SPEED = -MOVE_FORWARD_SPEED;
-const int BEHAVIOR_NUM = 5;
+//const double MOVE_BACKWARD_SPEED = -MOVE_FORWARD_SPEED;
+const int BEHAVIOR_NUM = 3;
+
+/* PARTICLE */
+const double BEL_NOR = 2;
+const double MAX_ANGLE_TO_MOVE = 1.0;
+const double NORMAL_ANGLE_TO_MOVE =  0.5;
+const double SAFE_DISTANCE_TO_MOVE = 0.3;
 
 }

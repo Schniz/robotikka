@@ -30,20 +30,19 @@ double Robot::getYawPosition() {
 	return _pp->GetYaw();
 }
 
-void Robot::calcLocationDeltas(double &DelX,double &DelY,double &DelYaw)
-{
+void Robot::calcLocationDeltas(double &DelX, double &DelY, double &DelYaw) {
 	// Getting the new position of the robot
 	double currRobotX = _pp->GetXPos();
 	double currRobotY = _pp->GetYPos();
 
 	// Getting the robot yaw and casting it from radians to degrees
-	double x =  _pp->GetYaw();
+	double x = _pp->GetYaw();
 	double currRobotYaw = x * 180 / M_PI;
 
 	// Calculating the deltas
 	DelX = currRobotX - robot_XPos;
 	DelY = currRobotY - robot_YPos;
-	DelYaw = fmod(currRobotYaw - robot_Yaw ,360);
+	DelYaw = fmod(currRobotYaw - robot_Yaw, 360);
 
 	// Updating the robot location
 	robot_XPos = currRobotX;
@@ -51,25 +50,22 @@ void Robot::calcLocationDeltas(double &DelX,double &DelY,double &DelYaw)
 	robot_Yaw = currRobotYaw;
 }
 
-bool Robot::canTurnRight()
-{
-	return canTurnInDirection(START_RIGHT_RAYS_RANGE_ANGLE, END_RIGHT_RAYS_RANGE_ANGLE);
+bool Robot::canTurnRight() {
+	return canTurnInDirection(START_RIGHT_RAYS_RANGE_ANGLE,
+			END_RIGHT_RAYS_RANGE_ANGLE);
 }
 
-bool Robot::canTurnLeft()
-{
-	return canTurnInDirection(START_LEFT_RAYS_RANGE_ANGLE, END_LEFT_RAYS_RANGE_ANGLE);
+bool Robot::canTurnLeft() {
+	return canTurnInDirection(START_LEFT_RAYS_RANGE_ANGLE,
+			END_LEFT_RAYS_RANGE_ANGLE);
 }
 
-bool Robot::canTurnInDirection(double startRangeAngle, double endRangeAngle)
-{
+bool Robot::canTurnInDirection(double startRangeAngle, double endRangeAngle) {
 	int rangeStartIndex = angleToIndex(startRangeAngle);
 	int rangeEndIndex = angleToIndex(endRangeAngle);
 
-	for (int i = rangeStartIndex; i < rangeEndIndex; i++)
-	{
-		if (getDistanceFromObstacle(i) <= 0.5)
-		{
+	for (int i = rangeStartIndex; i < rangeEndIndex; i++) {
+		if (getDistanceFromObstacle(i) <= 0.4) {
 			return false;
 		}
 	}
@@ -77,34 +73,27 @@ bool Robot::canTurnInDirection(double startRangeAngle, double endRangeAngle)
 	return true;
 }
 
-bool Robot::canMoveForward()
-{
+bool Robot::canMoveForward() {
 	double dis;
 	int rightCorner = angleToIndex(-30);
 	int leftCorner = angleToIndex(30);
-	for (int i = rightCorner; i <= leftCorner; i++)
-	{
+	for (int i = rightCorner; i <= leftCorner; i++) {
 		dis = getDistanceFromObstacle(i);
-		if (dis <= 0.8)
-		{
+		if (dis <= 0.7) {
 			return false;
 		}
 	}
 	return true;
 }
 
-
-
 // This function summarize the "rays range" distances from obstacles
-double Robot::getRaysRangeSum(double rangeStartAngle,double rangeEndAngle)
-{
+double Robot::getRaysRangeSum(double rangeStartAngle, double rangeEndAngle) {
 	double sum = 0;
 
 	int rangeStartIndex = angleToIndex(rangeStartAngle);
 	int rangeEndIndex = angleToIndex(rangeEndAngle);
 
-	for (int i = rangeStartIndex; i <= rangeEndIndex; i++)
-	{
+	for (int i = rangeStartIndex; i <= rangeEndIndex; i++) {
 		sum += getDistanceFromObstacle(i);
 	}
 
@@ -139,7 +128,6 @@ unsigned Robot::angleToIndex(double angle) {
 	if (index >= LASER_SLEASER_ARRAY_SIZE) {
 		throw new out_of_range("index larger than possible.");
 	}
-
 	return index;
 }
 

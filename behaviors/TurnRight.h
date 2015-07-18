@@ -14,15 +14,15 @@
 class TurnRight: public Behavior {
 public:
 	TurnRight(Robot* robot);
-	bool startCond() {	//TODO: this
+	bool startCond() {
 		return _robot->canTurnRight();
 	}
-	bool stopCond() {	//TODO: this
-		return _robot->canMoveForward();
+	bool stopCond() {
+		return  _robot->canMoveForward();
 	}
 
 	void action() {
-		_robot->setSpeed(TURN_SPEED, TURN_ANGULAR_SPEED);
+		_robot->setSpeed(TURN_SPEED, -TURN_ANGULAR_SPEED);
 
 	}
 	virtual ~TurnRight();
