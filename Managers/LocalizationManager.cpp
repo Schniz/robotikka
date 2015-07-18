@@ -3,7 +3,7 @@
 namespace Managers {
 
 LocalizationManager::LocalizationManager(Location currLocation,
-		AnotherMap* currMap) {
+		AnotherMap* currMap, double maxDistance) {
 	// add the location
 	this->currLocation = Location(currLocation);
 	this->particleList = std::list<Particle>();
@@ -14,6 +14,7 @@ LocalizationManager::LocalizationManager(Location currLocation,
 
 	// give the father particle the map
 	fatherParticle.SetMap(currMap);
+	fatherParticle.SetMaxDistance(maxDistance);
 
 	// rando all the particle list
 	for (unsigned i = 0; i <= NUMBER_OF_PARTICLE; i++) {

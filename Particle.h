@@ -23,11 +23,13 @@ public:
 	float y;
 	float yaw;
 	float belief;
+	double maxDistance;
 
 	Particle();
 	Particle(float x, float y, float yaw, float belief);
 	~Particle();
 	void SetMap(AnotherMap* map);
+	void SetMaxDistance(double maxDistance);
 
 	void Update(float deltaX, float deltaY, float deltaYaw, float laserArray[]);
 	float ProbMovement(float deltaX, float deltaY, float deltaYaw);

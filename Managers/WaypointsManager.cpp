@@ -13,12 +13,12 @@ WaypointsManager::WaypointsManager(vector<Cell*> waypoints) {
 }
 
 void WaypointsManager::SmoothWaypoints() {
-
 	unsigned currentY = waypointsVec[0]->getY();
 	unsigned currentX = waypointsVec[0]->getX();
 	float firstIncline = MathUtil::incline(waypointsVec[0]->getX(),
 			waypointsVec[0]->getY(), waypointsVec[1]->getX(),
 			waypointsVec[1]->getY());
+	longestDistance = MathUtil::distance(currentX, currentY, waypointsVec[0]->getX(), waypointsVec[0]->getY());
 	int lastPut = 0;
 	//smoothWaypoints.push_back(waypointsVec[0]);
 
@@ -31,6 +31,10 @@ void WaypointsManager::SmoothWaypoints() {
 		if((currIncline != firstIncline && abs(currIncline - firstIncline) >= INCLINE_INACCURACY) || lastPut > FORCE_WAYPOINT_ON)
 		{
 			lastPut = 0;
+			longestDistance = std::max(
+					longestDistance,
+					MathUtil::distance((double)currentX, (double)currentY, (double)waypointsVec[i]->getX(), (double)waypointsVec[i]->getY())
+			);
 			currentY = y;
 			currentX = x;
 			smoothWaypoints.push_back(waypointsVec[i]);

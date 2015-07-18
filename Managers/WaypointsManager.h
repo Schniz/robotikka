@@ -21,6 +21,7 @@ namespace Managers {
 			bool IsInWaypoint(double xp, double yp);
 			vector<Cell*> smoothWaypoints;
 			Cell* currWaypoint;
+			double longestDistance;
 
 		protected:
 			void SmoothWaypoints();

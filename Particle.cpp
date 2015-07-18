@@ -5,6 +5,7 @@ Particle::Particle() {
 	this->y = 0;
 	this->yaw = 0;
 	this->belief = 0;
+	this->maxDistance = 0;
 }
 
 Particle::Particle(float x, float y, float yaw, float belief) {
@@ -12,6 +13,7 @@ Particle::Particle(float x, float y, float yaw, float belief) {
 	this->y = y;
 	this->yaw = yaw;
 	this->belief = belief;
+	this->maxDistance = 0;
 }
 
 void Particle::SetMap(AnotherMap* map) {
@@ -43,8 +45,8 @@ float Particle::ProbMovement(float deltaX, float deltaY, float deltaYaw) {
 	float prob = 0;
 
 	prob = 1
-			- abs((distance / (MAX_LEASER_DISTANCE * 100))
-					+ abs(deltaYaw / DTOR(LASER_FOV_DEGREE)));
+			- ((distance / this->maxDistance)
+					* (deltaYaw / LASER_FOV_DEGREE));
 
 	if (prob > 1)
 		prob = 1;
@@ -91,12 +93,17 @@ float Particle::Randomize(float min, float max) {
 	return min + num * (max - min);
 }
 
+void Particle::SetMaxDistance(double maxDistance) {
+	this->maxDistance = maxDistance;
+}
+
 Particle* Particle::CreateChild(float dExpansionRadius, float dYawRange) {
 	float newX = this->x + Randomize(-dExpansionRadius, dExpansionRadius);
 	float newY = this->y + Randomize(-dExpansionRadius, dExpansionRadius);
 	float newYaw = this->yaw + Randomize(-dYawRange, dYawRange);
 	Particle* p = new Particle(newX, newY, newYaw, 1);
 	p->SetMap(this->map);
+	p->SetMaxDistance(this->maxDistance);
 
 	return p;
 }

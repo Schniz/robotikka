@@ -23,7 +23,7 @@ public:
 	Location BestLocation();
 
 	// Ctor
-	LocalizationManager(Location currLocation,  AnotherMap* currMap);
+	LocalizationManager(Location currLocation, AnotherMap* currMap, double maxDistance);
 
 	// Dtor
 	~LocalizationManager();
