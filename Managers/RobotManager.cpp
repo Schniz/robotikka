@@ -1,27 +1,27 @@
-//#include "RobotManager.h"
-//
-//using namespace std;
-//using namespace PlayerCc;
-//
-//namespace Managers {
-//
-//RobotManager::RobotManager(PlayerClient* player) {
-////m_Robot = new Robot(player);
-//
-//	initBehaviors();
-//	m_CurrBehavior = NULL;
-//	m_LocalizationManager = NULL;
-//	m_WaypointsManager = NULL;
-//}
-//
-//RobotManager::RobotManager(const string hostname, uint port) {
-////	m_Robot = new Robot(hostname, port);
-//
-//	initBehaviors();
-//	m_CurrBehavior = NULL;
-//	m_LocalizationManager = NULL;
-//	m_WaypointsManager = NULL;
-//}
+#include "RobotManager.h"
+
+using namespace std;
+using namespace PlayerCc;
+
+namespace Managers {
+
+RobotManager::RobotManager(PlayerClient* player) {
+//m_Robot = new Robot(player);
+
+	initBehaviors();
+	m_CurrBehavior = NULL;
+	m_LocalizationManager = NULL;
+	m_WaypointsManager = NULL;
+}
+
+RobotManager::RobotManager(const string hostname, uint port) {
+//	m_Robot = new Robot(hostname, port);
+
+	initBehaviors();
+	m_CurrBehavior = NULL;
+	m_LocalizationManager = NULL;
+	m_WaypointsManager = NULL;
+}
 //
 //RobotManager::~RobotManager() {
 //	while (!m_Behaviors.empty()) {
@@ -96,4 +96,4 @@
 //
 //	// TODO!
 //	}
-//}
+}
