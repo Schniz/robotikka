@@ -30,6 +30,7 @@ class Config {
 		int* robotSize;
 		double mapResolutionCm;
 		double gridResolutionCm;
+		friend ostream& operator<<(ostream& os, const Config& cell);
 };
 
 #endif

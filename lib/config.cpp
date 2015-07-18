@@ -80,7 +80,9 @@ void Config::parse(string fileName) {
 	}
 
 	// Debug it
-	cout << "map location: " << this->mapLocation << endl
+	cout << "config.cpp" << endl
+		 << "---------------------------------------------" << endl
+		 << "map location: " << this->mapLocation << endl
 		 << "start location: " << this->startLocation[0] << " "
 		 	 	 	 	 	  << this->startLocation[1] << " "
 		 	 	 	 	 	  << this->startLocation[2] << endl
@@ -88,6 +90,7 @@ void Config::parse(string fileName) {
 		 << "robot size: " << this->robotSize[0] << " " << this->robotSize[1] << endl
 		 << "map res: " << this->mapResolutionCm << endl
 		 << "grid res: " << this->gridResolutionCm << endl
+		 << "---------------------------------------------" << endl
 		 ;
 }
 
