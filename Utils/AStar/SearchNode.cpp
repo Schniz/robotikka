@@ -44,7 +44,7 @@ bool SearchNode::getSuccessors(AStarSearch<SearchNode>* search, AnotherMap* map,
 	Cell* previousCell = NULL;
 
 	if (parentNode) {
-		previousCell = map->getCell(parentNode->X, parentNode->Y);
+		previousCell = map->getResizedCell(parentNode->X, parentNode->Y);
 	}
 
 	SearchNode newNode;
@@ -52,10 +52,10 @@ bool SearchNode::getSuccessors(AStarSearch<SearchNode>* search, AnotherMap* map,
 	// push each possible move except allowing the search to go backwards
 
 	Cell* neighbors[] = {
-			map->getCell(X - 1, Y),
-			map->getCell(X + 1, Y),
-			map->getCell(X, Y - 1),
-			map->getCell(X, Y + 1)
+			map->getResizedCell(X - 1, Y),
+			map->getResizedCell(X + 1, Y),
+			map->getResizedCell(X, Y - 1),
+			map->getResizedCell(X, Y + 1)
 	};
 
 	for (Cell* neighbor : neighbors) {
@@ -69,7 +69,7 @@ bool SearchNode::getSuccessors(AStarSearch<SearchNode>* search, AnotherMap* map,
 // of our map the answer is the map terrain value at this node since that is
 // conceptually where we're moving
 double SearchNode::getCost(SearchNode& successor, AnotherMap* map) {
-	Cell* cell = map->getCell(Y, X);
+	Cell* cell = map->getResizedCell(Y, X);
 	CellType cost = cell->Cell_Cost;
 	//delete cell;
 	return (double)cost;
