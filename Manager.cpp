@@ -27,10 +27,13 @@ double getAngleToBe(Cell* waypoint, Location* bestLocation) {
 void Manager::rotateLikeShawarma(Cell* waypoint, Location* bestLocation) {
 	double angleToBe = getAngleToBe(waypoint, bestLocation);
 	double yaw = bestLocation->getYaw();
-	while (fabs(angleToBe - yaw) > 0.1) {
-		robot->setSpeed(Consts::TURN_SPEED, Consts::TURN_ANGULAR_SPEED);
+	double angleDifference = angleToBe - yaw;
+	while (fabs(angleDifference) > 0.6) {
+		int factor = angleDifference > 0 ? -1 : 1;
+		robot->setSpeed(0, factor * Consts::TURN_ANGULAR_SPEED);
 		robot->Read();
 		yaw = this->getBestLocation().getYaw();
+		angleDifference = angleToBe - yaw;
 	}
 }
 
@@ -38,7 +41,7 @@ Location Manager::getBestLocation() {
 	double dx, dy, dyaw;
 	float* allLasers = robot->getAllLasers();
 	robot->calcLocationDeltas(dx, dy, dyaw);
-	this->localizationManager->upDate((float) dx, (float) dy,
+	this->localizationManager->update((float) dx, (float) dy,
 			(float) dyaw, allLasers);
 	Location bestLocation = this->localizationManager->BestLocation();
 	delete[] allLasers;

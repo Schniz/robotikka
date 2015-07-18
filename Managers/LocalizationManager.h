@@ -12,24 +12,24 @@ namespace Managers {
 
 class LocalizationManager {
 
-
 public:
 	// Data Member
 	Location currLocation;
 	AnotherMap* m_Map;
 
 	// Function
-	void upDate(float deltaX, float deltaY, float deltaYaw, float laserArr[]);
+	void update(float deltaX, float deltaY, float deltaYaw, float laserArr[]);
 	Location BestLocation();
 
 	// Ctor
-	LocalizationManager(Location currLocation, AnotherMap* currMap, double maxDistance);
+	LocalizationManager(Location currLocation, AnotherMap* currMap,
+			double maxDistance);
 
 	// Dtor
 	~LocalizationManager();
 
 protected:
 	// Data Member
-	std::list<Particle> particleList;
-	};
+	vector<Particle*> particles;
+};
 }
