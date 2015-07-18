@@ -10,9 +10,7 @@
 #include <stdarg.h>
 
 #define RUN_ROBOT true
-#define TRASHHOLE 0.5
-#define BEST_EFFORT 0.9
-#define NUMBER_OF_PARTICLE 100
+
 
 //map check
 #include "Managers/ConfigurationManager.h"

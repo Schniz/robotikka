@@ -16,6 +16,7 @@ Particle::Particle(float x, float y, float yaw, float belief) {
 
 void Particle::SetMap(AnotherMap* map) {
 	this->map = map;
+	cout <<"Particle : SetMap : " <<this->map->gridHeight << " - " << this->map->gridWidth<< endl;
 }
 
 void Particle::Update(float deltaX, float deltaY, float deltaYaw,
@@ -59,12 +60,12 @@ float Particle::ProbByScan(float laserArray[]) {
 	int mapy = 0;
 
 	for (int i = 0; i < LASER_FOV_DEGREE; i++) {
-		mapx = round(
+		mapx = round((
 				cos(this->yaw) * (double) laserArray[i] * 100.0
-						+ (double) this->x);
-		mapy = round(
+						+ (double) this->x)/ ConfigurationManager::GetInstance()->getPngGridResolution());
+		mapy = round((
 				sin(this->yaw) * (double) laserArray[i] * 100.0
-						+ (double) this->y);
+						+ (double) this->y) / ConfigurationManager::GetInstance()->getPngGridResolution());
 
 		Cell* cell = this->map->getResizedCell(mapx, mapy);
 

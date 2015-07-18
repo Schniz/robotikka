@@ -13,7 +13,7 @@ LocalizationManager::LocalizationManager(Location currLocation,
 			this->currLocation.m_Y, this->currLocation.m_Yaw, 1);
 
 	// give the father particle the map
-	fatherParticle.SetMap(this->m_Map);
+	fatherParticle.SetMap(currMap);
 
 	// rando all the particle list
 	for (unsigned i = 0; i <= NUMBER_OF_PARTICLE; i++) {
@@ -36,10 +36,12 @@ void LocalizationManager::upDate(float deltaX, float deltaY, float deltaYaw,
 	for (std::list<Particle>::iterator it = this->particleList.begin();
 			it != this->particleList.end(); it++) {
 		it->Update(deltaX, deltaY, deltaYaw, laserArr);
+		cout << "Local : belf : "<< it->belief << endl;
 		if (it->belief < TRASHHOLE) {
 			kakis.push_back(it);
 		} else if (it->belief > BEST_EFFORT) {
 			BestParticle.push_back(it);
+			cout << "Local : Best EFFORT : belf : "<< it->belief << endl;
 		}
 	}
 
@@ -47,11 +49,14 @@ void LocalizationManager::upDate(float deltaX, float deltaY, float deltaYaw,
 		this->particleList.erase(it);
 	}
 
+
+	std::list<Particle>::iterator parent;
 	// born new children
-	for (unsigned i = 0; i < NUMBER_OF_PARTICLE - this->particleList.size();
+	for (unsigned i = 1; i != NUMBER_OF_PARTICLE - this->particleList.size();
 			i++) {
+		parent = BestParticle[fmod(i, BestParticle.size())];
 		this->particleList.push_front(
-				(*(BestParticle[fmod(i, BestParticle.size())])->CreateChild(
+				*(parent->CreateChild(
 						PARTIACLE_CHILED_RADIOS_CM, PARTICAL_DGREE_YAW)));
 	}
 }
