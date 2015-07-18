@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <math.h>
 #include <player-2.0/libplayerc++/utility.h>
 
 using namespace std;
@@ -54,21 +55,13 @@ const int BEHAVIOR_NUM = 3;
 
 /* PARTICLE */
 const double BEL_NOR = 2;
-const double MAX_ANGLE_TO_MOVE = 1.0;
-const double NORMAL_ANGLE_TO_MOVE =  0.5;
-const double SAFE_DISTANCE_TO_MOVE = 0.3;
-const double SENSOR_FROM_END = 15;
-const double SENSOR_DETECTION_RANGE = 60;
-const double CELL_DIM = 5;
 
-const double MAX_ACCURATE_MOVEMENT = 0.5; /*Meter*/
-const double MAX_ACCURATE_ANGLE = 1.0; /*Radians*/
-const double NIE = 0.02;
-
-const double YAW_RANGE = 0.2; // yaw range for each child particle
-const double MAX_PARTICLES_COUNT = 200; // max particles count
-const double EXPANSION_RADIUS = 0.3; // expansion radius for each child particle
-const double EMERGENCY_EXPANSION_RADIUS = EXPANSION_RADIUS * 2; // emergency expansion radius when no particles exists
-const double EMERGENCY_YAW_RANGE = YAW_RANGE * 2; // emergency yaw range when no particles exists
-const double PARTICLE_EMERGENCY_BREED = MAX_PARTICLES_COUNT - 2; // Particles emergency breed count when no particles exists
+/* LocationManager */
+const unsigned NUMBER_OF_PARTICLE = 100;
+const float TRASHHOLE = 0.5;
+const float BEST_EFFORT = 0.9;
+const float PARTIACLE_CHILED_RADIOS_CM = 10;
+const float PARTICALE_RADIOS_FROM_ROBOT = 40;
+const float PARTICAL_DGREE_YAW = M_PI / 4;
+const float PARTICAL_DGREE_YAW_FROM_ROBOT = M_PI / 3;
 }

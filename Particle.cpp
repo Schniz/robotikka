@@ -14,13 +14,12 @@ Particle::Particle(float x, float y, float yaw, float belief) {
 	this->belief = belief;
 }
 
-void Particle::SetMap(Map* map)
-{
+void Particle::SetMap(AnotherMap* map) {
 	this->map = map;
 }
 
 void Particle::Update(float deltaX, float deltaY, float deltaYaw,
-		float laserArray[], int laserCount, LaserProxy* lp) {
+		float laserArray[]) {
 	this->x += deltaX;
 	this->y += deltaY;
 	this->yaw += deltaYaw;
@@ -29,7 +28,7 @@ void Particle::Update(float deltaX, float deltaY, float deltaYaw,
 			* this->belief;
 
 	// TODO: check ?!
-	float probabilityByScan = ProbByScan(laserArray, laserCount, lp);
+	float probabilityByScan = ProbByScan(laserArray);
 
 	this->belief = probabilityByScan * predictionBelif * BEL_NOR;
 
@@ -38,35 +37,13 @@ void Particle::Update(float deltaX, float deltaY, float deltaYaw,
 }
 
 float Particle::ProbMovement(float deltaX, float deltaY, float deltaYaw) {
-	float distance = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
+	float distance = sqrt(pow(deltaX, 2) + pow(deltaY, 2)); // cm?
 
-//	// TODO: check this !
-//	if ((deltaYaw < NORMAL_ANGLE_TO_MOVE)
-//			&& (deltaYaw > -NORMAL_ANGLE_TO_MOVE)) {
-//		if (distance <= SAFE_DISTANCE_TO_MOVE)
-//			return 1.0;
-//		else
-//			return (SAFE_DISTANCE_TO_MOVE + distance + 0.2);
-//	} else if ((deltaYaw < MAX_ANGLE_TO_MOVE)
-//			&& (deltaYaw > -MAX_ANGLE_TO_MOVE)) {
-//		if (distance <= SAFE_DISTANCE_TO_MOVE)
-//			return 1.0;
-//		else
-//			return (SAFE_DISTANCE_TO_MOVE + distance - 0.2);
-//	}
-//	return 1.0;
+	float prob = 0;
 
-	//float distance = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
-	float movementProb, angleProb, prob;
-
-	movementProb = MAX_ACCURATE_MOVEMENT / distance;
-	angleProb = MAX_ACCURATE_ANGLE / deltaYaw;
-
-	if (deltaYaw > -MAX_ACCURATE_ANGLE && deltaYaw < MAX_ACCURATE_ANGLE)
-		if (movementProb >= 1)
-			return 1;
-
-	prob = NIE * movementProb * angleProb;
+	prob = 1
+			- abs((distance / (MAX_LEASER_DISTANCE * 100))
+					+ abs(deltaYaw / DTOR(LASER_FOV_DEGREE)));
 
 	if (prob > 1)
 		prob = 1;
@@ -74,29 +51,55 @@ float Particle::ProbMovement(float deltaX, float deltaY, float deltaYaw) {
 	return prob;
 }
 
-float Particle::ProbByScan(float laserArray[], int laserCount, LaserProxy* lp) {
+float Particle::ProbByScan(float laserArray[]) {
 
-	double mapx, mapy;
-	int countMiss = 0;
-	int countHit = 0;
+	int matchCount = 0;
+
+	int mapx = 0;
+	int mapy = 0;
+
+	for (int i = 0; i < LASER_FOV_DEGREE; i++) {
+		mapx = round(
+				cos(this->yaw) * (double) laserArray[i] * 100.0
+						+ (double) this->x);
+		mapy = round(
+				sin(this->yaw) * (double) laserArray[i] * 100.0
+						+ (double) this->y);
+
+		Cell* cell = this->map->getResizedCell(mapx, mapy);
+
+		if (cell != NULL) {
+			if (laserArray[i] < MAX_LEASER_DISTANCE
+					&& cell->Cell_Cost == CellType::WALL) {
+				matchCount++;
+			}
+
+			else if (cell->Cell_Cost != CellType::WALL) {
+				matchCount++;
+			}
+		}
+
+	}
+
+	return matchCount / LASER_FOV_DEGREE;
+
 }
 
-float Particle::Randomize(float min, float max)
-{
-	float num = (float)rand() / RAND_MAX;
+float Particle::Randomize(float min, float max) {
+	float num = (float) rand() / RAND_MAX;
 	return min + num * (max - min);
-}
-
-Particle* Particle::CreateChild() {
-	return CreateChild(EXPANSION_RADIUS, YAW_RANGE);
 }
 
 Particle* Particle::CreateChild(float dExpansionRadius, float dYawRange) {
 	float newX = this->x + Randomize(-dExpansionRadius, dExpansionRadius);
 	float newY = this->y + Randomize(-dExpansionRadius, dExpansionRadius);
 	float newYaw = this->yaw + Randomize(-dYawRange, dYawRange);
-	return new Particle(newX, newY, newYaw, 1);
+	Particle* p = new Particle(newX, newY, newYaw, 1);
+	p->SetMap(this->map);
+
+	return p;
 }
 
 Particle::~Particle() {
 }
+
