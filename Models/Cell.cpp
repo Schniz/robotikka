@@ -25,7 +25,7 @@ Cell::Cell(const Cell* cell) {
 	m_X = cell->m_X;
 	m_Y = cell->m_Y;
 	Cell_Cost = cell->Cell_Cost;
-	m_Neighbors = vector<Cell*>(cell->m_Neighbors);
+	m_Neighbors = vector<Cell*>();
 }
 
 void Cell::init(vector<Cell*> neighbors) {

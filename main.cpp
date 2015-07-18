@@ -35,10 +35,6 @@ int main()
 	ConfigurationManager::LoadFromFile("Resources/parameters.txt");
 	Managers::ConfigurationManager* config =
 			ConfigurationManager::GetInstance();
-	AnotherMap* m = new AnotherMap(
-		config->getPngMapPath(),
-		config->getRobotSize().RadiosSize(),
-		config->getPngGridResolution()
-	);
+	AnotherMap* m = new AnotherMap(config);
 	AStarUtil::testWithMap(m);
 }
