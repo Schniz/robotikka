@@ -57,5 +57,11 @@ const double BEL_NOR = 2;
 const double MAX_ANGLE_TO_MOVE = 1.0;
 const double NORMAL_ANGLE_TO_MOVE =  0.5;
 const double SAFE_DISTANCE_TO_MOVE = 0.3;
+const double SENSOR_FROM_END = 15;
+const double SENSOR_DETECTION_RANGE = 60;
+const double CELL_DIM = 5;
 
+const double MAX_ACCURATE_MOVEMENT = 0.5; /*Meter*/
+const double MAX_ACCURATE_ANGLE = 1.0; /*Radians*/
+const double NIE = 0.02;
 }
