@@ -24,13 +24,15 @@ public:
 	float belief;
 
 	Particle();
-	Particle(float x, float y, float yaw, float belief, Map* map);
+	Particle(float x, float y, float yaw, float belief);
 	~Particle();
+	void SetMap(Map* map);
+
 	void Update(float deltaX, float deltaY, float deltaYaw, float laserArray[],
 			int laserCount, LaserProxy* lp);
 	float ProbMovement(float deltaX, float deltaY, float deltaYaw);
 	float ProbByScan(float laserArray[], int laserCount, LaserProxy* lp);
-	float Randomize(float dMin, float dMax);
+	float Randomize(float min, float max);
 	Particle* CreateChild();
 	Particle* CreateChild(float expansionRadius, float yawRange);
 };
