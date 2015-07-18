@@ -9,6 +9,8 @@
 #include "Plans/PlnObstacleAvoid.h"
 #include <stdarg.h>
 
+#define RUN_ROBOT false
+
 //map check
 #include "Managers/ConfigurationManager.h"
 #include "Models/Map.h"
@@ -20,6 +22,14 @@ using namespace Utils;
 
 int main()
 {
+	if (RUN_ROBOT) {
+		Robot robot("localhost",6665);
+		PlnObstacleAvoid plnOA(&robot);
+		Manager manager(&robot, &plnOA);
+		manager.run();
+	}
+	// Testing O:)
+
 //	Robot robot("localhost",6665);
 //	PlnObstacleAvoid plnOA(&robot);
 //	Manager manager(&robot, &plnOA);
