@@ -7,11 +7,15 @@ Particle::Particle() {
 	this->belief = 0;
 }
 
-Particle::Particle(float x, float y, float yaw, float belief, Map* map) {
+Particle::Particle(float x, float y, float yaw, float belief) {
 	this->x = x;
 	this->y = y;
 	this->yaw = yaw;
 	this->belief = belief;
+}
+
+void Particle::SetMap(Map* map)
+{
 	this->map = map;
 }
 
@@ -73,10 +77,26 @@ float Particle::ProbMovement(float deltaX, float deltaY, float deltaYaw) {
 float Particle::ProbByScan(float laserArray[], int laserCount, LaserProxy* lp) {
 
 	double mapx, mapy;
-	int sumMiss=0;
-	int sumHit=0;
+	int countMiss = 0;
+	int countHit = 0;
 }
 
+float Particle::Randomize(float min, float max)
+{
+	float num = (float)rand() / RAND_MAX;
+	return min + num * (max - min);
+}
+
+Particle* Particle::CreateChild() {
+	return CreateChild(EXPANSION_RADIUS, YAW_RANGE);
+}
+
+Particle* Particle::CreateChild(float dExpansionRadius, float dYawRange) {
+	float newX = this->x + Randomize(-dExpansionRadius, dExpansionRadius);
+	float newY = this->y + Randomize(-dExpansionRadius, dExpansionRadius);
+	float newYaw = this->yaw + Randomize(-dYawRange, dYawRange);
+	return new Particle(newX, newY, newYaw, 1);
+}
 
 Particle::~Particle() {
 }
