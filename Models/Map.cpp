@@ -140,11 +140,12 @@ Cell* Map::getCell(int x, int y) const {
 		return NULL;
 	}
 	unsigned int index = y*this->m_Cols + x;
-	return new Cell(
-		x,
-		y,
-		this->Grid[index]
-	);
+//	return new Cell(
+//		(unsigned)x,
+//		(unsigned)y,
+//		this->Grid[index]
+//	);
+	return NULL;
 }
 
 void Map::PrintMap(const char* filename) {

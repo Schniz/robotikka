@@ -38,7 +38,7 @@ void addIfNotBackwards(Cell* cell, Cell* previousCell, AStarSearch<SearchNode>* 
 	}
 }
 
-bool SearchNode::getSuccessors(AStarSearch<SearchNode>* search, Map* map, SearchNode* parentNode) {
+bool SearchNode::getSuccessors(AStarSearch<SearchNode>* search, AnotherMap* map, SearchNode* parentNode) {
 	cout << "SearchNode.cpp: " << "searching successors for " << this->Y << "," << this->Y << endl;
 	// Infinity!
 	Cell* previousCell = NULL;
@@ -68,11 +68,11 @@ bool SearchNode::getSuccessors(AStarSearch<SearchNode>* search, Map* map, Search
 // given this node, what does it cost to move to successor. In the case
 // of our map the answer is the map terrain value at this node since that is
 // conceptually where we're moving
-double SearchNode::getCost(SearchNode& successor, Map* map) {
+double SearchNode::getCost(SearchNode& successor, AnotherMap* map) {
 	Cell* cell = map->getCell(Y, X);
-	double cost = cell->Cell_Cost;
+	CellType cost = cell->Cell_Cost;
 	//delete cell;
-	return cost;
+	return (double)cost;
 }
 
 bool SearchNode::isSameState(SearchNode& rhs) {

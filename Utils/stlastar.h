@@ -177,7 +177,7 @@ public: // methods
 	}
 
 	// Advances search one step
-	unsigned int SearchStep(Map* map) {
+	unsigned int SearchStep(AnotherMap* map) {
 		// Firstly break if the user has not initialised the search
 		assert((m_State > SEARCH_STATE_NOT_INITIALISED) &&
 			(m_State < SEARCH_STATE_INVALID));

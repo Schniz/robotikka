@@ -4,13 +4,18 @@
 
 using namespace std;
 
+enum class CellType : unsigned char {
+	TERRAIN = 0,
+	BLOATED_WALL = 1,
+	WALL = 2,
+	PATH = 3
+};
+
 class Cell {
 public:
 	static const unsigned NUM_NEIGHBORS = 8;
-
-	double Cell_Cost;
-
-	Cell(unsigned x, unsigned y, double cell_cost = 1.0);
+	CellType Cell_Cost;
+	Cell(unsigned x, unsigned y, CellType cell_cost = CellType::TERRAIN);
 	Cell(const Cell& cell);
 	Cell(const Cell* cell);
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Models/AnotherMap.h";
 #include <vector>
 #include "stlastar.h"
 #include "./AStar/SearchNode.h"
@@ -10,12 +11,12 @@ using namespace std;
 namespace Utils {
   class AStarUtil {
   public:
-	  AStarUtil(Map* map) : map(map), search(NULL) {
+	  AStarUtil(AnotherMap* map) : map(map), search(NULL) {
 		  cout << "AStarUtil.h: Creating a map." << endl;
 	  }
 	  vector<Cell*> findPath(Cell* start, Cell* destination);
   protected:
-	  Map* map;
+	  AnotherMap* map;
 	  AStarSearch<SearchNode> search;
 	  vector<Cell*> buildPath();
   };

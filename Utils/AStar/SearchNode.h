@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Models/Map.h"
+#include "../../Models/AnotherMap.h"
 #include "../stlastar.h"
 
 class SearchNode
@@ -11,11 +12,11 @@ public:
 
 	double goalDistanceEstimate(SearchNode& goalNode);
 	bool isGoal(SearchNode& goalNode);
-	bool getSuccessors(AStarSearch<SearchNode>* search, Map* map, SearchNode* parentNode);
-	double getCost(SearchNode& successor, Map* map);
+	bool getSuccessors(AStarSearch<SearchNode>* search, AnotherMap* map, SearchNode* parentNode);
+	double getCost(SearchNode& successor, AnotherMap* map);
 	bool isSameState(SearchNode& rhs);
 
-	inline Cell* toMapCell(Map* map) {
+	inline Cell* toMapCell(AnotherMap* map) {
 		return map->getCell(this->X, this->Y);
 	}
 
