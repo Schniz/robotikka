@@ -3,7 +3,6 @@
 #include "Consts.h"
 #include "Utils/MathUtil.h"
 #include "Models/AnotherMap.h"
-#include "Robot.h"
 #include <libplayerc++/playerc++.h>
 #include <math.h>
 #include <float.h>
