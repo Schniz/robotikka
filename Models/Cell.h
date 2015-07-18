@@ -8,7 +8,9 @@ enum class CellType : unsigned char {
 	TERRAIN = 0,
 	BLOATED_WALL = 1,
 	WALL = 2,
-	PATH = 3
+	PATH = 3,
+	START = 4,
+	DESTINATION = 5
 };
 
 class Cell {

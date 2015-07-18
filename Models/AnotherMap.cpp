@@ -13,18 +13,52 @@
 
 using namespace std;
 
+char* colorFor(CellType type) {
+	char r,g,b;
+	switch (type) {
+		case(CellType::TERRAIN):
+			r = g = b = 255;
+			break;
+		case(CellType::WALL):
+			r = g = b = 0;
+			break;
+		case(CellType::BLOATED_WALL):
+			r = g = b = 100;
+			break;
+		case(CellType::PATH):
+			r = 0;
+			g = 140;
+			b = 40;
+			break;
+		case (CellType::START):
+			r = 0;
+			g = 40;
+			b = 140;
+			break;
+		case (CellType::DESTINATION):
+			r = 140;
+			g = 40;
+			b = 0;
+			break;
+	}
+	char* c = new char[3];
+	c[0] = r;
+	c[1] = g;
+	c[2] = b;
+	return c;
+}
+
 void saveFile(AnotherMap* map, string fileName) {
 	int gridSquare = map->gridHeight * map->gridWidth;
 	unsigned char* image = new unsigned char[gridSquare * 4];
 	for (int i = 0; i < gridSquare; i++) {
 		CellType type = map->grid[i]->Cell_Cost;
-		char color =
-				type == CellType::TERRAIN ?
-						(255) : (type == CellType::BLOATED_WALL ? (128) : (0));
-		image[i * 4] = color;
-		image[i * 4 + 1] = color;
-		image[i * 4 + 2] = color;
+		char* rgb = colorFor(type);
+		image[i * 4] = rgb[0];
+		image[i * 4 + 1] = rgb[1];
+		image[i * 4 + 2] = rgb[2];
 		image[i * 4 + 3] = 255;
+		delete[] rgb;
 	}
 	lodepng::encode(fileName, image, map->gridWidth, map->gridHeight);
 	delete image;
@@ -76,21 +110,20 @@ void bloatMap(AnotherMap* map, unsigned pxToBloat) {
 }
 
 unsigned howMuchPxToBloat(float robotRadiusSize, float pngGridResolution) {
-	return robotRadiusSize / pngGridResolution;
+	return robotRadiusSize / pngGridResolution * 2;
 }
 
-AnotherMap::AnotherMap() {
-	Managers::ConfigurationManager* config =
-			Managers::ConfigurationManager::GetInstance();
+AnotherMap::AnotherMap(string fileName, float radiusSize, double gridResolution) {
 	this->width = 1;
 	this->height = 1;
 	this->gridWidth = 1;
 	this->gridHeight = 1;
 
-	loadFile(this, config->getPngMapPath());
-	bloatMap(this,
-			howMuchPxToBloat(config->getRobotSize().RadiosSize(),
-					config->getPngGridResolution()));
+	loadFile(this, fileName);
+	bloatMap(
+		this,
+		howMuchPxToBloat(radiusSize, gridResolution)
+	);
 	saveFile(this, "/tmp/holyfuck.png");
 
 	cout << "NOT DEAD! YAY" << endl;
@@ -101,6 +134,10 @@ Cell* AnotherMap::getCell(unsigned x, unsigned y) {
 		return NULL;
 	}
 	return this->grid[y * this->gridWidth + x];
+}
+
+void AnotherMap::saveToFile(string fileName) {
+	return saveFile(this, fileName);
 }
 
 AnotherMap::~AnotherMap() {

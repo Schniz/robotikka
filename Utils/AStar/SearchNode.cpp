@@ -52,10 +52,10 @@ bool SearchNode::getSuccessors(AStarSearch<SearchNode>* search, AnotherMap* map,
 	// push each possible move except allowing the search to go backwards
 
 	Cell* neighbors[] = {
-			map->getCell(Y, X - 1),
-			map->getCell(Y, X + 1),
-			map->getCell(Y - 1, X),
-			map->getCell(Y + 1, X)
+			map->getCell(X - 1, Y),
+			map->getCell(X + 1, Y),
+			map->getCell(X, Y - 1),
+			map->getCell(X, Y + 1)
 	};
 
 	for (Cell* neighbor : neighbors) {

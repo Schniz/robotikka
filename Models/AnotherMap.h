@@ -11,14 +11,17 @@
 
 #include <stdio.h>
 #include "Cell.h"
+#include <string>
+#include "../Models/Size.h"
 
 using namespace std;
 
 class AnotherMap {
 public:
-	AnotherMap();
+	AnotherMap(string fileName, float radiusSize, double gridResolution);
 	virtual ~AnotherMap();
 	Cell* getCell(unsigned x, unsigned y);
+	void saveToFile(string fileName);
 	unsigned int height;
 	unsigned int width;
 	unsigned int gridWidth;
