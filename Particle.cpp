@@ -42,8 +42,8 @@ float Particle::ProbMovement(float deltaX, float deltaY, float deltaYaw) {
 	float prob = 0;
 
 	prob = 1
-			- (distance / (MAX_LEASER_DISTANCE * 100)
-					+ deltaYaw / DTOR(LASER_FOV_DEGREE));
+			- abs((distance / (MAX_LEASER_DISTANCE * 100))
+					+ abs(deltaYaw / DTOR(LASER_FOV_DEGREE)));
 
 	if (prob > 1)
 		prob = 1;
