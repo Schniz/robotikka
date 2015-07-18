@@ -13,7 +13,7 @@ ConfigurationManager *ConfigurationManager::m_ConfigurationManagerInstance = NUL
 
 ConfigurationManager::ConfigurationManager(){};
 
-void ConfigurationManager::LoadFromFile(string filePath) {
+ConfigurationManager* ConfigurationManager::LoadFromFile(string filePath) {
 		// create the first singleton instance
 
 		Config configParser(filePath);
@@ -29,7 +29,7 @@ void ConfigurationManager::LoadFromFile(string filePath) {
 		ConfigurationManager::m_ConfigurationManagerInstance->m_PngGridResolution = configParser.gridResolutionCm;
 		ConfigurationManager::m_ConfigurationManagerInstance->m_RobotSize.m_Width = configParser.robotSize[0];
 		ConfigurationManager::m_ConfigurationManagerInstance->m_RobotSize.m_Height = configParser.robotSize[1];
-
+		return ConfigurationManager::m_ConfigurationManagerInstance;
 	}
 
 ConfigurationManager::~ConfigurationManager() {

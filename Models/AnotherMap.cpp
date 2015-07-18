@@ -122,7 +122,9 @@ void resizeGrid(AnotherMap* map) {
 				}
 			}
 			CellType cellType;
-			if (pxBloatedWallCounter >= pxTerrainCounter) {
+			if (pxWallCounter > 0) {
+				cellType = CellType::WALL;
+			} else if (pxBloatedWallCounter >= pxTerrainCounter) {
 				if (pxBloatedWallCounter > pxWallCounter) {
 					cellType = CellType::BLOATED_WALL;
 				} else {
@@ -184,7 +186,7 @@ void bloatMap(AnotherMap* map, unsigned pxToBloat) {
 }
 
 unsigned howMuchPxToBloat(float robotRadiusSize, float pngGridResolution) {
-	return robotRadiusSize / pngGridResolution * 2;
+	return robotRadiusSize / pngGridResolution * 4;
 }
 
 AnotherMap::AnotherMap(Managers::ConfigurationManager* config) {

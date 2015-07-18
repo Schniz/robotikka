@@ -9,7 +9,7 @@
 #include "Plans/PlnObstacleAvoid.h"
 #include <stdarg.h>
 
-#define RUN_ROBOT false
+#define RUN_ROBOT true
 #define TRASHHOLE 0.5
 #define BEST_EFFORT 0.9
 #define NUMBER_OF_PARTICLE 100
@@ -30,6 +30,7 @@ int main()
 		PlnObstacleAvoid plnOA(&robot);
 		Manager manager(&robot, &plnOA);
 		manager.run();
+		return 0;
 	}
 
 	ConfigurationManager::LoadFromFile("Resources/parameters.txt");
