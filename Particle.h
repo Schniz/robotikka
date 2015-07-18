@@ -2,7 +2,7 @@
 
 #include "Consts.h"
 #include "Utils/MathUtil.h"
-#include "Models/Map.h"
+#include "Models/AnotherMap.h"
 #include "Robot.h"
 #include <libplayerc++/playerc++.h>
 #include <math.h>
@@ -17,7 +17,7 @@ using namespace Managers;
 class Particle {
 
 private:
-	Map* map;
+	AnotherMap* map;
 
 public:
 	float x;
@@ -28,7 +28,7 @@ public:
 	Particle();
 	Particle(float x, float y, float yaw, float belief);
 	~Particle();
-	void SetMap(Map* map);
+	void SetMap(AnotherMap* map);
 
 	void Update(float deltaX, float deltaY, float deltaYaw, float laserArray[]);
 	float ProbMovement(float deltaX, float deltaY, float deltaYaw);

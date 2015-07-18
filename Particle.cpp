@@ -14,7 +14,7 @@ Particle::Particle(float x, float y, float yaw, float belief) {
 	this->belief = belief;
 }
 
-void Particle::SetMap(Map* map) {
+void Particle::SetMap(AnotherMap* map) {
 	this->map = map;
 }
 
@@ -59,15 +59,25 @@ float Particle::ProbByScan(float laserArray[]) {
 	int mapy = 0;
 
 	for (int i = 0; i < LASER_FOV_DEGREE; i++) {
-		mapx = round(cos(this->yaw) * laserArray[i] * 100 + this->x);
-		mapy = round(sin(this->yaw) * laserArray[i] * 100 + this->y);
+		mapx = round(
+				cos(this->yaw) * (double) laserArray[i] * 100.0
+						+ (double) this->x);
+		mapy = round(
+				sin(this->yaw) * (double) laserArray[i] * 100.0
+						+ (double) this->y);
 
-		if (laserArray[i] < MAX_LEASER_DISTANCE
-				&& this->map->getCell(mapx, mapy)->Cell_Cost == CellType::WALL)
-			matchCount++;
+		Cell* cell = this->map->getResizedCell(mapx, mapy);
 
-		else if (this->map->getCell(mapx, mapy)->Cell_Cost != CellType::WALL)
-			matchCount++;
+		if (cell != NULL) {
+			if (laserArray[i] < MAX_LEASER_DISTANCE
+					&& cell->Cell_Cost == CellType::WALL) {
+				matchCount++;
+			}
+
+			else if (cell->Cell_Cost != CellType::WALL) {
+				matchCount++;
+			}
+		}
 
 	}
 
@@ -79,7 +89,6 @@ float Particle::Randomize(float min, float max) {
 	float num = (float) rand() / RAND_MAX;
 	return min + num * (max - min);
 }
-
 
 Particle* Particle::CreateChild(float dExpansionRadius, float dYawRange) {
 	float newX = this->x + Randomize(-dExpansionRadius, dExpansionRadius);
@@ -93,3 +102,4 @@ Particle* Particle::CreateChild(float dExpansionRadius, float dYawRange) {
 
 Particle::~Particle() {
 }
+
