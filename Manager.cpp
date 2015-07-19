@@ -121,9 +121,11 @@ void Manager::InitApp() {
 
 	Location startLocationPx = startCell->getLocation();
 	startLocationPx.m_Yaw = startLocation.m_Yaw;
+	double odemX = MathUtil::pxToCm(startLocationPx.getX()) / 100;
+	double odemY = MathUtil::pxToCm(startLocationPx.getY()) / 100;
 	this->robot->setOdemetry(
-			MathUtil::pxToCm(startLocationPx.getX()) / 100,
-			MathUtil::pxToCm(map->gridHeight - startLocationPx.getY()) / 100,
+			odemX,
+			odemY,
 			DTOR(startLocationPx.getYaw()));
 	this->robot->setLocation(
 			startLocationPx.getX(),

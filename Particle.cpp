@@ -57,9 +57,14 @@ float Particle::ProbByScan(float laserArray[]) {
 	int mapx = 0;
 	int mapy = 0;
 
-	for (int i = 0; i < 666; i += 5) {
+	double minAngle = laserProxy->GetMinAngle();
+	double maxAngle = laserProxy->GetMaxAngle();
+	int scanCount = laserProxy->GetCount();
+	double scanIncrement = (maxAngle - minAngle) / scanCount;
+
+	for (int i = 0; i < scanCount; i += 5) {
 		countCheck++;
-		int angle = laserProxy->GetBearing(i);
+		int angle = scanIncrement * i + minAngle;
 		double distanceFromLaserInPx = Utils::MathUtil::cmToPx(
 				(double) laserArray[i] * 100.0);
 		mapx = round(
