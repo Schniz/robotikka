@@ -33,7 +33,6 @@ double getAngleToBe(Cell* waypoint, Location* bestLocation) {
 	double rawYaw = calRawYaw(waypoint, bestLocation);
 	double realYaw = rawYaw;
 
-	// ravoon rishon
 	if (bestLocation->getY() < waypoint->getY()) {
 		if (bestLocation->getX() < waypoint->getX()) { // 1st
 			realYaw = rawYaw;
@@ -56,14 +55,12 @@ void Manager::rotateLikeShawarma(Cell* waypoint, Location* bestLocation) {
 	cout << "angleToBe (radians): " << angleToBe << endl;
 	double yaw = bestLocation->getYaw();
 	double angleDifference = circle(angleToBe - yaw);
-	cout << angleDifference << endl;
 	while (angleDifference > 15) {
 		int factor = angleDifference >= 180 ? -1 : 1;
 		robot->setSpeed(0, factor * Consts::TURN_ANGULAR_SPEED);
 		robot->Read();
 		yaw = this->getBestLocation().getYaw();
 		angleDifference = circle(angleToBe - yaw);
-		cout << angleDifference << endl;
 	}
 }
 
@@ -85,13 +82,13 @@ void Manager::run() {
 	Location bestLocation = Location(dx, dy, dyaw);
 	for (Cell* waypoint : waypointsManager->smoothWaypoints) {
 		this->waypointsManager->currWaypoint = waypoint;
+		bestLocation = this->getBestLocation();
 		while (!waypointsManager->IsInWaypoint(dx, dy)) {
 			robot->Read();
+			cout << "LOCATION: " << bestLocation.getX() << "," << bestLocation.getY() << endl;
 			this->rotateLikeShawarma(waypoint, &bestLocation);
-			cout << "about to go" << endl;
 			this->robot->setSpeed(Consts::MOVE_FORWARD_SPEED, 0);
 			sleep(1);
-			cout << "stopping" << endl;
 			this->robot->setSpeed(0, 0);
 			bestLocation = this->getBestLocation();
 		}

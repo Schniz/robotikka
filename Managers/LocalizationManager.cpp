@@ -32,6 +32,7 @@ void LocalizationManager::update(float deltaX, float deltaY, float deltaYaw,
 	vector<Particle*> newParticles;
 	unsigned int maxIndex = 0;
 	unsigned int particleCount = this->particles.size();
+
 	for (unsigned int i = 0; i < particleCount; i++) {
 		Particle* particle = this->particles[i];
 		particle->Update(deltaX, deltaY, deltaYaw, laserArr);
