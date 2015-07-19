@@ -81,6 +81,7 @@ void Manager::run() {
 	double dyaw = ConfigurationManager::GetInstance()->getStartLocation().getYaw();
 	Location bestLocation = Location(dx, dy, dyaw);
 	for (Cell* waypoint : waypointsManager->smoothWaypoints) {
+		cout << "Starting to walk to " << waypoint->getX() << "," << waypoint->getY() << endl;
 		this->waypointsManager->currWaypoint = waypoint;
 		bestLocation = this->getBestLocation();
 		while (!waypointsManager->IsInWaypoint(dx, dy)) {
@@ -94,6 +95,8 @@ void Manager::run() {
 		}
 
 	}
+
+	cout << "finished" << endl;
 
 	/*
 	 while (currentPoint->stopCond()) {
@@ -141,7 +144,7 @@ void Manager::InitApp() {
 			startLocation.getY() * config->getPixelPerCm() / 100,
 			startLocationPx.getYaw()
 			);
-	this->localizationManager = new LocalizationManager(startLocationPx, map, wayPointsManager->longestDistance);
+	this->localizationManager = new LocalizationManager(startLocationPx, map, wayPointsManager->longestDistance, robot->_lp);
 
 	for (Cell* cell : astarPath) {
 		cell->Cell_Cost = CellType::PATH;

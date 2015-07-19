@@ -32,7 +32,7 @@ void Particle::Update(float deltaX, float deltaY, float deltaYaw,
 	// TODO: check ?!
 	float probabilityByScan = ProbByScan(laserArray);
 
-	this->belief = probabilityByScan * predictionBelif * BEL_NOR;
+	this->belief = probabilityByScan * predictionBelif * 2;
 
 	if (this->belief > 1)
 		this->belief = 1;
@@ -45,7 +45,7 @@ float Particle::ProbMovement(float deltaX, float deltaY, float deltaYaw) {
 
 	prob = 1
 			- ((distance / this->maxDistance)
-					* (deltaYaw / LASER_FOV_DEGREE));
+					* (deltaYaw / 360));
 
 	if (prob > 1)
 		prob = 1;
@@ -54,18 +54,19 @@ float Particle::ProbMovement(float deltaX, float deltaY, float deltaYaw) {
 }
 
 float Particle::ProbByScan(float laserArray[]) {
-
 	int matchCount = 0;
-
+	int countCheck = 0;
 	int mapx = 0;
 	int mapy = 0;
 
-	for (int i = 0; i < LASER_FOV_DEGREE; i++) {
+	for (int i = 0; i < 666; i+=5) {
+		countCheck++;
+		int angle = laserProxy->GetBearing(i);
 		mapx = round((
-				cos(this->yaw) * (double) laserArray[i] * 100.0
+				cos(DTOR(this->yaw) + angle) * (double) laserArray[i] * 100.0
 						+ (double) this->x)/ ConfigurationManager::GetInstance()->getPngGridResolution());
 		mapy = round((
-				sin(this->yaw) * (double) laserArray[i] * 100.0
+				sin(DTOR(this->yaw) + angle) * (double) laserArray[i] * 100.0
 						+ (double) this->y) / ConfigurationManager::GetInstance()->getPngGridResolution());
 
 		Cell* cell = this->map->getResizedCell(mapx, mapy);
@@ -83,7 +84,7 @@ float Particle::ProbByScan(float laserArray[]) {
 
 	}
 
-	return matchCount / LASER_FOV_DEGREE;
+	return matchCount / countCheck;
 
 }
 
@@ -103,6 +104,7 @@ Particle* Particle::CreateChild(float dExpansionRadius, float dYawRange) {
 	Particle* p = new Particle(newX, newY, newYaw, 1);
 	p->SetMap(this->map);
 	p->SetMaxDistance(this->maxDistance);
+	p->SetLaserProxy(this->laserProxy);
 
 	return p;
 }

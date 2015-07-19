@@ -23,7 +23,7 @@ public:
 
 	// Ctor
 	LocalizationManager(Location currLocation, AnotherMap* currMap,
-			double maxDistance);
+			double maxDistance, LaserProxy* laserProxy);
 
 	// Dtor
 	~LocalizationManager();

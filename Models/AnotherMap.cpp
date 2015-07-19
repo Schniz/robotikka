@@ -186,7 +186,7 @@ void bloatMap(AnotherMap* map, unsigned pxToBloat) {
 }
 
 unsigned howMuchPxToBloat(float robotRadiusSize, float pngGridResolution) {
-	return robotRadiusSize / pngGridResolution * 4;
+	return robotRadiusSize / pngGridResolution * 7;
 }
 
 AnotherMap::AnotherMap(Managers::ConfigurationManager* config) {

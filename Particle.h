@@ -24,8 +24,12 @@ public:
 	float yaw;
 	float belief;
 	double maxDistance;
+	LaserProxy* laserProxy;
 
 	Particle();
+	void SetLaserProxy(LaserProxy* lp) {
+		this->laserProxy = lp;
+	}
 	Particle(float x, float y, float yaw, float belief);
 	~Particle();
 	void SetMap(AnotherMap* map);

@@ -3,7 +3,7 @@
 namespace Managers {
 
 LocalizationManager::LocalizationManager(Location currLocation,
-		AnotherMap* currMap, double maxDistance) {
+		AnotherMap* currMap, double maxDistance, LaserProxy* laserProxy) {
 	// add the location
 	this->currLocation = Location(currLocation);
 	this->particles = vector<Particle*>();
@@ -15,6 +15,7 @@ LocalizationManager::LocalizationManager(Location currLocation,
 	// give the father particle the map	fatherParticle.SetMap(currMap);
 	fatherParticle->SetMaxDistance(maxDistance);
 	fatherParticle->SetMap(currMap);
+	fatherParticle->SetLaserProxy(laserProxy);
 	this->particles.push_back(fatherParticle);
 
 	// rando all the particle list
