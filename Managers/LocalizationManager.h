@@ -16,6 +16,7 @@ public:
 	// Data Member
 	Location currLocation;
 	AnotherMap* m_Map;
+	LaserProxy* laserProxy;
 
 	// Function
 	void update(float deltaX, float deltaY, float deltaYaw, float laserArr[]);
@@ -23,7 +24,7 @@ public:
 
 	// Ctor
 	LocalizationManager(Location currLocation, AnotherMap* currMap,
-			double maxDistance);
+			double maxDistance, LaserProxy* laserProxy);
 
 	// Dtor
 	~LocalizationManager();

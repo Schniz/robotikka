@@ -19,6 +19,7 @@ private:
 	AnotherMap* map;
 
 public:
+	LaserProxy* laserProxy;
 	float x;
 	float y;
 	float yaw;
@@ -28,6 +29,7 @@ public:
 	Particle();
 	Particle(float x, float y, float yaw, float belief);
 	~Particle();
+	void SetLaserProxy(LaserProxy* laserProxy);
 	void SetMap(AnotherMap* map);
 	void SetMaxDistance(double maxDistance);
 

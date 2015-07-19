@@ -62,8 +62,8 @@ bool WaypointsManager::WaypointDriver(Cell* wp, Robot rob) {
 }
 
 bool WaypointsManager::IsInWaypoint(double xp, double yp) {
-	return MathUtil::equals(xp, currWaypoint->getX())
-			&& MathUtil::equals(yp, currWaypoint->getY());
+	return MathUtil::inRange(xp, currWaypoint->getX() + 10, currWaypoint->getX() - 10)
+			&& MathUtil::inRange(yp, currWaypoint->getY() + 10, currWaypoint->getY() - 10);
 
 }
 }

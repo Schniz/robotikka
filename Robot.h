@@ -15,9 +15,9 @@ using namespace Consts;
 class Robot {
 	PlayerClient*_pc;
 	Position2dProxy* _pp;
-	LaserProxy* _lp;
 
 public:
+	LaserProxy* _lp;
 	Robot(char* ip, int port);
 	void Read() {
 		// TODO

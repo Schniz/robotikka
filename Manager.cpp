@@ -137,11 +137,11 @@ void Manager::InitApp() {
 	Location startLocationPx = startCell->getLocation();
 	startLocationPx.m_Yaw = startLocation.m_Yaw;
 	this->robot->setOdemetry(
-			startLocation.getX() * config->getPixelPerCm() / 100,
-			startLocation.getY() * config->getPixelPerCm() / 100,
-			startLocationPx.getYaw()
-			);
-	this->localizationManager = new LocalizationManager(startLocationPx, map, wayPointsManager->longestDistance);
+		0, //startLocation.getX() * config->getPixelPerCm() / config->getPngGridResolution(),
+		0, //startLocation.getY() * config->getPixelPerCm() / config->getPngGridResolution(),
+		DTOR(startLocationPx.getYaw())
+	);
+	this->localizationManager = new LocalizationManager(startLocationPx, map, wayPointsManager->longestDistance, robot->_lp);
 
 	for (Cell* cell : astarPath) {
 		cell->Cell_Cost = CellType::PATH;

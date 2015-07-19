@@ -16,6 +16,10 @@ Particle::Particle(float x, float y, float yaw, float belief) {
 	this->maxDistance = 0;
 }
 
+void Particle::SetLaserProxy(LaserProxy* laserProxy) {
+	this->laserProxy = laserProxy;
+}
+
 void Particle::SetMap(AnotherMap* map) {
 	this->map = map;
 }
@@ -60,12 +64,12 @@ float Particle::ProbByScan(float laserArray[]) {
 	int mapx = 0;
 	int mapy = 0;
 
-	for (int i = 0; i < LASER_FOV_DEGREE; i++) {
+	for (int i = 0; i < 1024; i++) {
 		mapx = round((
-				cos(this->yaw) * (double) laserArray[i] * 100.0
+				cos(DTOR(this->yaw) + laserProxy->GetBearing(i)) * (double) laserArray[i] * 100.0
 						+ (double) this->x)/ ConfigurationManager::GetInstance()->getPngGridResolution());
-		mapy = round((
-				sin(this->yaw) * (double) laserArray[i] * 100.0
+		mapy = map->gridHeight - round((
+				sin(DTOR(this->yaw) + laserProxy->GetBearing(i)) * (double) laserArray[i] * 100.0
 						+ (double) this->y) / ConfigurationManager::GetInstance()->getPngGridResolution());
 
 		Cell* cell = this->map->getResizedCell(mapx, mapy);
@@ -103,6 +107,7 @@ Particle* Particle::CreateChild(float dExpansionRadius, float dYawRange) {
 	Particle* p = new Particle(newX, newY, newYaw, 1);
 	p->SetMap(this->map);
 	p->SetMaxDistance(this->maxDistance);
+	p->SetLaserProxy(this->laserProxy);
 
 	return p;
 }
