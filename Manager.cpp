@@ -18,22 +18,52 @@ Manager::Manager(Robot* robot, Plan* pln) {
 	this->InitApp();
 }
 
-double getAngleToBe(Cell* waypoint, Location* bestLocation) {
+double circle(double num) {
+	return fmod(num + 4*360, 360.0);
+}
+
+double calRawYaw(Cell* waypoint, Location* bestLocation) {
 	unsigned int deltaY = abs(waypoint->getY() - bestLocation->getY());
 	unsigned int deltaX = abs(waypoint->getX() - bestLocation->getX());
-	return tan(deltaY / deltaX);
+	double rawYaw = RTOD(atan(deltaY / deltaX));
+	return rawYaw;
+}
+
+double getAngleToBe(Cell* waypoint, Location* bestLocation) {
+	double rawYaw = calRawYaw(waypoint, bestLocation);
+	double realYaw = rawYaw;
+
+	// ravoon rishon
+	if (bestLocation->getY() < waypoint->getY()) {
+		if (bestLocation->getX() < waypoint->getX()) { // 1st
+			realYaw = rawYaw;
+		} else { // 2nd
+			realYaw = 180 - rawYaw;
+		}
+	} else {
+		if (bestLocation->getX() < waypoint->getX()) { // 4rd
+			realYaw = 360 - rawYaw;
+		} else { // 3th
+			realYaw = 180 + rawYaw;
+		}
+	}
+
+	return fmod(realYaw + 360, 360.0);
 }
 
 void Manager::rotateLikeShawarma(Cell* waypoint, Location* bestLocation) {
 	double angleToBe = getAngleToBe(waypoint, bestLocation);
+	cout << "angleToBe (radians): " << angleToBe << endl;
 	double yaw = bestLocation->getYaw();
-	double angleDifference = angleToBe - yaw;
-	while (fabs(angleDifference) > 0.6) {
-		int factor = angleDifference > 0 ? -1 : 1;
+	double angleDifference = circle(angleToBe - yaw);
+	cout << angleDifference << endl;
+	while (angleDifference > 15) {
+		int factor = angleDifference >= 180 ? -1 : 1;
 		robot->setSpeed(0, factor * Consts::TURN_ANGULAR_SPEED);
 		robot->Read();
 		yaw = this->getBestLocation().getYaw();
-		angleDifference = angleToBe - yaw;
+		angleDifference = circle(angleToBe - yaw);
+		cout << angleDifference << endl;
 	}
 }
 
@@ -58,8 +88,10 @@ void Manager::run() {
 		while (!waypointsManager->IsInWaypoint(dx, dy)) {
 			robot->Read();
 			this->rotateLikeShawarma(waypoint, &bestLocation);
+			cout << "about to go" << endl;
 			this->robot->setSpeed(Consts::MOVE_FORWARD_SPEED, 0);
 			sleep(1);
+			cout << "stopping" << endl;
 			this->robot->setSpeed(0, 0);
 			bestLocation = this->getBestLocation();
 		}
