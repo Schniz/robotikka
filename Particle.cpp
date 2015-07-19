@@ -21,7 +21,7 @@ void Particle::SetMap(AnotherMap* map) {
 }
 
 void Particle::Update(float deltaX, float deltaY, float deltaYaw,
-		float laserArray[]) {
+		float laserArray[], Cell* nextWaypoint) {
 	this->x += deltaX;
 	this->y += deltaY;
 	this->yaw += deltaYaw;
@@ -43,9 +43,7 @@ float Particle::ProbMovement(float deltaX, float deltaY, float deltaYaw) {
 
 	float prob = 0;
 
-	prob = 1
-			- ((distance / this->maxDistance)
-					* (deltaYaw / 360));
+	prob = 1 - ((distance / this->maxDistance) * (deltaYaw / 360));
 
 	if (prob > 1)
 		prob = 1;
@@ -59,15 +57,17 @@ float Particle::ProbByScan(float laserArray[]) {
 	int mapx = 0;
 	int mapy = 0;
 
-	for (int i = 0; i < 666; i+=5) {
+	for (int i = 0; i < 666; i += 5) {
 		countCheck++;
 		int angle = laserProxy->GetBearing(i);
-		mapx = round((
-				cos(DTOR(this->yaw) + angle) * (double) laserArray[i] * 100.0
-						+ (double) this->x)/ ConfigurationManager::GetInstance()->getPngGridResolution());
-		mapy = round((
-				sin(DTOR(this->yaw) + angle) * (double) laserArray[i] * 100.0
-						+ (double) this->y) / ConfigurationManager::GetInstance()->getPngGridResolution());
+		double distanceFromLaserInPx = Utils::MathUtil::cmToPx(
+				(double) laserArray[i] * 100.0);
+		mapx = round(
+				cos(DTOR(this->yaw) + angle) * distanceFromLaserInPx
+						+ (double) this->x);
+		mapy = round(
+				sin(DTOR(this->yaw) + angle) * distanceFromLaserInPx
+						+ (double) this->y);
 
 		Cell* cell = this->map->getResizedCell(mapx, mapy);
 

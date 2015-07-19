@@ -24,13 +24,19 @@ public:
 		_pc->Read();
 	}
 	void setOdemetry(double x, double y, double yaw) {
-		this->_pp->SetOdometry(x, y, yaw);
+		this->_pp->SetOdometry(Utils::MathUtil::pxToCm(x) / 100,
+				Utils::MathUtil::pxToCm(y), yaw);
 	}
 	void setSpeed(float xSpeed, float angularSpeed) {
 		// TODO: check if we need to do:  cm_to_m to the x speed! we need.
 		// TODO: need to check if do it here or in the caller method
 
 		_pp->SetSpeed(xSpeed, angularSpeed);
+	}
+	void kickstart() {
+		//For fixing Player's reading BUG
+		for (int i = 0; i < 15; i++)
+			Read();
 	}
 
 	Location getLocation();
@@ -42,6 +48,11 @@ public:
 			lasers[i] = this->_lp->GetRange(i);
 		}
 		return lasers;
+	}
+	void setLocation(double x, double y, double yaw) {
+		this->robot_XPos = x;
+		this->robot_YPos = y;
+		this->robot_Yaw = yaw;
 	}
 	bool canTurnRight();
 	bool canTurnLeft();

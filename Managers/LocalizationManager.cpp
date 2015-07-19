@@ -28,7 +28,7 @@ LocalizationManager::LocalizationManager(Location currLocation,
 }
 
 void LocalizationManager::update(float deltaX, float deltaY, float deltaYaw,
-		float laserArr[]) {
+		float laserArr[], Cell* nextWaypoint) {
 	vector<unsigned int> indexesToDelete;
 	vector<Particle*> newParticles;
 	unsigned int maxIndex = 0;
@@ -36,7 +36,7 @@ void LocalizationManager::update(float deltaX, float deltaY, float deltaYaw,
 
 	for (unsigned int i = 0; i < particleCount; i++) {
 		Particle* particle = this->particles[i];
-		particle->Update(deltaX, deltaY, deltaYaw, laserArr);
+		particle->Update(deltaX, deltaY, deltaYaw, laserArr, nextWaypoint);
 		if (this->particles[maxIndex]->belief < particle->belief) {
 			maxIndex = i;
 		}
@@ -52,7 +52,9 @@ void LocalizationManager::update(float deltaX, float deltaY, float deltaYaw,
 	Particle* bestParticle = this->particles[maxIndex];
 	for (unsigned int i = newParticles.size(); i < particleCount; i++) {
 		Particle* newParticle = bestParticle->CreateChild(
-				PARTIACLE_CHILED_RADIOS_CM, PARTICAL_DGREE_YAW);
+			Utils::MathUtil::cmToPx(PARTIACLE_CHILED_RADIOS_CM),
+			PARTICAL_DGREE_YAW
+		);
 		newParticles.push_back(newParticle);
 	}
 

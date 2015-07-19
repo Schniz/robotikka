@@ -18,7 +18,7 @@ public:
 	AnotherMap* m_Map;
 
 	// Function
-	void update(float deltaX, float deltaY, float deltaYaw, float laserArr[]);
+	void update(float deltaX, float deltaY, float deltaYaw, float laserArr[], Cell* nextWaypoint);
 	Location BestLocation();
 
 	// Ctor

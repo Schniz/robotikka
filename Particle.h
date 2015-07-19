@@ -7,6 +7,7 @@
 #include <math.h>
 #include <float.h>
 #include "Managers/ConfigurationManager.h"
+#include "Models/Cell.h"
 
 using namespace std;
 using namespace PlayerCc;
@@ -35,7 +36,7 @@ public:
 	void SetMap(AnotherMap* map);
 	void SetMaxDistance(double maxDistance);
 
-	void Update(float deltaX, float deltaY, float deltaYaw, float laserArray[]);
+	void Update(float deltaX, float deltaY, float deltaYaw, float laserArray[], Cell* nextWaypoint);
 	float ProbMovement(float deltaX, float deltaY, float deltaYaw);
 	float ProbByScan(float laserArray[]);
 	float Randomize(float min, float max);

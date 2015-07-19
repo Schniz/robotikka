@@ -19,7 +19,7 @@ Manager::Manager(Robot* robot, Plan* pln) {
 }
 
 double circle(double num) {
-	return fmod(num + 4*360, 360.0);
+	return fmod(num + 4 * 360, 360.0);
 }
 
 double calRawYaw(Cell* waypoint, Location* bestLocation) {
@@ -59,17 +59,17 @@ void Manager::rotateLikeShawarma(Cell* waypoint, Location* bestLocation) {
 		int factor = angleDifference >= 180 ? -1 : 1;
 		robot->setSpeed(0, factor * Consts::TURN_ANGULAR_SPEED);
 		robot->Read();
-		yaw = this->getBestLocation().getYaw();
+		yaw = this->getBestLocation(waypoint).getYaw();
 		angleDifference = circle(angleToBe - yaw);
 	}
 }
 
-Location Manager::getBestLocation() {
+Location Manager::getBestLocation(Cell* waypoint) {
 	double dx, dy, dyaw;
 	float* allLasers = robot->getAllLasers();
 	robot->calcLocationDeltas(dx, dy, dyaw);
-	this->localizationManager->update((float) dx, (float) dy,
-			(float) dyaw, allLasers);
+	this->localizationManager->update((float) dx, (float) dy, (float) dyaw,
+			allLasers, waypoint);
 	Location bestLocation = this->localizationManager->BestLocation();
 	delete[] allLasers;
 	return bestLocation;
@@ -78,44 +78,27 @@ Location Manager::getBestLocation() {
 void Manager::run() {
 	double dx = this->start->getX();
 	double dy = this->start->getY();
-	double dyaw = ConfigurationManager::GetInstance()->getStartLocation().getYaw();
+	double dyaw =
+			ConfigurationManager::GetInstance()->getStartLocation().getYaw();
 	Location bestLocation = Location(dx, dy, dyaw);
 	for (Cell* waypoint : waypointsManager->smoothWaypoints) {
-		cout << "Starting to walk to " << waypoint->getX() << "," << waypoint->getY() << endl;
+		cout << "Starting to walk to " << waypoint->getX() << ","
+				<< waypoint->getY() << endl;
 		this->waypointsManager->currWaypoint = waypoint;
-		bestLocation = this->getBestLocation();
+		bestLocation = this->getBestLocation(waypoint);
 		while (!waypointsManager->IsInWaypoint(dx, dy)) {
 			robot->Read();
-			cout << "LOCATION: " << bestLocation.getX() << "," << bestLocation.getY() << endl;
+			cout << "LOCATION: " << bestLocation.getX() << ","
+					<< bestLocation.getY() << endl;
 			this->rotateLikeShawarma(waypoint, &bestLocation);
 			this->robot->setSpeed(Consts::MOVE_FORWARD_SPEED, 0);
 			sleep(1);
 			this->robot->setSpeed(0, 0);
-			bestLocation = this->getBestLocation();
+			bestLocation = this->getBestLocation(waypoint);
 		}
-
 	}
 
 	cout << "finished" << endl;
-
-	/*
-	 while (currentPoint->stopCond()) {
-	 currentPoint = currentPoint->selectNext();
-
-	 if (currentPoint == NULL) {
-	 return;
-	 }
-	 }
-	 currentPoint->action();
-	 while (currentPoint != NULL) {
-	 while (!currentPoint->stopCond()) {
-	 currentPoint->action();
-	 robot->Read();
-	 }
-	 currentPoint = currentPoint->selectNext();
-	 robot->Read();
-	 }
-	 */
 }
 
 Cell* locationToMapCell(AnotherMap* map, Location location) {
@@ -129,8 +112,7 @@ void Manager::InitApp() {
 	AnotherMap* map = this->map = new AnotherMap(config);
 	AStarUtil astar(map);
 	Location startLocation = config->getStartLocation();
-	Cell* startCell = this->start = locationToMapCell(map,
-			startLocation);
+	Cell* startCell = this->start = locationToMapCell(map, startLocation);
 	Cell* endCell = this->destination = locationToMapCell(map,
 			config->getEndLocation());
 	vector<Cell*> astarPath = astar.findPath(startCell, endCell);
@@ -140,11 +122,20 @@ void Manager::InitApp() {
 	Location startLocationPx = startCell->getLocation();
 	startLocationPx.m_Yaw = startLocation.m_Yaw;
 	this->robot->setOdemetry(
-			startLocation.getX() * config->getPixelPerCm() / 100,
-			startLocation.getY() * config->getPixelPerCm() / 100,
-			startLocationPx.getYaw()
-			);
-	this->localizationManager = new LocalizationManager(startLocationPx, map, wayPointsManager->longestDistance, robot->_lp);
+			MathUtil::pxToCm(startLocationPx.getX()) / 100,
+			MathUtil::pxToCm(map->gridHeight - startLocationPx.getY()) / 100,
+			DTOR(startLocationPx.getYaw()));
+	this->robot->setLocation(
+			startLocationPx.getX(),
+			startLocationPx.getY(),
+			startLocationPx.getYaw());
+	this->robot->kickstart();
+	this->localizationManager = new LocalizationManager(
+		startLocationPx,
+		map,
+		wayPointsManager->longestDistance,
+		robot->_lp
+	);
 
 	for (Cell* cell : astarPath) {
 		cell->Cell_Cost = CellType::PATH;
