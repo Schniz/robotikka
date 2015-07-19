@@ -1,5 +1,12 @@
 #include "Particle.h"
 
+#include <cmath>
+#include <cstdlib>
+
+#include "Models/Cell.h"
+
+
+
 Particle::Particle() {
 	this->x = 0;
 	this->y = 0;
@@ -22,6 +29,10 @@ void Particle::SetMap(AnotherMap* map) {
 
 void Particle::Update(float deltaX, float deltaY, float deltaYaw,
 		float laserArray[]) {
+
+	// Erase the old paint on map
+	this->UnPaint();
+
 	this->x += deltaX;
 	this->y += deltaY;
 	this->yaw += deltaYaw;
@@ -36,6 +47,9 @@ void Particle::Update(float deltaX, float deltaY, float deltaYaw,
 
 	if (this->belief > 1)
 		this->belief = 1;
+
+	// Paint the partical on the map
+	this->Paint(BEST_EFFORT);
 }
 
 float Particle::ProbMovement(float deltaX, float deltaY, float deltaYaw) {
@@ -76,7 +90,7 @@ float Particle::ProbByScan(float laserArray[]) {
 				matchCount++;
 			}
 
-			else if (cell->Cell_Cost != CellType::WALL) {
+			else if ((cell->Cell_Cost != CellType::WALL) && ((laserArray[i] - MAX_LEASER_DISTANCE)/MAX_LEASER_DISTANCE) > 0.1) {
 				matchCount++;
 			}
 		}
@@ -107,6 +121,28 @@ Particle* Particle::CreateChild(float dExpansionRadius, float dYawRange) {
 	return p;
 }
 
+void Particle::Paint(float paintGood)
+{
+	Cell * c = this->map->getResizedCell(this->x,this->y);
+	if (this->belief >= paintGood)
+	{
+		c->Cell_Color = CellColor::PATH;
+	}
+	else
+	{
+		c->Cell_Color = CellColor::DESTINATION;
+	}
+
+}
+
+void Particle::UnPaint()
+{
+	Cell * c = this->map->getResizedCell(this->x,this->y);
+	c->Cell_Color = (CellColor)c->Cell_Cost;
+}
+
+
 Particle::~Particle() {
+	this->UnPaint();
 }
 

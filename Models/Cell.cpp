@@ -8,6 +8,8 @@ Cell::Cell(unsigned x, unsigned y, CellType cell_cost) {
 	m_X = x;
 	m_Y = y;
 	Cell_Cost = cell_cost;
+	unsigned color = (unsigned)cell_cost;
+	Cell_Color = (CellColor)color;
 
 	// cout << "Cell.cpp: " << x << "," << y << "," << cell_cost << endl;
 }
@@ -17,6 +19,7 @@ Cell::Cell(const Cell& cell) {
 	m_X = cell.m_X;
 	m_Y = cell.m_Y;
 	Cell_Cost = cell.Cell_Cost;
+	Cell_Color = cell.Cell_Color;
 	m_Neighbors = vector<Cell*>(cell.m_Neighbors);
 }
 
@@ -25,6 +28,7 @@ Cell::Cell(const Cell* cell) {
 	m_X = cell->m_X;
 	m_Y = cell->m_Y;
 	Cell_Cost = cell->Cell_Cost;
+	Cell_Color = cell->Cell_Color;
 	m_Neighbors = vector<Cell*>();
 }
 

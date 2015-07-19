@@ -14,10 +14,21 @@ enum class CellType : unsigned char {
 	DESTINATION = 5
 };
 
+enum class CellColor : unsigned char {
+	TERRAIN = 0,
+	BLOATED_WALL = 1,
+	WALL = 2,
+	PATH = 3,
+	START = 4,
+	DESTINATION = 5,
+	PARTICALE = 6
+};
+
 class Cell {
 public:
 	static const unsigned NUM_NEIGHBORS = 8;
 	CellType Cell_Cost;
+	CellColor Cell_Color;
 	Cell(unsigned x, unsigned y, CellType cell_cost = CellType::TERRAIN);
 	Cell(const Cell& cell);
 	Cell(const Cell* cell);

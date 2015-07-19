@@ -11,31 +11,33 @@
 #include "../lib/lodepng.h"
 #include "../Managers/ConfigurationManager.h"
 
+#define USE_COLOR true
+
 using namespace std;
 
-char* colorFor(CellType type) {
+char* colorFor(unsigned type) {
 	char r, g, b;
 	switch (type) {
-	case (CellType::TERRAIN):
+	case (1)://CellType::TERRAIN):
 		r = g = b = 255;
 		break;
-	case (CellType::WALL):
+	case (2)://CellType::WALL):
 		r = g = b = 0;
 		break;
-	case (CellType::BLOATED_WALL):
+	case (3)://CellType::BLOATED_WALL):
 		r = g = b = 100;
 		break;
-	case (CellType::PATH):
+	case (4)://CellType::PATH):
 		r = 0;
 		g = 140;
 		b = 40;
 		break;
-	case (CellType::START):
+	case (5)://CellType::START):
 		r = 0;
 		g = 40;
 		b = 140;
 		break;
-	case (CellType::DESTINATION):
+	case (6)://CellType::DESTINATION):
 		r = 140;
 		g = 40;
 		b = 0;
@@ -56,12 +58,21 @@ void saveFile(AnotherMap* map, string fileName, bool resized) {
 	unsigned char* image = new unsigned char[gridSquare * 4];
 	for (int i = 0; i < gridSquare; i++) {
 		CellType type;
+		CellColor color;
 		if (resized) {
 			type = map->resizedGrid[i]->Cell_Cost;
+			color = map->resizedGrid[i]->Cell_Color;
 		} else {
 			type = map->grid[i]->Cell_Cost;
+			color = map->grid[i]->Cell_Color;
 		}
-		char* rgb = colorFor(type);
+		char* rgb;
+		if (USE_COLOR == true){
+			rgb = colorFor((unsigned)color);
+		}
+		else {
+			rgb = colorFor((unsigned)type);
+		}
 		image[i * 4] = rgb[0];
 		image[i * 4 + 1] = rgb[1];
 		image[i * 4 + 2] = rgb[2];

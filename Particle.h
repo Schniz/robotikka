@@ -1,12 +1,15 @@
 #pragma once
 
-#include "Consts.h"
-#include "Utils/MathUtil.h"
-#include "Models/AnotherMap.h"
-#include <libplayerc++/playerc++.h>
-#include <math.h>
+
 #include <float.h>
+
+#include <math.h>
+
+#include "Consts.h"
 #include "Managers/ConfigurationManager.h"
+#include "Models/AnotherMap.h"
+#include "Utils/MathUtil.h"
+
 
 using namespace std;
 using namespace PlayerCc;
@@ -35,7 +38,8 @@ public:
 	float ProbMovement(float deltaX, float deltaY, float deltaYaw);
 	float ProbByScan(float laserArray[]);
 	float Randomize(float min, float max);
-
+	void Paint(float paintGood);
+	void UnPaint();
 	Particle* CreateChild(float expansionRadius, float yawRange);
 };
 

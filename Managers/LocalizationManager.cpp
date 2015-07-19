@@ -1,4 +1,7 @@
 #include "LocalizationManager.h"
+#include "../Consts.h"
+
+using namespace Consts;
 
 namespace Managers {
 
@@ -56,6 +59,7 @@ void LocalizationManager::update(float deltaX, float deltaY, float deltaYaw,
 	}
 
 	this->particles = newParticles;
+	this->m_Map->saveToFile("/home/colman/Desktop/Particle",true);
 
 	// create new children
 //	vector<list<Particle>::iterator> BestParticle;
