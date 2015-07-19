@@ -12,10 +12,6 @@ Robot::Robot(char* ip, int port) {
 	robot_XPos = 0;
 	robot_YPos = 0;
 	robot_Yaw = 0;
-
-	//For fixing Player's reading BUG
-	for (int i = 0; i < 15; i++)
-		Read();
 }
 
 Location Robot::getLocation() {
@@ -36,8 +32,8 @@ double Robot::getYawPosition() {
 
 void Robot::calcLocationDeltas(double &DelX, double &DelY, double &DelYaw) {
 	// Getting the new position of the robot
-	double currRobotX = _pp->GetXPos();
-	double currRobotY = _pp->GetYPos();
+	double currRobotX = Utils::MathUtil::cmToPx(_pp->GetXPos() * 100);
+	double currRobotY = Utils::MathUtil::cmToPx(_pp->GetYPos() * 100);
 
 	// Getting the robot yaw and casting it from radians to degrees
 	double x = _pp->GetYaw();

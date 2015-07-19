@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include <float.h>
+#include "../Managers/ConfigurationManager.h"
 
 namespace Utils {
 
@@ -13,6 +14,15 @@ namespace Utils {
 
 	class MathUtil {
 		public:
+
+			static unsigned cmToPx(float cm) {
+				return cm / Managers::ConfigurationManager::GetInstance()->getPngGridResolution();
+			}
+
+			static float pxToCm(unsigned px) {
+				return px * Managers::ConfigurationManager::GetInstance()->getPngGridResolution();
+			}
+
 			static bool inRange(double num, double rangeStart, double rangeEnd, bool inclusive = true);
 			static double distance(double deltaX, double deltaY);
 			static double distance(double x1, double y1, double x2, double y2);

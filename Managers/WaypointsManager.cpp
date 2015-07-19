@@ -48,6 +48,7 @@ void WaypointsManager::SmoothWaypoints() {
 		smoothWaypoints.push_back(lastWaypoint);
 	}
 	this->currWaypoint = smoothWaypoints[0];
+	longestDistance = MathUtil::pxToCm(longestDistance);
 }
 
 WaypointsManager::~WaypointsManager() {

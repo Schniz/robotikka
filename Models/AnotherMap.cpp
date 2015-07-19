@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include "../lib/lodepng.h"
 #include "../Managers/ConfigurationManager.h"
+#include "../Utils/MathUtil.h"
 
 #define USE_COLOR true
 
@@ -197,7 +198,7 @@ void bloatMap(AnotherMap* map, unsigned pxToBloat) {
 }
 
 unsigned howMuchPxToBloat(float robotRadiusSize, float pngGridResolution) {
-	return robotRadiusSize / pngGridResolution * 4;
+	return round(Utils::MathUtil::cmToPx(robotRadiusSize) * 7);
 }
 
 AnotherMap::AnotherMap(Managers::ConfigurationManager* config) {

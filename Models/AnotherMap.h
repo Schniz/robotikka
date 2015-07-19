@@ -24,7 +24,10 @@ public:
 	Cell* getCell(unsigned x, unsigned y);
 	Cell* getResizedCell(unsigned x, unsigned y);
 	Cell* getResizedCellFromImageCoords(unsigned x, unsigned y) {
-		return this->getResizedCell(x * this->gridWidth / this->width, y * this->gridHeight / this->height);
+		return this->getResizedCell(
+			x * this->gridWidth / this->width,
+			y * this->gridHeight / this->height
+		);
 	}
 	void saveToFile(string fileName, bool resized = false);
 	unsigned int height;
