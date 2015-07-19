@@ -64,42 +64,44 @@ void Particle::Update(float deltaX, float deltaY, float deltaYaw,
 		return prob;
 	}
 
-	float Particle::ProbByScan(float laserArray[]) {
-		int matchCount = 0;
-		int countCheck = 0;
-		int mapx = 0;
-		int mapy = 0;
+float Particle::ProbByScan(float laserArray[]) {
+	int matchCount = 0;
+	int countCheck = 0;
+	int mapx = 0;
+	int mapy = 0;
 
-		for (int i = 0; i < 666; i += 5) {
-			countCheck++;
-			int angle = laserProxy->GetBearing(i);
-			double distanceFromLaserInPx = Utils::MathUtil::cmToPx(
-			(double) laserArray[i] * 100.0);
-			mapx = round(
-			cos(DTOR(this->yaw) + angle) * distanceFromLaserInPx
-			+ (double) this->x);
-			mapy = round(
-			sin(DTOR(this->yaw) + angle) * distanceFromLaserInPx
-			+ (double) this->y);
+	double minAngle = laserProxy->GetMinAngle();
+	double maxAngle = laserProxy->GetMaxAngle();
+	int scanCount = laserProxy->GetCount();
+	double scanIncrement = (maxAngle - minAngle) / scanCount;
 
-			Cell* cell = this->map->getResizedCell(mapx, mapy);
+	for (int i = 0; i < scanCount; i += 5) {
+		countCheck++;
+		int angle = scanIncrement * i + minAngle;
+		double distanceFromLaserInPx = Utils::MathUtil::cmToPx(
+				(double) laserArray[i] * 100.0);
+		mapx = round(
+				cos(DTOR(this->yaw) + angle) * distanceFromLaserInPx
+						+ (double) this->x);
+		mapy = round(
+				sin(DTOR(this->yaw) + angle) * distanceFromLaserInPx
+						+ (double) this->y);
 
-			if (cell != NULL) {
-				if (laserArray[i] < MAX_LEASER_DISTANCE
-				&& cell->Cell_Cost == CellType::WALL) {
-					matchCount++;
-				}
+		Cell* cell = this->map->getResizedCell(mapx, mapy);
 
-				else if ((cell->Cell_Cost != CellType::WALL) && ((laserArray[i] - MAX_LEASER_DISTANCE)/MAX_LEASER_DISTANCE) > 0.1) {
-					matchCount++;
-				}
+		if (cell != NULL) {
+			if (laserArray[i] < MAX_LEASER_DISTANCE
+					&& cell->Cell_Cost == CellType::WALL) {
+				matchCount++;
+
 			}
 
 		}
+	}
 
 		return matchCount / countCheck;
 
-	}
+}
 
 	float Particle::Randomize(float min, float max) {
 		float num = (float) rand() / RAND_MAX;
