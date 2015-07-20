@@ -1,10 +1,18 @@
 #include "Manager.h"
-#include "Managers/ConfigurationManager.h"
-#include "Managers/WaypointsManager.h"
-#include "Models/Map.h"
-#include "Utils/MathUtil.h"
-#include "Utils/AStarUtil.h"
+
+#include <libplayercore/playercommon.h>
+#include <cmath>
+#include <iostream>
 #include <vector>
+
+#include "Consts.h"
+#include "Managers/ConfigurationManager.h"
+//#include "Managers/WaypointsManager.h"
+#include "Models/Location.h"
+//#include "Models/Map.h"
+#include "Plans/Plan.h"
+#include "Utils/AStarUtil.h"
+#include "Utils/MathUtil.h"
 
 #define POSITION_INACCURACY 3
 
@@ -33,7 +41,7 @@ double getAngleToBe(Cell* waypoint, Location* bestLocation) {
 	double rawYaw = calRawYaw(waypoint, bestLocation);
 	double realYaw = rawYaw;
 
-	if (bestLocation->getY() < waypoint->getY()) {
+	if (bestLocation->getY() > waypoint->getY()) {
 		if (bestLocation->getX() < waypoint->getX()) { // 1st
 			realYaw = rawYaw;
 		} else { // 2nd
@@ -67,7 +75,7 @@ void Manager::rotateLikeShawarma(Cell* waypoint, Location* bestLocation) {
 Location Manager::getBestLocation(Cell* waypoint) {
 	double dx, dy, dyaw;
 	float* allLasers = robot->getAllLasers();
-	robot->calcLocationDeltas(dx, dy, dyaw);
+	robot->calcLocationDeltas(dx, dy, dyaw, map);
 	this->localizationManager->update((float) dx, (float) dy, (float) dyaw,
 			allLasers, waypoint);
 	Location bestLocation = this->localizationManager->BestLocation();
@@ -122,7 +130,7 @@ void Manager::InitApp() {
 	Location startLocationPx = startCell->getLocation();
 	startLocationPx.m_Yaw = startLocation.m_Yaw;
 	double odemX = MathUtil::pxToCm(startLocationPx.getX()) / 100;
-	double odemY = MathUtil::pxToCm(startLocationPx.getY()) / 100;
+	double odemY = MathUtil::pxToCm(map->gridHeight - startLocationPx.getY()) / 100;
 	this->robot->setOdemetry(
 			odemX,
 			odemY,

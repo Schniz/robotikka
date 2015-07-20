@@ -30,7 +30,7 @@ double Robot::getYawPosition() {
 	return _pp->GetYaw();
 }
 
-void Robot::calcLocationDeltas(double &DelX, double &DelY, double &DelYaw) {
+void Robot::calcLocationDeltas(double &DelX, double &DelY, double &DelYaw, AnotherMap* map) {
 	// Getting the new position of the robot
 	double currRobotX = Utils::MathUtil::cmToPx(_pp->GetXPos() * 100);
 	double currRobotY = Utils::MathUtil::cmToPx(_pp->GetYPos() * 100);

@@ -7,6 +7,7 @@
 #include "Consts.h"
 #include "Utils/MathUtil.h"
 #include "Models/Location.h"
+#include "Models/AnotherMap.h"
 
 using namespace std;
 using namespace PlayerCc;
@@ -57,7 +58,7 @@ public:
 	bool canTurnRight();
 	bool canTurnLeft();
 
-	void calcLocationDeltas(double &DelX, double &DelY, double &DelYaw);
+	void calcLocationDeltas(double &DelX, double &DelY, double &DelYaw, AnotherMap* map);
 	double getDistanceFromObstacle(int index);
 	double getXPosition();
 	double getYPosition();
