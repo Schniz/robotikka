@@ -106,7 +106,7 @@ void Manager::run() {
 				<< bestLocation.getY() << endl;
 
 		this->rotateLikeShawarma(waypoint, &bestLocation);
-		this->robot->setSpeed(0.3, 0);
+		this->robot->setSpeed(0.5, 0);
 		while (!waypointsManager->IsInWaypoint(bestLocation.getX(),
 				bestLocation.getY())) {
 			robot->Read();
