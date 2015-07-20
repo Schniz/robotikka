@@ -47,7 +47,7 @@ double getAngleToBe(Cell* waypoint, Location* bestLocation) {
 		}
 	}
 
-	return fmod(realYaw + 360, 360.0);
+	return circle(realYaw);
 }
 
 void Manager::rotateLikeShawarma(Cell* waypoint, Location* bestLocation) {
