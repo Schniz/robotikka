@@ -31,8 +31,8 @@ double circle(double num) {
 }
 
 double calRawYaw(Cell* waypoint, Location* bestLocation) {
-	unsigned int deltaY = abs(waypoint->getY() - bestLocation->getY());
-	unsigned int deltaX = abs(waypoint->getX() - bestLocation->getX());
+	double deltaY = abs(waypoint->getY() - bestLocation->getY());
+	double deltaX = abs(waypoint->getX() - bestLocation->getX());
 	double rawYaw = RTOD(atan(deltaY / deltaX));
 	return rawYaw;
 }
