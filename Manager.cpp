@@ -63,7 +63,7 @@ void Manager::rotateLikeShawarma(Cell* waypoint, Location* bestLocation) {
 	cout << "angleToBe (radians): " << angleToBe << endl;
 	double yaw = bestLocation->getYaw();
 	double angleDifference = circle(angleToBe - yaw);
-	while (angleDifference > 15) {
+	while (angleDifference > 5) {
 		int factor = angleDifference >= 180 ? -1 : 1;
 		robot->setSpeed(0, factor * Consts::TURN_ANGULAR_SPEED);
 		robot->Read();

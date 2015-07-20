@@ -1,6 +1,6 @@
 #include "WaypointsManager.h"
 
-#define WAYPOINT_SKIPS 5
+#define WAYPOINT_SKIPS 3
 #define INCLINE_INACCURACY DBL_EPSILON
 #define FORCE_WAYPOINT_ON 2
 
@@ -62,8 +62,8 @@ bool WaypointsManager::WaypointDriver(Cell* wp, Robot rob) {
 }
 
 bool WaypointsManager::IsInWaypoint(double xp, double yp) {
-	return MathUtil::inRange(xp, currWaypoint->getX() - 10, currWaypoint->getX() + 10)
-			&& MathUtil::inRange(yp, currWaypoint->getY() - 10, currWaypoint->getY() + 10);
+	return MathUtil::inRange(xp, currWaypoint->getX() - 5, currWaypoint->getX() + 5)
+			&& MathUtil::inRange(yp, currWaypoint->getY() - 5, currWaypoint->getY() + 5);
 
 }
 }
