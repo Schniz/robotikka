@@ -19,14 +19,20 @@ class Robot {
 
 public:
 	LaserProxy* _lp;
+	double odX;
+	double odY;
+	double odYaw;
 	Robot(char* ip, int port);
 	void Read() {
 		// TODO
 		_pc->Read();
 	}
 	void setOdemetry(double x, double y, double yaw) {
-		this->_pp->SetOdometry(Utils::MathUtil::pxToCm(x) / 100,
-				Utils::MathUtil::pxToCm(y), yaw);
+		odX = x;
+		odY = y;
+		odYaw = yaw;
+		this->_pp->SetOdometry(x,
+				y, yaw);
 	}
 	void setSpeed(float xSpeed, float angularSpeed) {
 		// TODO: check if we need to do:  cm_to_m to the x speed! we need.
@@ -36,8 +42,11 @@ public:
 	}
 	void kickstart() {
 		//For fixing Player's reading BUG
-		for (int i = 0; i < 15; i++)
+		for (int i = 0; i < 30; i++) {
 			Read();
+			setOdemetry(odX, odY, odYaw);
+		}
+
 	}
 
 	Location getLocation();

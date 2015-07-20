@@ -1,6 +1,6 @@
 #include "WaypointsManager.h"
 
-#define WAYPOINT_SKIPS 3
+#define WAYPOINT_SKIPS 5
 #define INCLINE_INACCURACY DBL_EPSILON
 #define FORCE_WAYPOINT_ON 2
 

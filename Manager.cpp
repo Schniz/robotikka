@@ -80,7 +80,7 @@ Location Manager::getBestLocation(Cell* waypoint) {
 			allLasers, waypoint);
 	Location bestLocation = this->localizationManager->BestLocation();
 	delete[] allLasers;
-	return bestLocation;
+	return Location(bestLocation.getX(), map->gridHeight - bestLocation.getY(), bestLocation.getYaw());
 }
 
 void Manager::run() {
@@ -89,21 +89,32 @@ void Manager::run() {
 	double dyaw =
 			ConfigurationManager::GetInstance()->getStartLocation().getYaw();
 	Location bestLocation = Location(dx, dy, dyaw);
+
+	// For every waypoint...
 	for (Cell* waypoint : waypointsManager->smoothWaypoints) {
 		cout << "Starting to walk to " << waypoint->getX() << ","
 				<< waypoint->getY() << endl;
+
 		this->waypointsManager->currWaypoint = waypoint;
+
 		bestLocation = this->getBestLocation(waypoint);
-		while (!waypointsManager->IsInWaypoint(dx, dy)) {
+
+		// Go to the waypoint..
+		robot->Read();
+
+		cout << "LOCATION: " << bestLocation.getX() << ","
+				<< bestLocation.getY() << endl;
+
+		this->rotateLikeShawarma(waypoint, &bestLocation);
+		this->robot->setSpeed(0.3, 0);
+		while (!waypointsManager->IsInWaypoint(bestLocation.getX(),
+				bestLocation.getY())) {
 			robot->Read();
-			cout << "LOCATION: " << bestLocation.getX() << ","
-					<< bestLocation.getY() << endl;
-			this->rotateLikeShawarma(waypoint, &bestLocation);
-			this->robot->setSpeed(Consts::MOVE_FORWARD_SPEED, 0);
-			sleep(1);
-			this->robot->setSpeed(0, 0);
 			bestLocation = this->getBestLocation(waypoint);
 		}
+
+		this->robot->setSpeed(0, 0);
+
 	}
 
 	cout << "finished" << endl;
@@ -130,22 +141,14 @@ void Manager::InitApp() {
 	Location startLocationPx = startCell->getLocation();
 	startLocationPx.m_Yaw = startLocation.m_Yaw;
 	double odemX = MathUtil::pxToCm(startLocationPx.getX()) / 100;
-	double odemY = MathUtil::pxToCm(map->gridHeight - startLocationPx.getY()) / 100;
-	this->robot->setOdemetry(
-			odemX,
-			odemY,
-			DTOR(startLocationPx.getYaw()));
-	this->robot->setLocation(
-			startLocationPx.getX(),
-			startLocationPx.getY(),
+	double odemY = MathUtil::pxToCm(map->gridHeight - startLocationPx.getY())
+			/ 100;
+	this->robot->setOdemetry(odemX, odemY, DTOR(startLocationPx.getYaw()));
+	this->robot->setLocation(startLocationPx.getX(), startLocationPx.getY(),
 			startLocationPx.getYaw());
 	this->robot->kickstart();
-	this->localizationManager = new LocalizationManager(
-		startLocationPx,
-		map,
-		wayPointsManager->longestDistance,
-		robot->_lp
-	);
+	this->localizationManager = new LocalizationManager(startLocationPx, map,
+			wayPointsManager->longestDistance, robot->_lp);
 
 	for (Cell* cell : astarPath) {
 		cell->Cell_Cost = CellType::PATH;
